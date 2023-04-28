@@ -1,5 +1,4 @@
 import axios from 'axios'
-import * as pluralize from 'pluralize'
 import {useAuth} from '../stores/auth'
 import {ElMessage} from 'element-plus'
 
@@ -62,12 +61,12 @@ export const Service = {
     upload: (url, data = {}, options = {}) => request({url: url, data: data, method: 'upload', ...options})
 }
 
-export const Resources = (resources, others = {}) => ({
+export const Resources = (resources, resource, others = {}) => ({
     all: (params) => Service.get(`${resources}`, params),
     get: (id) => Service.get(`${resources}/${id}`),
     delete: (id) => Service.delete(`${resources}/${id}`),
-    create: (data) => Service.post(`${resources}`, {[pluralize.singular(resources)]: data}),
-    update: (data) => Service.put(`${resources}/${data.id}`, {[pluralize.singular(resources)]: _.omit(data, 'id')}), ...others
+    create: (data) => Service.post(`${resources}`, {[resource]: data}),
+    update: (data) => Service.put(`${resources}/${data.id}`, {[resource]: _.omit(data, 'id')}), ...others
 })
 
 export const Auth = {
