@@ -1,10 +1,6 @@
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router'
 
-// 引入pinia，用于状态管理
-import {createPinia} from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
 // 引入路由router
 import routes from '@/router/routes'
 import {useAuth} from './stores/auth';
@@ -17,11 +13,11 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 //全局样式文件
-import '@/assets/css/main.scss'
-import '@/assets/css/app.scss'
+import './assets/styles/main.scss'
+import './assets/styles/app.scss'
 
 // 引入App.vue，根组件
-import App from '@/App.vue'
+import App from './App.vue'
 
 const initApp = (pinia) => {
     const router = createRouter({
@@ -54,8 +50,6 @@ const initApp = (pinia) => {
             next()
         }
     })
-
-    return app
 }
 
 export default initApp

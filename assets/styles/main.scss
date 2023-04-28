@@ -1,0 +1,43 @@
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: avenir, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+
+  height: 100%;
+  width: 100%;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  --tm-bg-color: #F5F5F5;
+}
+
+html.dark {
+  --tm-bg-color: #00000;
+}
+
+.el-main {
+  --el-main-padding: 15px;
+}
+
+.el-table {
+  --el-table-header-text-color: var(--el-text-color-primary);
+}
+
+div {
+  box-sizing: border-box;
+}
