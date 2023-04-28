@@ -4,7 +4,7 @@ import {ElMessage} from 'element-plus'
 
 import _ from "lodash-es";
 
-const API_URL = `${import.meta.env.API_URL}`
+const API_URL = `${import.meta.env.VITE_API_URL}`
 const REQUEST_TIMEOUT = 60000
 
 const service = axios.create({
