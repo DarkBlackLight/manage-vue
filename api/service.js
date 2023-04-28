@@ -1,6 +1,6 @@
 import axios from 'axios'
 import pluralize from 'pluralize'
-import {useAuth} from '@/stores/auth'
+import {useAuth} from '../stores/auth'
 import {ElMessage} from 'element-plus'
 import _ from "lodash";
 
