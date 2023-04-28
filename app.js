@@ -5,10 +5,6 @@ import {createRouter, createWebHistory} from 'vue-router'
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-// 引入路由router
-import routes from '@/router/routes'
-// import {useAuth} from './stores/auth';
-
 // 引入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -29,6 +25,9 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 
+// 引入路由router
+import routes from '@/router/routes'
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: routes
 })
@@ -40,6 +39,8 @@ app.use(ElementPlus, {
 })
 
 app.mount('#app')
+
+import {useAuth} from './stores/auth';
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
