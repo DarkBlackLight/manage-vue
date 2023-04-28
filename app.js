@@ -23,16 +23,15 @@ import '@/assets/css/app.scss'
 // 引入App.vue，根组件
 import App from '@/App.vue'
 
+const app = createApp(App)
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: routes
 })
-
-const app = createApp(App)
-
-app.use(pinia)
 
 app.use(router)
 
@@ -42,20 +41,19 @@ app.use(ElementPlus, {
 
 app.mount('#app')
 
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuth()
+    const publicPages = ['/login', '/register']
+    const authRequired = !publicPages.includes(to.path)
+    const loggedIn = await authStore.current();
 
-// router.beforeEach(async (to, from, next) => {
-//     const authStore = useAuth()
-//     const publicPages = ['/login', '/register']
-//     const authRequired = !publicPages.includes(to.path)
-//     const loggedIn = await authStore.current();
-//
-//     if (authRequired && !loggedIn) {
-//         next('/login')
-//     } else if (!authRequired && loggedIn) {
-//         next('/')
-//     } else {
-//         next()
-//     }
-// })
+    if (authRequired && !loggedIn) {
+        next('/login')
+    } else if (!authRequired && loggedIn) {
+        next('/')
+    } else {
+        next()
+    }
+})
 
 
