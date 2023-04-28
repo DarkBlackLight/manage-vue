@@ -2,18 +2,19 @@ import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router'
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import routes from '@/router/routes'
 
 // 引入pinia，用于状态管理
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 // 引入路由router
+import routes from '@/router/routes'
+import {useAuth} from './stores/auth';
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: routes
 })
 
-import {useAuth} from './stores/auth';
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
