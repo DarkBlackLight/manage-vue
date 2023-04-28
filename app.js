@@ -17,7 +17,7 @@ import './assets/styles/main.scss'
 import './assets/styles/app.scss'
 
 // 引入App.vue，根组件
-import App from './App.vue'
+import App from '@/App.vue'
 
 const initApp = (pinia) => {
     const router = createRouter({
