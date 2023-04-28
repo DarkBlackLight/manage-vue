@@ -3,7 +3,7 @@ import API from "../../api";
 import ResourceDialog from "./ResourceDialog";
 import {formatDateTime} from "../../utils/tools";
 
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 
 const renderColumns = (columns, showResource) => columns.map(column =>

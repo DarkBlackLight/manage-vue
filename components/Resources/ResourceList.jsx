@@ -6,7 +6,7 @@ import ElTableNext from "el-table-next";
 import {Delete, Edit, ZoomIn, Search, Refresh, Plus} from "@element-plus/icons-vue";
 import {formatDateTime} from "../../utils/tools";
 
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 const renderFilters = (queries, filters) => filters.map(filter => (
     <el-col span={6}>
