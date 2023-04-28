@@ -13,7 +13,8 @@
     "moment": "^2.29.4",
     "pinia": "^2.0.32",
     "pinia-plugin-persistedstate": "^3.1.0",
-    "sass": "^1.59.3"
+    "sass": "^1.59.3",
+    "echarts": "^5.4.2"
   },
   "author": "",
   "license": "ISC"
