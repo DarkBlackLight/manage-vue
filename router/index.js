@@ -3,6 +3,7 @@ import {useAuth} from '../stores/auth'
 
 import routes from '@/router/routes'
 
+console.log(routes);
 
 const initRouter = () => {
     const router = createRouter({
