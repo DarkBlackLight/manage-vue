@@ -31,6 +31,17 @@ const initApp = () => {
         history: createWebHistory(import.meta.env.BASE_URL), routes: routes
     })
 
+    const app = createApp(App)
+
+    app.use(pinia)
+
+    app.use(router)
+
+    app.use(ElementPlus, {
+        locale: zhCn,
+    })
+
+    app.mount('#app')
 
     router.beforeEach(async (to, from, next) => {
         const authStore = useAuth()
@@ -46,19 +57,7 @@ const initApp = () => {
             next()
         }
     })
-
-    const app = createApp(App)
-
-    app.use(pinia)
-
-    app.use(router)
-
-    app.use(ElementPlus, {
-        locale: zhCn,
-    })
-
-    app.mount('#app')
-
+    
     return app
 }
 
