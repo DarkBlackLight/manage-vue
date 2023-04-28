@@ -2,7 +2,8 @@ import axios from 'axios'
 import pluralize from 'pluralize'
 import {useAuth} from '../stores/auth'
 import {ElMessage} from 'element-plus'
-import _ from "lodash";
+
+import {omit} from "lodash";
 
 const BASE_URL = 'http://localhost:3000/api/admin'
 const REQUEST_TIMEOUT = 60000
@@ -66,7 +67,7 @@ export const Resources = (resources, others = {}) => ({
     get: (id) => Service.get(`${resources}/${id}`),
     delete: (id) => Service.delete(`${resources}/${id}`),
     create: (data) => Service.post(`${resources}`, {[pluralize.singular(resources)]: data}),
-    update: (data) => Service.put(`${resources}/${data.id}`, {[pluralize.singular(resources)]: _.omit(data, 'id')}), ...others
+    update: (data) => Service.put(`${resources}/${data.id}`, {[pluralize.singular(resources)]: omit(data, 'id')}), ...others
 })
 
 export const Auth = {
