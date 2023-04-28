@@ -16,15 +16,14 @@ import 'element-plus/dist/index.css'
 // 引入element-plus全局国际化的配置
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
+//全局样式文件
+import '@/assets/css/main.scss'
+import '@/assets/css/app.scss'
+
+// 引入App.vue，根组件
+import App from '@/App.vue'
 
 const initApp = () => {
-    //全局样式文件
-    import '@/assets/css/main.scss'
-    import '@/assets/css/app.scss'
-
-    // 引入App.vue，根组件
-    import App from '@/App.vue'
-
     const pinia = createPinia()
     pinia.use(piniaPluginPersistedstate)
 
