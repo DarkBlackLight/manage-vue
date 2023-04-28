@@ -1,0 +1,17 @@
+.resource-dialog {
+  header {
+    margin: 0;
+    padding: 15px 20px;
+
+    border-bottom: 1px solid var(--el-color-info-light-7);
+  }
+
+  footer {
+    border-top: 1px solid var(--el-color-info-light-7);
+    padding: 10px 20px;
+  }
+
+  .el-dialog__body {
+    padding: 5px 15px;
+  }
+}
