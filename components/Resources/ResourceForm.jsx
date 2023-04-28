@@ -8,38 +8,28 @@ import './ResourceForm.scss';
 
 import _ from "lodash-es";
 
-
 const renderOption = (c, r) => (
     <el-select modelValue={_.get(r, c.prop)} onChange={(e) => _.set(r, c.prop, e)} class="w-100" {...c.props}
                filterable>
         {c.options && c.options.map(option => (
-            <el-option key={option.value} label={option.label} value={option.value}/>
-        ))}
-    </el-select>
-)
+            <el-option key={option.value} label={option.label} value={option.value}/>))}
+    </el-select>)
 
 const renderImage = (c, r) => {
-    return (
-        <el-upload
-            class="resource-form-image"
-            show-file-list={false}
-            http-request={({file}) => {
-                API.Storage.upload(file).then(response => {
-                    _.set(r, c.prop, response.data.id);
-                    _.set(r, c.prop.replace('_id', ''), response.data);
-                });
-            }}
-        >
-            {
-                _.get(r, c.prop.replace('_id', '')) ?
-                    <div class='uploader-image'>
-                        <el-image src={_.get(r, c.prop.replace('_id', ''))['src']}/>
-                    </div>
-                    :
-                    <el-icon class='uploader-icon'><Plus/></el-icon>
-            }
-        </el-upload>
-    )
+    return (<el-upload
+        class="resource-form-image"
+        show-file-list={false}
+        http-request={({file}) => {
+            API.Storage.upload(file).then(response => {
+                _.set(r, c.prop, response.data.id);
+                _.set(r, c.prop.replace('_id', ''), response.data);
+            });
+        }}
+    >
+        {_.get(r, c.prop.replace('_id', '')) ? <div class='uploader-image'>
+            <el-image src={_.get(r, c.prop.replace('_id', ''))['src']}/>
+        </div> : <el-icon class='uploader-icon'><Plus/></el-icon>}
+    </el-upload>)
 }
 
 
@@ -73,48 +63,38 @@ const renderColumn = {
     'color': (c, r) => <el-color-picker modelValue={_.get(r, c.prop)}
                                         onUpdate:modelValue={(e) => _.set(r, c.prop, e)} {...c.props}></el-color-picker>,
     'slider': (c, r) => <el-slider modelValue={_.get(r, c.prop)}
-                                   onUpdate:modelValue={(e) => _.set(r, c.prop, e)} {...c.props}></el-slider>
+                                   onUpdate:modelValue={(e) => _.set(r, c.prop, e)} {...c.props}></el-slider>,
+    'switch': (c, r) => <el-switch modelValue={_.get(r, c.prop)}
+                                   onUpdate:modelValue={(e) => _.set(r, c.prop, e)} {...c.props}></el-switch>
 }
 
 const setColumnDefault = (c, r) => {
-    _.set(
-        r,
-        c.prop,
-        c.default ? c.default : initResource[c.type](c)
-    )
+    _.set(r, c.prop, c.default ? c.default : initResource[c.type](c))
 }
 
-const renderAssociations = (column, resource) => (
-    <el-col span={24}>
-        <ElTableNext data={_.get(resource, column.prop).filter(r => r['_destroy'] !== true)} column={
-            [
-                ...[{
+const renderAssociations = (column, resource) => (<el-col span={24}>
+    <ElTableNext data={_.get(resource, column.prop).filter(r => r['_destroy'] !== true)} column={[...[{
 
-                    label: '操作',
-                    render: (value, scope) => <el-button icon={Delete} circle plain type='danger' onClick={() => {
-                        ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
-                            _.get(resource, column.prop)[value.$index]['_destroy'] = true
-                        })
-                    }}/>
-                }],
-                ...column.columns.map(c => ({
-                    prop: c.prop,
-                    label: c.label,
-                    ...c.props,
-                    render: (value, scope) => renderColumn[c.type](c, scope.row)
-                }))]
+        label: '操作',
+        render: (value, scope) => <el-button icon={Delete} circle plain type='danger' onClick={() => {
+            ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
+                _.get(resource, column.prop)[value.$index]['_destroy'] = true
+            })
+        }}/>
+    }], ...column.columns.map(c => ({
+        prop: c.prop, label: c.label, ...c.props, render: (value, scope) => renderColumn[c.type](c, scope.row)
+    }))]
 
-        } border/>
-        <div class="text-start my-10">
-            <el-button plain icon={Plus} type="primary" onClick={() => {
-                let newResource = {};
-                column.columns.forEach(c => setColumnDefault(c, newResource))
-                _.get(resource, column.prop).push(newResource);
-            }}>添加
-            </el-button>
-        </div>
-    </el-col>
-)
+    } border/>
+    <div class="text-start my-10">
+        <el-button plain icon={Plus} type="primary" onClick={() => {
+            let newResource = {};
+            column.columns.forEach(c => setColumnDefault(c, newResource))
+            _.get(resource, column.prop).push(newResource);
+        }}>添加
+        </el-button>
+    </div>
+</el-col>)
 
 const renderAssociation = (column, resource) => renderColumns(column.columns, _.get(resource, column.prop))
 
@@ -126,14 +106,12 @@ const renderColumns = (columns, resource) => columns.map((column) => {
             return (renderAssociation(column, resource))
         else if (column.type === 'hidden')
             return null
-        else
-            return (
+        else return (
                 <el-col span={column.span ? column.span : 18}>
                     <el-form-item label={column.label} prop={column.prop.split(',')}>
                         {renderColumn[column.type](column, resource)}
                     </el-form-item>
-                </el-col>
-            )
+                </el-col>)
     }
 })
 
@@ -151,19 +129,17 @@ const initResource = {
     'display': (c) => null,
     'association': (c) => ({}),
     'associations': (c) => [],
-    'hidden': (c) => null
+    'hidden': (c) => null,
+    'color': (c) => null,
+    'slider': (c) => null,
+    'switch': (c) => null
 }
 
 
 export default defineComponent({
-    name: 'ResourceForm',
-    props: {
-        resource: Object,
-        columns: Array,
-        tabs: Array
-    },
-    emits: ['submit', 'change'],
-    setup(props, {expose, emit}) {
+    name: 'ResourceForm', props: {
+        resource: Object, columns: Array, tabs: Array
+    }, emits: ['submit', 'change'], setup(props, {expose, emit}) {
         const formRef = ref(null);
         const activeTab = ref(0);
 
@@ -173,11 +149,9 @@ export default defineComponent({
         const rules = ref([]);
 
         const initColumn = (column) => {
-            if (!column.type)
-                column.type = 'text';
+            if (!column.type) column.type = 'text';
 
-            if (!column.props)
-                column.props = {}
+            if (!column.props) column.props = {}
 
             // Init Default Value
             if (!props.resource) setColumnDefault(column, resource.value);
@@ -187,8 +161,7 @@ export default defineComponent({
                 column.props.loading = true
                 column.remote_options.remote().then(data => {
                     column.options = data.map(d => ({
-                        value: d[column.remote_options.value],
-                        label: d[column.remote_options.label]
+                        value: d[column.remote_options.value], label: d[column.remote_options.label]
                     }))
                     column.props.loading = false
                 })
@@ -243,26 +216,15 @@ export default defineComponent({
 
         return () => (
             <el-form rules={rules} ref={formRef} model={resource.value} label-width='auto' label-position="right">
-                {
-                    props.tabs ?
-                        <el-tabs v-model={activeTab.value} class="resource-form-tabs">
-                            {
-                                props.tabs.map((tab, index) =>
-                                    <el-tab-pane label={tab.name} name={index}>
-                                        <el-row gutter={20}>
-                                            {renderColumns(columns.value.filter(column => tab.prop.includes(column.prop)), resource.value)}
-                                        </el-row>
-                                    </el-tab-pane>
-                                )
-                            }
-                        </el-tabs> :
-                        <el-row gutter={20} style={{padding: '15px 0'}}>
-                            {
-                                renderColumns(columns.value, resource.value)
-                            }
+                {props.tabs ? <el-tabs v-model={activeTab.value} class="resource-form-tabs">
+                    {props.tabs.map((tab, index) => <el-tab-pane label={tab.name} name={index}>
+                        <el-row gutter={20}>
+                            {renderColumns(columns.value.filter(column => tab.prop.includes(column.prop)), resource.value)}
                         </el-row>
-                }
-            </el-form>
-        )
+                    </el-tab-pane>)}
+                </el-tabs> : <el-row gutter={20} style={{padding: '15px 0'}}>
+                    {renderColumns(columns.value, resource.value)}
+                </el-row>}
+            </el-form>)
     }
 })
