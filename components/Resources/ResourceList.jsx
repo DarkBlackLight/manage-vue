@@ -8,7 +8,6 @@ import {formatDateTime} from "../../utils/tools";
 
 import _ from 'lodash';
 
-tools.js
 const renderFilters = (queries, filters) => filters.map(filter => (
     <el-col span={6}>
         <el-form-item label={filter.label} prop={filter.prop}>
