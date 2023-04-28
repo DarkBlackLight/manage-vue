@@ -81,4 +81,4 @@ const Storage = {
     upload: (file) => Service.upload('/storage/upload', {storage: file})
 }
 
-export {Auth, Storage, Resources, Service}
+export default {Auth, Storage, Resources, Service}
