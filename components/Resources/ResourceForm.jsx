@@ -6,7 +6,7 @@ import {ElMessageBox} from "element-plus";
 import API from "../../api";
 import './ResourceForm.scss';
 
-import _ from "lodash";
+import _ from "lodash-es";
 
 
 const renderOption = (c, r) => (
