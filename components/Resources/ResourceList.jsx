@@ -1,14 +1,14 @@
 import {ref, defineComponent, reactive, toRaw, onMounted} from "vue";
-import API from "@/api";
+import API from "../../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 import ElTableNext from "el-table-next";
 
 import {Delete, Edit, ZoomIn, Search, Refresh, Plus} from "@element-plus/icons-vue";
-import {formatDateTime} from "@/utils/tools";
+import {formatDateTime} from "../../utils/tools";
 
 import _ from 'lodash';
 
-
+tools.js
 const renderFilters = (queries, filters) => filters.map(filter => (
     <el-col span={6}>
         <el-form-item label={filter.label} prop={filter.prop}>

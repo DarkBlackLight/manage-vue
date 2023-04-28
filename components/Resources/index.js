@@ -1,5 +1,9 @@
 import ResourceDialog from "./ResourceDialog";
-import ResourceEdit from "./ResourceEdit";
 import ResourceForm from "./ResourceForm";
+import ResourceIndex from "./ResourceIndex";
 
-export default {ResourceDialog, ResourceEdit, ResourceForm}
+export default {
+    ResourceDialog,
+    ResourceForm,
+    ResourceIndex
+}
