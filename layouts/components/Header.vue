@@ -45,7 +45,7 @@
 
 <script setup>
 import {Fold, Expand, Sunny, Moon} from '@element-plus/icons-vue'
-import {useAuth} from 'manage-vue/stores/auth';
+import {useAuth} from '../../stores/auth';
 import {useRouter} from "vue-router";
 import {computed, onMounted} from 'vue';
 
