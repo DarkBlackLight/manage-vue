@@ -7,7 +7,7 @@ import pinia from './stores'
 import router from './router'
 
 // 引入App.vue，根组件
-import App from '@/App.vue'
+import App from './App.vue'
 
 // 引入element-plus
 import ElementPlus from 'element-plus'
