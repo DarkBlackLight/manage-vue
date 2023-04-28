@@ -5,6 +5,10 @@ import {createRouter, createWebHistory} from 'vue-router'
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
+// 引入路由router
+import routes from '@/router/routes'
+import {useAuth} from './stores/auth';
+
 // 引入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -19,42 +23,39 @@ import '@/assets/css/app.scss'
 // 引入App.vue，根组件
 import App from '@/App.vue'
 
-const app = createApp(App)
+const initApp = (pinia) => {
+    const router = createRouter({
+        history: createWebHistory(import.meta.env.BASE_URL), routes: routes
+    })
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-app.use(pinia)
+    const app = createApp(App)
 
-// 引入路由router
-import routes from '@/router/routes'
+    app.use(pinia)
 
-const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL), routes: routes
-})
+    app.use(router)
 
-app.use(router)
+    app.use(ElementPlus, {
+        locale: zhCn,
+    })
 
-app.use(ElementPlus, {
-    locale: zhCn,
-})
+    app.mount('#app')
 
-app.mount('#app')
+    router.beforeEach(async (to, from, next) => {
+        const authStore = useAuth()
+        const publicPages = ['/login', '/register']
+        const authRequired = !publicPages.includes(to.path)
+        const loggedIn = await authStore.current();
 
-import {useAuth} from './stores/auth';
+        if (authRequired && !loggedIn) {
+            next('/login')
+        } else if (!authRequired && loggedIn) {
+            next('/')
+        } else {
+            next()
+        }
+    })
 
-router.beforeEach(async (to, from, next) => {
-    const authStore = useAuth()
-    const publicPages = ['/login', '/register']
-    const authRequired = !publicPages.includes(to.path)
-    const loggedIn = await authStore.current();
+    return app
+}
 
-    if (authRequired && !loggedIn) {
-        next('/login')
-    } else if (!authRequired && loggedIn) {
-        next('/')
-    } else {
-        next()
-    }
-})
-
-
+export default initApp
