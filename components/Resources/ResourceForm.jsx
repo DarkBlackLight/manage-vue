@@ -1,10 +1,13 @@
 import {defineComponent, onMounted, ref, watch} from "vue";
 import {Delete, Plus} from "@element-plus/icons-vue";
-import API from "@/api";
-import _ from "lodash";
-import './ResourceForm.scss';
 import ElTableNext from "el-table-next";
 import {ElMessageBox} from "element-plus";
+
+import API from "../../api";
+import './ResourceForm.scss';
+
+import _ from "lodash";
+
 
 const renderOption = (c, r) => (
     <el-select modelValue={_.get(r, c.prop)} onChange={(e) => _.set(r, c.prop, e)} class="w-100" {...c.props}

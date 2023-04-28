@@ -1,9 +1,10 @@
 import {ref, defineComponent} from "vue";
-import API from "@/api";
 import {ElMessage} from 'element-plus';
 import {Check} from "@element-plus/icons-vue";
-import ResourceDialog from "@/components/Resources/ResourceDialog";
-import ResourceForm from "@/components/Resources/ResourceForm";
+
+import API from "../../api";
+import ResourceDialog from "./ResourceDialog";
+import ResourceForm from "./ResourceForm";
 
 export default defineComponent({
     name: 'ResourceEdit',
