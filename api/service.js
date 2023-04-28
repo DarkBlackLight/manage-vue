@@ -3,7 +3,7 @@ import pluralize from 'pluralize'
 import {useAuth} from '../stores/auth'
 import {ElMessage} from 'element-plus'
 
-import {omit} from "lodash";
+import omit from "lodash/omit";
 
 const BASE_URL = 'http://localhost:3000/api/admin'
 const REQUEST_TIMEOUT = 60000
