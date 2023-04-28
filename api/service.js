@@ -53,7 +53,7 @@ const request = (options) => {
     })
 }
 
-export const Service = {
+const Service = {
     get: (url, params = {}, options = {}) => request({url: url, params: params, method: 'get', ...options}),
     post: (url, data = {}, options = {}) => request({url: url, data: data, method: 'post', ...options}),
     put: (url, data = {}, options = {}) => request({url: url, data: data, method: 'put', ...options}),
@@ -61,7 +61,7 @@ export const Service = {
     upload: (url, data = {}, options = {}) => request({url: url, data: data, method: 'upload', ...options})
 }
 
-export const Resources = function (resources, resource, others = {}) {
+const Resources = function (resources, resource, others = {}) {
     return ({
         all: (params) => Service.get(`${resources}`, params),
         get: (id) => Service.get(`${resources}/${id}`),
@@ -71,12 +71,14 @@ export const Resources = function (resources, resource, others = {}) {
     })
 }
 
-export const Auth = {
+const Auth = {
     current: () => Service.get('/auth/current'),
     validate_email_password: (user) => Service.post('/auth/validate_email_password', {user}),
     logout: () => Service.delete('/auth/logout')
 }
 
-export const Storage = {
+const Storage = {
     upload: (file) => Service.upload('/storage/upload', {storage: file})
 }
+
+export {Auth, Storage, Resources, Service}
