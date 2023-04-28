@@ -1,5 +1,5 @@
 import {ref, defineComponent, reactive, toRaw, onMounted} from "vue";
-import API from "../../api";
+import API from "@/api";
 import {ElMessage, ElMessageBox} from "element-plus";
 import ElTableNext from "el-table-next";
 

@@ -1,5 +1,5 @@
 import {ref, defineComponent} from "vue";
-import API from "../../api";
+import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
 import {formatDateTime} from "../../utils/tools";
 

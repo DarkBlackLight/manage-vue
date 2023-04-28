@@ -1,6 +1,5 @@
 import moment from "moment";
 
-
 export const formatDateTime = (data) => {
     return moment(data).format("YYYY-MM-DD HH:mm:ss");
 }
@@ -8,6 +7,7 @@ export const formatDateTime = (data) => {
 export const formatDate = (data) => {
     return moment(data).format("YYYY-MM-DD HH:mm:ss");
 }
+
 // 通用判断传入的多个值是否为空的方法（包含对象、数组、字符串、null、undefined，为空返回false，不为空返回true）
 export const isEmpty = (item) => {
     // for (let i = 0; i < data.length; i++) {

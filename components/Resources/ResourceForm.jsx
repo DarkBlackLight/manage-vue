@@ -3,7 +3,7 @@ import {Delete, Plus} from "@element-plus/icons-vue";
 import ElTableNext from "el-table-next";
 import {ElMessageBox} from "element-plus";
 
-import API from "../../api";
+import API from "@/api";
 import './ResourceForm.scss';
 
 import _ from "lodash-es";

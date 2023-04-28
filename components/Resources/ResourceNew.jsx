@@ -1,7 +1,7 @@
 import {ref, defineComponent} from "vue";
 import {ElMessage} from 'element-plus';
 import {Check} from "@element-plus/icons-vue";
-import API from "../../api";
+import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
 import ResourceForm from "./ResourceForm";
 
