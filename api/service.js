@@ -61,7 +61,7 @@ export const Service = {
     upload: (url, data = {}, options = {}) => request({url: url, data: data, method: 'upload', ...options})
 }
 
-export const Resources = (resources, resource, others = {}) => ({
+export const Resource = (resources, resource, others = {}) => ({
     all: (params) => Service.get(`${resources}`, params),
     get: (id) => Service.get(`${resources}/${id}`),
     delete: (id) => Service.delete(`${resources}/${id}`),
