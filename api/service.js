@@ -4,11 +4,11 @@ import {ElMessage} from 'element-plus'
 
 import _ from "lodash-es";
 
-const BASE_URL = 'http://localhost:3000/api/admin'
+const API_URL = `${import.meta.env.API_URL}`
 const REQUEST_TIMEOUT = 60000
 
 const service = axios.create({
-    baseURL: BASE_URL, timeout: REQUEST_TIMEOUT
+    baseURL: API_URL, timeout: REQUEST_TIMEOUT
 })
 
 const request = (options) => {
