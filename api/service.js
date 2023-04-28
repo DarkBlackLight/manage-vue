@@ -53,7 +53,7 @@ const request = (options) => {
     })
 }
 
-const Service = {
+const Request = {
     get: (url, params = {}, options = {}) => request({url: url, params: params, method: 'get', ...options}),
     post: (url, data = {}, options = {}) => request({url: url, data: data, method: 'post', ...options}),
     put: (url, data = {}, options = {}) => request({url: url, data: data, method: 'put', ...options}),
@@ -63,22 +63,22 @@ const Service = {
 
 const Resources = function (resources, resource, others = {}) {
     return ({
-        all: (params) => Service.get(`${resources}`, params),
-        get: (id) => Service.get(`${resources}/${id}`),
-        delete: (id) => Service.delete(`${resources}/${id}`),
-        create: (data) => Service.post(`${resources}`, {[resource]: data}),
-        update: (data) => Service.put(`${resources}/${data.id}`, {[resource]: _.omit(data, 'id')}), ...others
+        all: (params) => Request.get(`${resources}`, params),
+        get: (id) => Request.get(`${resources}/${id}`),
+        delete: (id) => Request.delete(`${resources}/${id}`),
+        create: (data) => Request.post(`${resources}`, {[resource]: data}),
+        update: (data) => Request.put(`${resources}/${data.id}`, {[resource]: _.omit(data, 'id')}), ...others
     })
 }
 
 const Auth = {
-    current: () => Service.get('/auth/current'),
+    current: () => Request.get('/auth/current'),
     validate_email_password: (user) => Service.post('/auth/validate_email_password', {user}),
-    logout: () => Service.delete('/auth/logout')
+    logout: () => Request.delete('/auth/logout')
 }
 
 const Storage = {
-    upload: (file) => Service.upload('/storage/upload', {storage: file})
+    upload: (file) => Request.upload('/storage/upload', {storage: file})
 }
 
-export default {Auth, Storage, Resources, Service}
+export default {Auth, Storage, Resources, Request}
