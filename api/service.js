@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {pluralize} from 'pluralize'
+import * as pluralize from 'pluralize'
 import {useAuth} from '../stores/auth'
 import {ElMessage} from 'element-plus'
 
