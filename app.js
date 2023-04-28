@@ -41,7 +41,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 //全局样式文件
 import '@/assets/css/main.scss'
 import '@/assets/css/app.scss'
-import {useAuth} from "./stores/auth";
 
 const app = createApp(App)
 
