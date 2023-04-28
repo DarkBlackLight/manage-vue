@@ -61,13 +61,15 @@ export const Service = {
     upload: (url, data = {}, options = {}) => request({url: url, data: data, method: 'upload', ...options})
 }
 
-export const Resource = (resources, resource, others = {}) => ({
-    all: (params) => Service.get(`${resources}`, params),
-    get: (id) => Service.get(`${resources}/${id}`),
-    delete: (id) => Service.delete(`${resources}/${id}`),
-    create: (data) => Service.post(`${resources}`, {[resource]: data}),
-    update: (data) => Service.put(`${resources}/${data.id}`, {[resource]: _.omit(data, 'id')}), ...others
-})
+export const Resources = function (resources, resource, others = {}) {
+    return ({
+        all: (params) => Service.get(`${resources}`, params),
+        get: (id) => Service.get(`${resources}/${id}`),
+        delete: (id) => Service.delete(`${resources}/${id}`),
+        create: (data) => Service.post(`${resources}`, {[resource]: data}),
+        update: (data) => Service.put(`${resources}/${data.id}`, {[resource]: _.omit(data, 'id')}), ...others
+    })
+}
 
 export const Auth = {
     current: () => Service.get('/auth/current'),
