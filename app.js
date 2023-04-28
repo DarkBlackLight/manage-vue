@@ -24,7 +24,7 @@ import './assets/styles/main.scss'
 import './assets/styles/app.scss'
 
 // 引入App.vue，根组件
-import App from '@/App.vue'
+import App from './App.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: routes
