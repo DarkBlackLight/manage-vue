@@ -81,4 +81,4 @@ const Storage = {
     upload: (file) => Request.upload('/storage/upload', {storage: file})
 }
 
-export default {Auth, Storage, Resources, Request}
+export {Auth, Storage, Resources, Request}
