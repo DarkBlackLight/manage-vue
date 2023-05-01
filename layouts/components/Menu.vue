@@ -1,7 +1,7 @@
 <template>
   <el-aside class="layout-aside" :width="authStore.storeConfig.MenuCollapse ? '64px' : '180px'">
     <div class="layout-aside-header row-align-center">
-      <img src="../../../public/favicon.ico">
+      <img src="../../../../public/favicon.ico">
       <h3 v-if="!authStore.storeConfig.MenuCollapse">INFSHOP</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
