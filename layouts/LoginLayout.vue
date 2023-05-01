@@ -7,7 +7,7 @@
         <el-card class="login-card">
           <template #header>
             <div class="login-header column-center">
-              <img class="logo-image" src="../public/favicon.ico" alt="" srcset="">
+              <img class="logo-image" src="../../../public/favicon.ico" alt="" srcset="">
               <!-- <el-avatar shape="circle" :size="75" :src="'../../public/favicon.ico'" /> -->
               <h3 class="mt-6">XXX后台管理系统</h3>
               <!-- <h2>登录</h2> -->
@@ -95,7 +95,7 @@ const onEnter = () => {
 
 <style lang="scss" scoped>
 .login-page {
-  background-image: url('../../public/images/background.jpg');
+  background-image: url('../../../public/images/background.jpg');
   background-size: cover;
   background-position: center;
 }
