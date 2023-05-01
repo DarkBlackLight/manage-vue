@@ -27,7 +27,7 @@ import './assets/styles/app.scss'
 import App from './App.vue'
 
 const router = createRouter({
-    history: createWebHistory(), routes: routes
+    history: createWebHistory(import.meta.env.BASE_URL), routes: routes
 })
 
 router.beforeEach(async (to, from, next) => {
