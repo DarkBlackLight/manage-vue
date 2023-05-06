@@ -178,7 +178,7 @@ export default defineComponent({
 
             if (r.id) result.id = r.id
 
-            if (r['_destroy']) result['_destroy'] = r['_destroy']
+            if ('_destroy' in r) result['_destroy'] = r['_destroy']
 
             cs.forEach(c => {
                 if (!c.condition || c.condition(_.get(r, c.prop))) {
