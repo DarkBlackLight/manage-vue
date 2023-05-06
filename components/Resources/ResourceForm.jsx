@@ -143,7 +143,7 @@ export default defineComponent({
         const formRef = ref(null);
         const activeTab = ref(0);
 
-        const columns = ref(props.columns);
+        const columns = ref(props.columns.filter(column => !column.disable));
         const resource = ref(props.resource ? props.resource : {});
 
         const rules = ref([]);
@@ -209,7 +209,7 @@ export default defineComponent({
         expose({submit})
 
         onMounted(() => {
-            columns.value.filter(column => !column.disable).forEach((column) => initColumn(column));
+            columns.value.forEach((column) => initColumn(column));
 
             columns.value
                 .filter(column => column.rules)
