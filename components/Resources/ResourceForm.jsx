@@ -211,13 +211,11 @@ export default defineComponent({
 
         expose({submit})
 
-        onMounted(() => {
-            columns.value.forEach((column) => initColumn(column));
+        columns.value.forEach((column) => initColumn(column));
 
-            columns.value
-                .filter(column => column.rules)
-                .forEach(column => rules.value[column.prop] = column.rules)
-        })
+        columns.value
+            .filter(column => column.rules)
+            .forEach(column => rules.value[column.prop] = column.rules)
 
         return () => (
             <el-form rules={rules} ref={formRef} model={resource.value} label-width='auto' label-position="right">

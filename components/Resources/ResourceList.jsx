@@ -81,40 +81,40 @@ export default defineComponent({
 
         }
 
+        fullListColumns.value = [...[{
+            type: "selection",
+            width: "55px",
+            label: '选择'
+        }], ...props.listConfig.columns.map(column => {
+            if (column.type === 'datetime')
+                column.render = (value, scope) => (
+                    formatDateTime(_.get(scope.row, column.prop))
+                );
+            else if (column.type === 'image')
+                column.render = (value, scope) => (
+                    _.get(scope.row, column.prop) && <img height={70} src={_.get(scope.row, column.prop).src}/>
+                )
+            return column
+        }), ...[{
+            label: '操作',
+            fixed: 'right',
+            width: 150,
+            render: (scope) => (
+                <div>
+                    <el-button plain type="primary" icon={ZoomIn} circle
+                               onClick={() => emit('show', scope.row)}/>
+
+                    <el-button plain type="warning" icon={Edit} circle
+                               onClick={() => emit('edit', scope.row)}/>
+
+                    <el-button plain type="danger" icon={Delete} circle
+                               onClick={() => onDelete(scope.row)}/>
+                </div>
+            )
+        }]]
+
         onMounted(() => {
             getResourceList();
-
-            fullListColumns.value = [...[{
-                type: "selection",
-                width: "55px",
-                label: '选择'
-            }], ...props.listConfig.columns.map(column => {
-                if (column.type === 'datetime')
-                    column.render = (value, scope) => (
-                        formatDateTime(_.get(scope.row, column.prop))
-                    );
-                else if (column.type === 'image')
-                    column.render = (value, scope) => (
-                        _.get(scope.row, column.prop) && <img height={70} src={_.get(scope.row, column.prop).src}/>
-                    )
-                return column
-            }), ...[{
-                label: '操作',
-                fixed: 'right',
-                width: 150,
-                render: (scope) => (
-                    <div>
-                        <el-button plain type="primary" icon={ZoomIn} circle
-                                   onClick={() => emit('show', scope.row)}/>
-
-                        <el-button plain type="warning" icon={Edit} circle
-                                   onClick={() => emit('edit', scope.row)}/>
-
-                        <el-button plain type="danger" icon={Delete} circle
-                                   onClick={() => onDelete(scope.row)}/>
-                    </div>
-                )
-            }]]
         })
 
         expose({getResourceList})
