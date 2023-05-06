@@ -209,7 +209,7 @@ export default defineComponent({
         expose({submit})
 
         onMounted(() => {
-            columns.value.forEach((column) => initColumn(column));
+            columns.value.filter(column => !column.disable).forEach((column) => initColumn(column));
 
             columns.value
                 .filter(column => column.rules)
