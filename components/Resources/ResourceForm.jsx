@@ -73,19 +73,22 @@ const setColumnDefault = (c, r) => {
 }
 
 const renderAssociations = (column, resource) => (<el-col span={24}>
-    <ElTableNext data={_.get(resource, column.prop).filter(r => r['_destroy'] !== true)} column={[...[{
+    <ElTableNext data={_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] !== true)}
+                 column={[...[{
 
-        label: '操作',
-        render: (value, scope) => <el-button icon={Delete} circle plain type='danger' onClick={() => {
-            ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
-                _.get(resource, column.prop)[value.$index]['_destroy'] = true
-            })
-        }}/>
-    }], ...column.columns.map(c => ({
-        prop: c.prop, label: c.label, ...c.props, render: (value, scope) => renderColumn[c.type](c, scope.row)
-    }))]
+                     label: '操作',
+                     render: (value, scope) => <el-button icon={Delete} circle plain type='danger' onClick={() => {
+                         ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
+                             _.get(resource, column.prop)[value.$index]['_destroy'] = true
+                         })
+                     }}/>
+                 }], ...column.columns.map(c => ({
+                     prop: c.prop,
+                     label: c.label, ...c.props,
+                     render: (value, scope) => renderColumn[c.type](c, scope.row)
+                 }))]
 
-    } border/>
+                 } border/>
     <div class="text-start my-10">
         <el-button plain icon={Plus} type="primary" onClick={() => {
             let newResource = {};
