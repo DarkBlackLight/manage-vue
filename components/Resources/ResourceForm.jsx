@@ -184,7 +184,7 @@ export default defineComponent({
             if ('_destroy' in r) result['_destroy'] = r['_destroy']
 
             cs.forEach(c => {
-                if (!c.condition || c.condition(_.get(r, c.prop))) {
+                if (!c.condition || c.condition(r)) {
                     if (c.type === 'associations')
                         result[`${c.prop}_attributes`] = _.get(r, c.prop).map(d => prepareColumn(c.columns, d))
                     else if (c.type === 'association')
