@@ -186,7 +186,7 @@ export default defineComponent({
                         result[`${c.prop}_attributes`] = _.get(r, c.prop).map(d => prepareColumn(c.columns, d))
                     else if (c.type === 'association')
                         result[`${c.prop}_attributes`] = prepareColumn(c.columns, _.get(r, c.prop))
-                    else if (c.type !== 'display' && c.type !== 'hidden')
+                    else if (c.type !== 'display')
                         result[c.prop] = _.get(r, c.prop)
                 }
             })
