@@ -5,6 +5,7 @@ export const useAuth = defineStore('auth', {
     state: () => ({
         user: null,
         role: null,
+        routers: [],
         storeConfig: {
             MenuCollapse: false,
             dark: false,
@@ -19,10 +20,12 @@ export const useAuth = defineStore('auth', {
                 let response = await API.Auth.current();
                 this.user = response.data;
                 this.role = response.data.source.role
+                this.routers = response.data.source.admin_permissions
                 return true;
             } catch (e) {
                 this.user = null;
-                this.role = null
+                this.role = null;
+                this.routers = []
                 return false;
             }
         },
@@ -31,12 +34,14 @@ export const useAuth = defineStore('auth', {
                 .then((response) => {
                     this.user = response.data;
                     this.role = response.data.source.role;
+                    this.routers = response.data.source.admin_permissions;
                 })
         },
         async logout() {
             await API.Auth.logout().finally(() => {
-                this.user = null
+                this.user = null;
                 this.role = null;
+                this.routers = [];
             });
         },
         changeStoreConfig(key, value) {

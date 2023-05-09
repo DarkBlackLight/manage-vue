@@ -27,8 +27,22 @@ import './assets/styles/app.scss'
 import App from './App.vue'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL), routes: routes
+    history: createWebHistory(import.meta.env.BASE_URL), routes: [
+        ...[
+            {
+                path: '/login',
+                name: 'login',
+                component: () => import('@/manage-vue/layouts/LoginLayout.vue')
+            }
+        ]
+    ]
 })
+
+const res = routes.filter(v => ['home', 'dashboard'].some(val => val === v.name))
+
+for (const item of res) {
+    router.addRoute(item)
+}
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
