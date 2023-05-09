@@ -38,11 +38,9 @@ const router = createRouter({
     ]
 })
 
-const res = routes.filter(v => ['home', 'dashboard'].some(val => val === v.name))
-
-for (const item of res) {
-    router.addRoute(item)
-}
+const filterRouter = (rs, permissions) => rs
+    .filter(r => !r.permission || r.permission(permissions))
+    .map(r => r.children ? ({...r, children: filterRouter(r.children, permissions)}) : r)
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
@@ -52,7 +50,14 @@ router.beforeEach(async (to, from, next) => {
 
     if (authRequired && !loggedIn) {
         next('/login')
-    } else if (!authRequired && loggedIn) {
+        return
+    }
+
+    filterRouter(routes, authStore.permissions).forEach(router => {
+        router.addRoute(router)
+    })
+
+    if (!authRequired && loggedIn) {
         next('/')
     } else {
         next()
