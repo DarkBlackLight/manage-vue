@@ -53,8 +53,8 @@ router.beforeEach(async (to, from, next) => {
         return
     }
 
-    filterRouter(routes, authStore.permissions).forEach(router => {
-        router.addRoute(router)
+    filterRouter(routes, authStore.permissions).forEach(r => {
+        router.addRoute(r)
     })
 
     if (!authRequired && loggedIn) {
