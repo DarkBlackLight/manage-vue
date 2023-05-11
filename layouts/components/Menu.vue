@@ -46,8 +46,14 @@ const defaultActive = ref('')
 
 const authStore = useAuth();
 
+const filterMenu = (mu, permissions) => mu
+    .filter(m => !m.permission || m.permission(permissions))
+    .map(m => m.children ? ({...m, children: filterMenu(m.children, permissions)}) : m)
+
 // 导航列表
-const list = ref(menus)
+const list = ref(filterMenu(menus, authStore.permissions.map(i => {
+    return i.permission.subject
+})))
 
 const handleOpen = (key, keyPath) => {
   // console.log(key, keyPath)
