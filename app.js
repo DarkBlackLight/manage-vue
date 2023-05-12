@@ -42,14 +42,6 @@ const filterRouter = (rs, permissions) => rs
     .filter(r => !r.permission || r.permission(permissions))
     .map(r => r.children ? ({...r, children: filterRouter(r.children, permissions)}) : r)
 
-function addRouters(permissions) {
-    filterRouter(routes, permissions).forEach(r => {
-        isMenu = true;
-        router.addRoute(r)
-    })
-}
-
-let isMenu = false;
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
     const publicPages = ['/login', '/register']
@@ -61,20 +53,16 @@ router.beforeEach(async (to, from, next) => {
         return
     }
 
-    if (!authRequired && loggedIn) {
-        next('/', true)
-    } else {
-        if (isMenu) {
-            // 没有权限
-            console.log('没有权限')
-        } else {
-            // 动态添加路由
-            addRouters(authStore.permissions.map(i => {
-                return i.permission.subject
-            }));
+    if (!authStore.globalState.routerInit) {
+        filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
 
-            router.replace(router.currentRoute.value.fullPath)
-        }
+        authStore.changeGlobalState('routerInit', true);
+        await router.replace(router.currentRoute.value.fullPath);
+    }
+
+    if (!authRequired && loggedIn) {
+        next('/')
+    } else {
         next()
     }
 })
@@ -90,5 +78,3 @@ app.use(ElementPlus, {
 })
 
 app.mount('#app')
-
-

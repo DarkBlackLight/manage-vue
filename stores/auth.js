@@ -9,6 +9,9 @@ export const useAuth = defineStore('auth', {
         storeConfig: {
             MenuCollapse: false,
             dark: false,
+        },
+        globalState: {
+            routerInit: false,
         }
     }),
     actions: {
@@ -46,6 +49,9 @@ export const useAuth = defineStore('auth', {
         },
         changeStoreConfig(key, value) {
             this.storeConfig[key] = value
+        },
+        changeGlobalState(key, value) {
+            this.globalState[key] = value
         }
     },
     persist: {
