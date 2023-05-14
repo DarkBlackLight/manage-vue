@@ -7,8 +7,7 @@
         <el-card class="login-card" style="border-radius: 0;" shadow="always">
           <template #header>
             <div class="login-header column-center">
-              <img class="logo-image" v-if="logoPath" :src="logoPath" alt="" srcset="">
-              <img class="logo-image" v-if="!logoPath" src="../assets/images/logo.jpeg" alt="" srcset="">
+              <img class="logo-image" :src="configStore.globalSettings.logoPath" alt="" srcset="">
               <h3 class="mt-6">登陆</h3>
             </div>
           </template>
@@ -42,10 +41,12 @@
 
 <script setup>
 import {useRouter} from "vue-router";
-import {useAuth} from '../stores/auth';
+import {useAuth, useConfig} from '../stores';
 import {ref, reactive} from "vue";
 
 const authStore = useAuth();
+const configStore = useConfig();
+
 const router = useRouter();
 
 const form = ref();

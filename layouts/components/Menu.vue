@@ -2,9 +2,7 @@
   <el-aside class="layout-aside"
             :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
     <div class="layout-aside-header row-align-center">
-
-      <img :src="configStore.globalSettings.logoPath">
-
+      <img :src="configStore.globalSettings.logoPath" style="height: 60%">
       <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
