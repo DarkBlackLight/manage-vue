@@ -5,6 +5,8 @@ import {formatDateTime} from "../../utils/tools";
 
 import _ from 'lodash-es';
 
+import {useI18n} from 'vue-i18n'
+
 
 const renderColumns = (columns, showResource) => columns.map(column =>
     (<el-descriptions-item label={column.label}>
@@ -31,6 +33,8 @@ export default defineComponent({
         showConfig: Object
     },
     setup(props, {expose}) {
+        const {t} = useI18n()
+
         const resourceDialogRef = ref(null);
         const showResource = ref(null);
 

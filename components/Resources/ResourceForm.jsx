@@ -8,6 +8,8 @@ import './ResourceForm.scss';
 
 import _ from "lodash-es";
 
+import {useI18n} from 'vue-i18n'
+
 const renderOption = (c, r) => (
     <el-select modelValue={_.get(r, c.prop)} onChange={(e) => _.set(r, c.prop, e)} class="w-100" {...c.props}
                filterable>
@@ -143,6 +145,8 @@ export default defineComponent({
     name: 'ResourceForm', props: {
         resource: Object, columns: Array, tabs: Array
     }, emits: ['submit', 'change'], setup(props, {expose, emit}) {
+        const {t} = useI18n()
+
         const formRef = ref(null);
         const activeTab = ref(0);
 

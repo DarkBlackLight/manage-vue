@@ -4,6 +4,7 @@ import {Check} from "@element-plus/icons-vue";
 import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
 import ResourceForm from "./ResourceForm";
+import {useI18n} from 'vue-i18n'
 
 export default defineComponent({
     name: 'ResourceNew',
@@ -13,6 +14,8 @@ export default defineComponent({
     },
     emits: ['success'],
     setup(props, {emit, expose}) {
+        const {t} = useI18n()
+
         const resourceDialogRef = ref(null);
         const resourceFormRef = ref(null);
 
