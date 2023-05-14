@@ -1,10 +1,11 @@
 import app_settings from '@/config/settings'
+import _ from "lodash-es"
 
 const default_settings = {
-    full_title: '管理系统',
-    short_title: 'KrTech',
+    fullTitle: '管理系统',
+    shortTitle: 'KrTech',
     layout: {
-        side_menu: {
+        sideMenu: {
             width: '180px'
         }
     }

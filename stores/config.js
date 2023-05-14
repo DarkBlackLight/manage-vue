@@ -7,8 +7,8 @@ export const useConfig = defineStore('config', {
             routerInit: false,
         },
         globalConfig: {
-            MenuCollapse: false,
-            dark: false,
+            sideMenuCollapse: false,
+            darkMode: false,
         },
         globalSettings: settings
     }),

@@ -1,14 +1,14 @@
 <template>
   <el-aside class="layout-aside"
-            :width="authStore.storeConfig.MenuCollapse ? '64px' : (sideMenuFullWidth ? sideMenuFullWidth : '180px')">
+            :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
     <div class="layout-aside-header row-align-center">
       <img v-if="logoPath" :src="logoPath">
       <img v-if="!logoPath" :src="logoPath">
 
-      <h3 v-if="!authStore.storeConfig.MenuCollapse">{{ configStore.globalSettings.short_title }}</h3>
+      <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
-             :collapse="authStore.storeConfig.MenuCollapse" @open="handleOpen" @close="handleClose">
+             :collapse="configStore.globalConfig.sideMenuCollapse" @open="handleOpen" @close="handleClose">
       <template v-for="(item, index) in list">
         <template v-if="item.children.length > 0">
           <el-sub-menu :index="`${item.name}`">
@@ -50,7 +50,6 @@ const defaultActive = ref('')
 const authStore = useAuth();
 const configStore = useConfig();
 
-const shortTitle = import.meta.env.VITE_SHORT_TITLE;
 const logoPath = import.meta.env.VITE_PATH;
 const sideMenuFullWidth = import.meta.env.VITE_SIDE_MENU_FULL_WIDTH;
 

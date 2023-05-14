@@ -3,10 +3,11 @@
     <el-row align="middle" class="h-100">
       <el-col :span="24">
         <el-page-header :icon="null"
-                        @back="authStore.changeStoreConfig('MenuCollapse', !authStore.storeConfig.MenuCollapse)">
+                        @back="configStore.changeGlobalConfig('sideMenuCollapse', !configStore.globalConfig.sideMenuCollapse)">
+
           <template #title>
             <div class="row-center">
-              <el-icon :size="24" v-if="authStore.storeConfig.MenuCollapse">
+              <el-icon :size="24" v-if="configStore.globalConfig.sideMenuCollapse">
                 <Expand/>
               </el-icon>
               <el-icon v-else :size="24">
@@ -16,16 +17,19 @@
           </template>
 
           <template #content>
-            <div class="">{{ useConfig.globalSettings.full_title }}</div>
+            <div class="">{{ configStore.globalSettings.fullTitle }}</div>
           </template>
 
           <template #extra>
-            <el-switch v-model="dark" class="mr-10" @change="changeDark" inline-prompt :active-icon="Sunny"
+            <el-switch v-model="configStore.globalConfig.darkMode"
+                       class="mr-10" @change="changeDarkMode" inline-prompt
+                       :active-icon="Sunny"
                        :inactive-icon="Moon"/>
 
             <el-dropdown trigger="click">
               <el-avatar :size="32"
                          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="Logout">
@@ -33,10 +37,10 @@
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
+
             </el-dropdown>
 
           </template>
-
         </el-page-header>
       </el-col>
     </el-row>
@@ -47,14 +51,12 @@
 import {Fold, Expand, Sunny, Moon} from '@element-plus/icons-vue'
 import {useAuth, useConfig} from '../../stores';
 import {useRouter} from "vue-router";
-import {computed, onMounted} from 'vue';
+import {onMounted} from 'vue';
 
 const authStore = useAuth();
+const configStore = useConfig();
+
 const router = useRouter();
-
-const dark = computed(() => authStore.storeConfig.dark);
-
-const fullTitle = import.meta.env.VITE_FULL_TITLE;
 
 const Logout = () => {
   authStore.logout().finally(() => {
@@ -62,13 +64,13 @@ const Logout = () => {
   })
 }
 
-const changeDark = (val) => {
-  authStore.changeStoreConfig('dark', !authStore.storeConfig.dark);
-  switchDark()
+const changeDarkMode = (val) => {
+  configStore.changeGlobalConfig('darkMode', !configStore.globalConfig.darkMode);
+  setupDarkMode()
 }
 
-const switchDark = () => {
-  if (authStore.storeConfig.dark) {
+const setupDarkMode = () => {
+  if (configStore.globalConfig.darkMode) {
     document.getElementsByTagName('html')[0].classList.add('dark')
   } else {
     document.getElementsByTagName('html')[0].classList.remove('dark')
@@ -76,8 +78,9 @@ const switchDark = () => {
 }
 
 onMounted(() => {
-  switchDark()
+  setupDarkMode()
 })
+
 </script>
 
 <style scoped>
