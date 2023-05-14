@@ -7,7 +7,8 @@
         <el-card class="login-card" style="border-radius: 0;" shadow="always">
           <template #header>
             <div class="login-header column-center">
-              <img class="logo-image" src="../../../public/favicon.ico" alt="" srcset="">
+              <img class="logo-image" v-if="logoPath" :src="logoPath" alt="" srcset="">
+              <img class="logo-image" v-if="!logoPath" src="../assets/images/logo.jpeg" alt="" srcset="">
               <h3 class="mt-6">登陆</h3>
             </div>
           </template>
@@ -48,6 +49,8 @@ const authStore = useAuth();
 const router = useRouter();
 
 const form = ref();
+
+const logoPath = import.meta.env.VITE_PATH
 
 const rules = reactive({
   email: [
