@@ -1,4 +1,4 @@
-import app_settings from '@/configs/settings'
+import app_settings from '@/config/settings'
 
 const default_settings = {
     full_title: '管理系统',

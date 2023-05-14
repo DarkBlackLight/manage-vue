@@ -41,7 +41,7 @@ import {ref, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 
 import {useAuth, useConfig} from '../../stores';
-import menus from '@/configs/menus';
+import menus from '@/config/menus';
 
 const route = useRoute();
 

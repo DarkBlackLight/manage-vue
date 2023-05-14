@@ -1,4 +1,4 @@
-import settings from '../configs/settings';
+import settings from '../config/settings';
 import {defineStore} from 'pinia'
 
 export const useConfig = defineStore('config', {

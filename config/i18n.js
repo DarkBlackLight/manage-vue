@@ -1,4 +1,4 @@
-import app_translations from '@/configs/i18n'
+import app_translations from '@/config/i18n'
 import _ from "lodash-es"
 
 const default_translations = {
