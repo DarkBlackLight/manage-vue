@@ -8,6 +8,8 @@ import {formatDateTime} from "../../utils/tools";
 
 import _ from 'lodash-es';
 
+import {useI18n} from 'vue-i18n'
+
 const renderFilters = (queries, filters) => filters.map(filter => (
     <el-col span={6}>
         <el-form-item label={filter.label} prop={filter.prop}>
@@ -24,6 +26,8 @@ export default defineComponent({
     },
     emits: ['new', 'show', 'edit'],
     setup(props, {expose, emit}) {
+        const {t} = useI18n()
+
         const queryFormRef = ref(null);
 
         const displayFilter = ref(false);
@@ -96,7 +100,7 @@ export default defineComponent({
                 )
             return column
         }), ...[{
-            label: '操作',
+            label: t('resources.actions'),
             fixed: 'right',
             width: 150,
             render: (scope) => (

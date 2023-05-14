@@ -9,12 +9,16 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 // 引入路由router
-import routes from '@/router/routes'
+import routes from '@/configs/routes'
 import {useAuth} from './stores/auth';
 
 // 引入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+
+// 引入国际化语言设置
+import {createI18n} from 'vue-i18n'
+import translations from './utils/i18n'
 
 // 引入element-plus全局国际化的配置
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -67,11 +71,20 @@ router.beforeEach(async (to, from, next) => {
     }
 })
 
+const i18n = createI18n({
+    locale: import.meta.env.VITE_DEFAULT_LOCALE,
+    fallbackLocale: 'zh',
+    legacy: false,
+    messages: translations
+})
+
 const app = createApp(App)
 
 app.use(pinia)
 
 app.use(router)
+
+app.use(i18n)
 
 app.use(ElementPlus, {
     locale: zhCn,

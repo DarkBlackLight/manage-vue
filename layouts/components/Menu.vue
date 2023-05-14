@@ -38,7 +38,7 @@ import {ref, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 
 import {useAuth} from '../../stores/auth';
-import menus from '@/router/menus';
+import menus from '@/configs/menus';
 
 const route = useRoute();
 
@@ -52,7 +52,7 @@ const filterMenu = (mu, permissions) => mu
 
 // 导航列表
 const list = ref(filterMenu(menus, authStore.permissions.map(i => {
-    return i.permission.subject
+  return i.permission.subject
 })))
 
 const handleOpen = (key, keyPath) => {
