@@ -1,5 +1,6 @@
 <template>
-  <el-aside class="layout-aside" :width="authStore.storeConfig.MenuCollapse ? '64px' : '180px'">
+  <el-aside class="layout-aside"
+            :width="authStore.storeConfig.MenuCollapse ? '64px' : (sideMenuFullWidth ? sideMenuFullWidth : '180px')">
     <div class="layout-aside-header row-align-center">
       <img v-if="logoPath" :src="logoPath">
       <img v-if="!logoPath" :src="logoPath">
@@ -37,7 +38,7 @@
 
 <script setup>
 import {ref, onMounted} from 'vue'
-import {useRouter, useRoute} from 'vue-router'
+import {useRoute} from 'vue-router'
 
 import {useAuth} from '../../stores/auth';
 import menus from '@/configs/menus';
@@ -50,6 +51,7 @@ const authStore = useAuth();
 
 const shortTitle = import.meta.env.VITE_SHORT_TITLE;
 const logoPath = import.meta.env.VITE_PATH;
+const sideMenuFullWidth = import.meta.env.VITE_SIDE_MENU_FULL_WIDTH;
 
 const filterMenu = (mu, permissions) => mu
     .filter(m => !m.permission || m.permission(permissions))
