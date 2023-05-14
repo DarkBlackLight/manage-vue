@@ -2,8 +2,8 @@
   <el-aside class="layout-aside"
             :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
     <div class="layout-aside-header row-align-center">
-      <img v-if="logoPath" :src="logoPath">
-      <img v-if="!logoPath" :src="logoPath">
+
+      <img :src="configStore.globalSettings.logoPath">
 
       <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
     </div>
@@ -49,9 +49,6 @@ const defaultActive = ref('')
 
 const authStore = useAuth();
 const configStore = useConfig();
-
-const logoPath = import.meta.env.VITE_PATH;
-const sideMenuFullWidth = import.meta.env.VITE_SIDE_MENU_FULL_WIDTH;
 
 const filterMenu = (mu, permissions) => mu
     .filter(m => !m.permission || m.permission(permissions))

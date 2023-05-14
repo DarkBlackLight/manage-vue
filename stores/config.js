@@ -14,7 +14,7 @@ export const useConfig = defineStore('config', {
     }),
     actions: {
         changeGlobalConfig(key, value) {
-            this.globalState[key] = value
+            this.globalConfig[key] = value
         },
         changeGlobalState(key, value) {
             this.globalState[key] = value
