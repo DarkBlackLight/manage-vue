@@ -25,7 +25,7 @@ export default defineComponent({
                 resourceDialogRef.value.onToggle();
                 emit('success');
                 ElMessage({
-                    message: '提交成功!',
+                    message: t('resources.success_message'),
                     type: 'success',
                 })
             })
@@ -44,7 +44,7 @@ export default defineComponent({
                         <el-row gutter={20}>
                             <el-col class="text-right">
                                 <el-button icon={Check} type="primary"
-                                           onClick={() => resourceFormRef.value.submit()}>提交
+                                           onClick={() => resourceFormRef.value.submit()}>{t('resources.submit')}
                                 </el-button>
                             </el-col>
                         </el-row>

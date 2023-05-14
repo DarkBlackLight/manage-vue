@@ -45,12 +45,12 @@ export default defineComponent({
         });
 
         const onDelete = (resource) => {
-            ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
+            ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
                 loadingList.value = true;
                 API[props.resourceConfig.resourceData].delete(resource.id).then(response => {
                     getResourceList();
                     ElMessage({
-                        message: '删除成功!',
+                        message: t('resources.delete_message'),
                         type: 'success',
                     })
                 })
@@ -134,9 +134,9 @@ export default defineComponent({
 
                             <el-col span={6} class="text-center">
                                 <el-button type="primary" onClick={() => getResourceList()} icon={Search}>
-                                    搜索
+                                    {t('resources.search')}
                                 </el-button>
-                                <el-button onClick={onResetQuery} icon={Refresh}>重置</el-button>
+                                <el-button onClick={onResetQuery} icon={Refresh}>{t('resources.reset')}</el-button>
                             </el-col>
                         </el-row>
                     </el-form>
@@ -153,11 +153,11 @@ export default defineComponent({
 
                         <el-button icon={Plus} type="primary" onClick={() => {
                             emit('new')
-                        }}>创建
+                        }}>{t('resources.new')}
                         </el-button>
 
                         <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
-                                   onClick={onDeleteSelected}>删除
+                                   onClick={onDeleteSelected}>{t('resources.delete')}
                         </el-button>
                     </div>
                 </div>

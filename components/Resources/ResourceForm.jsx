@@ -76,9 +76,9 @@ const renderAssociations = (column, resource) => (<el-col span={24}>
     <ElTableNext data={_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] !== true)}
                  column={[...[{
 
-                     label: '操作',
+                     label: t('resources.actions'),
                      render: (value, scope) => <el-button icon={Delete} circle plain type='danger' onClick={() => {
-                         ElMessageBox.confirm('确定要删除该资源吗?').then(() => {
+                         ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
                              _.get(resource, column.prop)[value.$index]['_destroy'] = true
                          })
                      }}/>
@@ -94,7 +94,7 @@ const renderAssociations = (column, resource) => (<el-col span={24}>
             let newResource = {};
             column.columns.forEach(c => setColumnDefault(c, newResource))
             _.get(resource, column.prop).push(newResource);
-        }}>添加
+        }}>{t('resources.add')}
         </el-button>
     </div>
 </el-col>)
