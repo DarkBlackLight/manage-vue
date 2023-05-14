@@ -74,7 +74,7 @@ const setColumnDefault = (c, r) => {
     _.set(r, c.prop, c.default ? c.default : initResource[c.type](c))
 }
 
-const renderAssociations = (column, resource) => (<el-col span={24}>
+const renderAssociations = (t, column, resource) => (<el-col span={24}>
     <ElTableNext data={_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] !== true)}
                  column={[...[{
 
@@ -101,12 +101,12 @@ const renderAssociations = (column, resource) => (<el-col span={24}>
     </div>
 </el-col>)
 
-const renderAssociation = (column, resource) => renderColumns(column.columns, _.get(resource, column.prop))
+const renderAssociation = (column, resource) => renderColumns(t, column.columns, _.get(resource, column.prop))
 
-const renderColumns = (columns, resource) => columns.map((column) => {
+const renderColumns = (t, columns, resource) => columns.map((column) => {
     if (!column.condition || column.condition(resource)) {
         if (column.type === 'associations')
-            return (renderAssociations(column, resource))
+            return (renderAssociations(t, column, resource))
         else if (column.type === 'association')
             return (renderAssociation(column, resource))
         else if (column.type === 'hidden')
@@ -226,11 +226,11 @@ export default defineComponent({
                 {props.tabs ? <el-tabs v-model={activeTab.value} class="resource-form-tabs">
                     {props.tabs.map((tab, index) => <el-tab-pane label={tab.name} name={index}>
                         <el-row gutter={20}>
-                            {renderColumns(columns.value.filter(column => tab.prop.includes(column.prop)), resource.value)}
+                            {renderColumns(t, columns.value.filter(column => tab.prop.includes(column.prop)), resource.value)}
                         </el-row>
                     </el-tab-pane>)}
                 </el-tabs> : <el-row gutter={20} style={{padding: '15px 0'}}>
-                    {renderColumns(columns.value, resource.value)}
+                    {renderColumns(t, columns.value, resource.value)}
                 </el-row>}
             </el-form>)
     }
