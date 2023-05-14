@@ -21,8 +21,9 @@
           </template>
 
           <template #extra>
-            <el-switch v-model="configStore.globalConfig.darkMode"
-                       class="mr-10" @change="changeDarkMode" inline-prompt
+            <el-switch class="mr-10"
+                       :modalValue="configStore.globalConfig.darkMode"
+                       @change="changeDarkMode" inline-prompt
                        :active-icon="Sunny"
                        :inactive-icon="Moon"/>
 
@@ -64,7 +65,7 @@ const Logout = () => {
   })
 }
 
-const changeDarkMode = (val) => {
+const changeDarkMode = () => {
   configStore.changeGlobalConfig('darkMode', !configStore.globalConfig.darkMode);
   setupDarkMode()
 }
