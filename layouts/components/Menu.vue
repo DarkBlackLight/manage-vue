@@ -1,8 +1,8 @@
 <template>
   <el-aside class="layout-aside" :width="authStore.storeConfig.MenuCollapse ? '64px' : '180px'">
     <div class="layout-aside-header row-align-center">
-      <img src="../../../../public/favicon.ico">
-      <h3 v-if="!authStore.storeConfig.MenuCollapse">{{ shortTitle}}</h3>
+      <img :src="logoPath">
+      <h3 v-if="!authStore.storeConfig.MenuCollapse">{{ shortTitle }}</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
              :collapse="authStore.storeConfig.MenuCollapse" @open="handleOpen" @close="handleClose">
@@ -47,6 +47,7 @@ const defaultActive = ref('')
 const authStore = useAuth();
 
 const shortTitle = import.meta.env.VITE_SHORT_TITLE;
+const logoPath = import.meta.env.VITE_PATH ? import.meta.env.VITE_PATH : '@/manage-vue/assets/images/logo.jpeg'
 
 const filterMenu = (mu, permissions) => mu
     .filter(m => !m.permission || m.permission(permissions))
