@@ -2,53 +2,41 @@
   <div class="w-100 h-100 login-page" @keydown.enter="onEnter">
 
     <el-row class="h-100" justify="center" align="middle">
-      <el-col :span="8" :xs="16" :sm="13" :md="10" :lg="8">
+      <el-col :span="8" :xs="20" :sm="14" :md="10" :lg="8">
 
-        <el-card class="login-card">
+        <el-card class="login-card" style="border-radius: 0;" shadow="always">
           <template #header>
             <div class="login-header column-center">
               <img class="logo-image" src="../../../public/favicon.ico" alt="" srcset="">
-              <!-- <el-avatar shape="circle" :size="75" :src="'../../public/favicon.ico'" /> -->
-              <h3 class="mt-6">XXX后台管理系统</h3>
-              <!-- <h2>登录</h2> -->
+              <h3 class="mt-6">登陆</h3>
             </div>
           </template>
 
           <el-row>
-
             <el-col :span="24">
-              <el-form label-position="left" label-width="80px" :hide-required-asterisk="true" :model="formValue"
+              <el-form label-position="left" label-width="80px" :hide-required-asterisk="true"
+                       :model="formValue"
                        :rules="rules" ref="form">
                 <el-form-item label="用户名" prop="email">
                   <el-input size="large" v-model="formValue.email"/>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                  <el-input type="password" size="large" :show-password="true" v-model="formValue.password"/>
+                  <el-input type="password" size="large" :show-password="true"
+                            v-model="formValue.password"/>
                 </el-form-item>
               </el-form>
             </el-col>
-
-            <!-- <el-col :span="10">
-              <div class="logo-box h-100 row-center">
-                <el-avatar shape="circle" :size="100" :src="'../../public/favicon.ico'" />
-              </div>
-            </el-col> -->
-
           </el-row>
-          <div class="foot">
+
+          <div class="column-center">
             <el-button type="primary" size="large" @click="Login(form)">登录</el-button>
-            <el-link>忘记密码</el-link>
+            <!--            <el-link>忘记密码</el-link>-->
           </div>
 
         </el-card>
-
       </el-col>
     </el-row>
-
   </div>
-
-  <!--<h1>Login Page</h1>
-  <el-button type="primary" @click="Login">Login</el-button> -->
 </template>
 
 <script setup>
@@ -63,7 +51,9 @@ const form = ref();
 
 const rules = reactive({
   email: [
-    {required: true, message: '请输入用户名', trigger: 'submit'}
+    {
+      required: true, message: '请输入用户名', trigger: 'submit'
+    }
   ],
   password: [
     {required: true, message: '请输入密码', trigger: 'submit'},
@@ -83,12 +73,10 @@ const Login = async (formEl) => {
       router.replace('/');
     });
   });
-
 }
 
 const onEnter = () => {
   if (formValue.email && formValue.password) Login(form.value);
-  // Login(form);
 }
 
 </script>
@@ -101,7 +89,6 @@ const onEnter = () => {
 }
 
 .foot {
-  // border-top: 1px solid var(--el-border-color-light);
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
