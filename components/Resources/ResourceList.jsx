@@ -4,7 +4,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import ElTableNext from "el-table-next";
 
 import {Delete, Edit, ZoomIn, Search, Refresh, Plus} from "@element-plus/icons-vue";
-import {formatDateTime} from "../../utils/tools";
+import {formatDateTime} from "../../configs/tools";
 
 import _ from 'lodash-es';
 

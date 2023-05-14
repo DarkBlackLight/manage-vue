@@ -16,7 +16,7 @@
           </template>
 
           <template #content>
-            <div class="">{{ fullTitle }}</div>
+            <div class="">{{ useConfig.globalSettings.full_title }}</div>
           </template>
 
           <template #extra>
@@ -45,7 +45,7 @@
 
 <script setup>
 import {Fold, Expand, Sunny, Moon} from '@element-plus/icons-vue'
-import {useAuth} from '../../stores/auth';
+import {useAuth, useConfig} from '../../stores';
 import {useRouter} from "vue-router";
 import {computed, onMounted} from 'vue';
 

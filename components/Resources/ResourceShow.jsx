@@ -1,7 +1,7 @@
 import {ref, defineComponent} from "vue";
 import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
-import {formatDateTime} from "../../utils/tools";
+import {formatDateTime} from "../../configs/tools";
 
 import _ from 'lodash-es';
 

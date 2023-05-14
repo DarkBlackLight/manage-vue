@@ -6,13 +6,6 @@ export const useAuth = defineStore('auth', {
         user: null,
         role: null,
         permissions: [],
-        storeConfig: {
-            MenuCollapse: false,
-            dark: false,
-        },
-        globalState: {
-            routerInit: false,
-        }
     }),
     actions: {
         async current() {
@@ -46,15 +39,9 @@ export const useAuth = defineStore('auth', {
                 this.role = null;
                 this.permissions = [];
             });
-        },
-        changeStoreConfig(key, value) {
-            this.storeConfig[key] = value
-        },
-        changeGlobalState(key, value) {
-            this.globalState[key] = value
         }
     },
     persist: {
-        paths: ['user', 'storeConfig']
+        paths: ['user']
     }
 })

@@ -5,7 +5,7 @@
       <img v-if="logoPath" :src="logoPath">
       <img v-if="!logoPath" :src="logoPath">
 
-      <h3 v-if="!authStore.storeConfig.MenuCollapse">{{ shortTitle }}</h3>
+      <h3 v-if="!authStore.storeConfig.MenuCollapse">{{ configStore.globalSettings.short_title }}</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
              :collapse="authStore.storeConfig.MenuCollapse" @open="handleOpen" @close="handleClose">
@@ -40,7 +40,7 @@
 import {ref, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 
-import {useAuth} from '../../stores/auth';
+import {useAuth, useConfig} from '../../stores';
 import menus from '@/configs/menus';
 
 const route = useRoute();
@@ -48,6 +48,7 @@ const route = useRoute();
 const defaultActive = ref('')
 
 const authStore = useAuth();
+const configStore = useConfig();
 
 const shortTitle = import.meta.env.VITE_SHORT_TITLE;
 const logoPath = import.meta.env.VITE_PATH;

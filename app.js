@@ -10,7 +10,7 @@ pinia.use(piniaPluginPersistedstate)
 
 // 引入路由router
 import routes from '@/configs/routes'
-import {useAuth} from './stores/auth';
+import {useAuth, useConfig} from './stores/index';
 
 // 引入element-plus
 import ElementPlus from 'element-plus'
@@ -18,7 +18,7 @@ import 'element-plus/dist/index.css'
 
 // 引入国际化语言设置
 import {createI18n} from 'vue-i18n'
-import translations from './utils/i18n'
+import translations from './configs/i18n'
 
 // 引入element-plus全局国际化的配置
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -48,6 +48,7 @@ const filterRouter = (rs, permissions) => rs
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
+    const configStore = useConfig()
     const publicPages = ['/login', '/register']
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = await authStore.current();
@@ -57,10 +58,10 @@ router.beforeEach(async (to, from, next) => {
         return
     }
 
-    if (!authStore.globalState.routerInit) {
+    if (!configStore.globalState.routerInit) {
         filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
 
-        authStore.changeGlobalState('routerInit', true);
+        configStore.changeGlobalState('routerInit', true);
         await router.replace(router.currentRoute.value.fullPath);
     }
 
