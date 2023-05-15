@@ -1,106 +1,104 @@
 <template>
-  <div class="w-100 h-100 login-page" @keydown.enter="onEnter">
-
-    <el-row class="h-100" justify="center" align="middle">
-      <el-col :span="8" :xs="20" :sm="14" :md="10" :lg="8">
-
-        <el-card class="login-card" style="border-radius: 0;" shadow="always">
-          <template #header>
-            <div class="login-header column-center">
-              <img class="logo-image" :src="configStore.globalSettings.logoPath" alt="" srcset="">
-              <h3 class="mt-6">登陆</h3>
+    <el-row class="h-100">
+        <el-col :lg="12" class="hidden-md-and-down login-left p-20">
+            <div class="position-r h-100 w-100">
+                <div class="position-a d-flex" style="top: 0;left: 0">
+                    <img :src="configStore.globalSettings.logoPath" style="height: 75px">
+                    <h2 style="color: white">Uplanner</h2>
+                </div>
+                <div class="position-a login-img">
+                    <img src="../assets/images/走势监测.png" class="w-100">
+                    <h1 style="color: white;margin: 0">欢迎使用本系统</h1>
+                    <h4 style="color: white;">开箱即用的中后台管理系统</h4>
+                </div>
             </div>
-          </template>
-
-          <el-row>
-            <el-col :span="24">
-              <el-form label-position="left" label-width="80px" :hide-required-asterisk="true"
-                       :model="formValue"
-                       :rules="rules" ref="form">
-                <el-form-item label="用户名" prop="email">
-                  <el-input size="large" v-model="formValue.email"/>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                  <el-input type="password" size="large" :show-password="true"
-                            v-model="formValue.password"/>
-                </el-form-item>
-              </el-form>
-            </el-col>
-          </el-row>
-
-          <div class="column-center">
-            <el-button type="primary" size="large" @click="Login(form)">登录</el-button>
-            <!--            <el-link>忘记密码</el-link>-->
-          </div>
-
-        </el-card>
-      </el-col>
+        </el-col>
+        <el-col :lg="12" class="login-right">
+            <el-card shadow="never" @keydown.enter="onEnter">
+                <h2>登录</h2>
+                <el-form label-position="top" :hide-required-asterisk="true"
+                         :model="formValue"
+                         :rules="rules" ref="form">
+                    <el-form-item label="用户名" prop="email">
+                        <el-input size="large" v-model="formValue.email" clearable/>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input type="password" size="large" :show-password="true"
+                                  v-model="formValue.password" clearable/>
+                    </el-form-item>
+                    <div class="text-end mb-20">
+                        <el-link>忘记密码</el-link>
+                    </div>
+                    <el-form-item>
+                        <el-button type="primary" size="large" @click="Login(form)" class="w-100">登录</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button size="large" class="w-100">注册</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </el-col>
     </el-row>
-  </div>
 </template>
 
 <script setup>
+import 'element-plus/theme-chalk/display.css'
 import {useRouter} from "vue-router";
 import {useAuth, useConfig} from '../stores';
 import {ref, reactive} from "vue";
 
 const authStore = useAuth();
 const configStore = useConfig();
-
 const router = useRouter();
 
 const form = ref();
 
-const logoPath = import.meta.env.VITE_PATH
-
 const rules = reactive({
-  email: [
-    {
-      required: true, message: '请输入用户名', trigger: 'submit'
-    }
-  ],
-  password: [
-    {required: true, message: '请输入密码', trigger: 'submit'},
-    {min: 6, message: '最低长度6个字符', trigger: 'blur'}
-  ]
+    email: [
+        {
+            required: true, message: '请输入用户名', trigger: 'submit'
+        }
+    ],
+    password: [
+        {required: true, message: '请输入密码', trigger: 'submit'},
+        {min: 6, message: '最低长度6个字符', trigger: 'blur'}
+    ]
 });
 
 const formValue = reactive({
-  email: '',
-  password: ''
+    email: '',
+    password: ''
 });
 
 const Login = async (formEl) => {
-  await formEl.validate((valid, fields) => {
-    if (!valid) return false;
-    authStore.login(formValue).then(() => {
-      router.replace('/');
+    await formEl.validate((valid, fields) => {
+        if (!valid) return false;
+        authStore.login(formValue).then(() => {
+            router.replace('/');
+        });
     });
-  });
 }
 
 const onEnter = () => {
-  if (formValue.email && formValue.password) Login(form.value);
+    if (formValue.email && formValue.password) Login(form.value);
 }
-
 </script>
 
 <style lang="scss" scoped>
-.login-page {
-  background-image: url('../../../public/images/background.jpg');
-  background-size: cover;
-  background-position: center;
+.login-left {
+    background-color: #293146;
 }
 
-.foot {
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
+.login-img {
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
 }
 
-.logo-image {
-  width: 75px;
-  height: 75px;
+.login-right {
+    padding: 10%;
+    margin: auto;
+    text-align: center;
 }
 </style>
-  
