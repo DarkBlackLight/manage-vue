@@ -3,13 +3,22 @@ import _ from "lodash-es"
 
 const default_translations = {
     en: {
+        error: {
+            return_to_homepage: 'Return to homepage',
+            '404_message': 'Sorry, the page you visited does not exist.',
+            '500_message': 'Sorry, the server reported an error.'
+        },
         login: {
             sign_in: 'Sign in',
             username: 'Username',
             email: 'Email',
             password: 'Password',
             register: 'Register',
-            forget_password: 'Forget password'
+            forget_password: 'Forget password',
+            email_reminder: 'Please enter your email address',
+            password_reminder: 'Please input a password',
+            password_length_prompt: 'Minimum length of 6 characters',
+            log_out: 'Log out'
         },
         resources: {
             actions: 'Actions',
@@ -25,13 +34,22 @@ const default_translations = {
         },
     },
     zh: {
+        error: {
+            return_to_homepage: '返回首页',
+            '404_message': '抱歉，您访问的页面不存在。',
+            '500_message': '抱歉，服务器报告错误。'
+        },
         login: {
             sign_in: '登录',
             username: '用户名',
             email: '邮箱',
             password: '密码',
             register: '注册',
-            forget_password: '找回密码'
+            forget_password: '找回密码',
+            email_reminder: '请输入邮箱',
+            password_reminder: '请输入邮箱',
+            password_length_prompt: '最低长度6个字符',
+            log_out: '退出登录'
         },
         resources: {
             actions: '操作',

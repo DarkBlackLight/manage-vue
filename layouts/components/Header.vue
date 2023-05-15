@@ -34,7 +34,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="Logout">
-                    退出系统
+                      {{ t('login.log_out') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -53,9 +53,12 @@ import {Fold, Expand, Sunny, Moon} from '@element-plus/icons-vue'
 import {useAuth, useConfig} from '../../stores';
 import {useRouter} from "vue-router";
 import {onMounted} from 'vue';
+import {useI18n} from 'vue-i18n'
 
 const authStore = useAuth();
 const configStore = useConfig();
+
+const {t} = useI18n()
 
 const router = useRouter();
 

@@ -60,12 +60,12 @@ const form = ref();
 const rules = reactive({
     email: [
         {
-            required: true, message: '请输入用户名', trigger: 'submit'
+            required: true, message: t('login.email_reminder'), trigger: 'submit'
         }
     ],
     password: [
-        {required: true, message: '请输入密码', trigger: 'submit'},
-        {min: 6, message: '最低长度6个字符', trigger: 'blur'}
+        {required: true, message: t('login.password_reminder'), trigger: 'submit'},
+        {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
     ]
 });
 
