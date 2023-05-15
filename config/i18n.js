@@ -3,6 +3,14 @@ import _ from "lodash-es"
 
 const default_translations = {
     en: {
+        login: {
+            sign_in: 'Sign in',
+            username: 'Username',
+            email: 'Email',
+            password: 'Password',
+            register: 'Register',
+            forget_password: 'Forget password'
+        },
         resources: {
             actions: 'Actions',
             search: 'Search',
@@ -17,6 +25,14 @@ const default_translations = {
         },
     },
     zh: {
+        login: {
+            sign_in: '登录',
+            username: '用户名',
+            email: '邮箱',
+            password: '密码',
+            register: '注册',
+            forget_password: '找回密码'
+        },
         resources: {
             actions: '操作',
             search: '搜索',

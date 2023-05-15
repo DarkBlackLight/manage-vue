@@ -4,6 +4,7 @@ import _ from "lodash-es"
 const default_settings = {
     fullTitle: '管理系统',
     shortTitle: 'KrTech',
+    description: '管理系统后台',
     logoPath: '/public/images/logo.jpg',
     layout: {
         sideMenu: {

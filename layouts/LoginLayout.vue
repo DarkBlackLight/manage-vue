@@ -4,36 +4,38 @@
             <div class="position-r h-100 w-100">
                 <div class="position-a d-flex" style="top: 0;left: 0">
                     <img :src="configStore.globalSettings.logoPath" style="height: 75px">
-                    <h2 style="color: white">Uplanner</h2>
+                    <h2 style="color: white">{{ configStore.globalSettings.shortTitle }}</h2>
                 </div>
                 <div class="position-a login-img">
-                    <img src="../assets/images/走势监测.png" class="w-100">
-                    <h1 style="color: white;margin: 0">欢迎使用本系统</h1>
-                    <h4 style="color: white;">开箱即用的中后台管理系统</h4>
+                    <img src="../assets/images/login-img.png" class="w-100">
+                    <h1 style="color: white;margin: 0">{{ configStore.globalSettings.fullTitle }}</h1>
+                    <h4 style="color: white;">{{ configStore.globalSettings.description }}</h4>
                 </div>
             </div>
         </el-col>
         <el-col :lg="12" class="login-right">
             <el-card shadow="never" @keydown.enter="onEnter">
-                <h2>登录</h2>
+                <h2>{{ t('login.sign_in') }}</h2>
                 <el-form label-position="top" :hide-required-asterisk="true"
                          :model="formValue"
                          :rules="rules" ref="form">
-                    <el-form-item label="用户名" prop="email">
+                    <el-form-item :label="t('login.email')" prop="email">
                         <el-input size="large" v-model="formValue.email" clearable/>
                     </el-form-item>
-                    <el-form-item label="密码" prop="password">
+                    <el-form-item :label="t('login.password')" prop="password">
                         <el-input type="password" size="large" :show-password="true"
                                   v-model="formValue.password" clearable/>
                     </el-form-item>
                     <div class="text-end mb-20">
-                        <el-link>忘记密码</el-link>
+                        <el-link>{{ t('login.forget_password') }}</el-link>
                     </div>
                     <el-form-item>
-                        <el-button type="primary" size="large" @click="Login(form)" class="w-100">登录</el-button>
+                        <el-button type="primary" size="large" @click="Login(form)" class="w-100">
+                            {{ t('login.sign_in') }}
+                        </el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button size="large" class="w-100">注册</el-button>
+                        <el-button size="large" class="w-100">{{ t('login.register') }}</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -46,10 +48,12 @@ import 'element-plus/theme-chalk/display.css'
 import {useRouter} from "vue-router";
 import {useAuth, useConfig} from '../stores';
 import {ref, reactive} from "vue";
+import {useI18n} from 'vue-i18n'
 
 const authStore = useAuth();
 const configStore = useConfig();
 const router = useRouter();
+const {t} = useI18n()
 
 const form = ref();
 
