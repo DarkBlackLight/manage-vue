@@ -14,7 +14,11 @@
             </div>
         </el-col>
         <el-col :lg="12" class="login-right">
-            <el-card shadow="never" @keydown.enter="onEnter">
+            <div class="d-flex hidden-lg-and-up">
+                <img :src="configStore.globalSettings.logoPath" style="height: 75px">
+                <h2 style="color: white">{{ configStore.globalSettings.shortTitle }}</h2>
+            </div>
+            <el-card shadow="never" @keydown.enter="onEnter" class="login-card" v-if="formCard">
                 <h2>{{ t('login.sign_in') }}</h2>
                 <el-form label-position="top" :hide-required-asterisk="true"
                          :model="formValue"
@@ -35,7 +39,40 @@
                         </el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button size="large" class="w-100">{{ t('login.register') }}</el-button>
+                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{
+                                t('login.register')
+                            }}
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+
+            <el-card shadow="never" class="register-card" v-if="!formCard">
+                <h2>{{ t('login.register') }}</h2>
+                <el-form label-position="top" :hide-required-asterisk="true"
+                         :model="registerFormValue"
+                         :rules="registerRules" ref="registerForm">
+                    <el-form-item :label="t('login.email')" prop="email">
+                        <el-input size="large" v-model="registerFormValue.email" clearable/>
+                    </el-form-item>
+                    <el-form-item :label="t('login.password')" prop="password">
+                        <el-input type="password" size="large" :show-password="true"
+                                  v-model="registerFormValue.password" clearable/>
+                    </el-form-item>
+                    <el-form-item :label="t('login.confirm_password')" prop="password_confirmation">
+                        <el-input type="password" size="large" :show-password="true"
+                                  v-model="registerFormValue.password_confirmation" clearable/>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="large" class="w-100">
+                            {{ t('login.register') }}
+                        </el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button size="large" class="w-100" @click="onSwitch('login')">{{
+                                t('login.go_to_login')
+                            }}
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -55,8 +92,9 @@ const configStore = useConfig();
 const router = useRouter();
 const {t} = useI18n()
 
-const form = ref();
+const formCard = ref(true);
 
+const form = ref();
 const rules = reactive({
     email: [
         {
@@ -68,10 +106,31 @@ const rules = reactive({
         {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
     ]
 });
-
 const formValue = reactive({
     email: '',
     password: ''
+});
+
+const registerForm = ref();
+const registerRules = reactive({
+    email: [
+        {
+            required: true, message: t('login.email_reminder'), trigger: 'submit'
+        }
+    ],
+    password: [
+        {required: true, message: t('login.password_reminder'), trigger: 'submit'},
+        {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
+    ],
+    password_confirmation: [
+        {required: true, message: t('login.password_reminder'), trigger: 'submit'},
+        {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
+    ]
+});
+const registerFormValue = reactive({
+    email: '',
+    password: '',
+    password_confirmation: ''
 });
 
 const Login = async (formEl) => {
@@ -85,6 +144,14 @@ const Login = async (formEl) => {
 
 const onEnter = () => {
     if (formValue.email && formValue.password) Login(form.value);
+}
+
+const onSwitch = (type) => {
+    if (type === 'register') {
+        formCard.value = false
+    } else {
+        formCard.value = true
+    }
 }
 </script>
 
@@ -101,8 +168,37 @@ const onEnter = () => {
 }
 
 .login-right {
-    padding: 10%;
-    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-items: center;
     text-align: center;
+    padding: 20px;
+}
+
+.login-card {
+    margin: auto;
+    width: 500px;
+}
+
+.register-card {
+    margin: auto;
+    width: 500px;
+}
+
+@media only screen and (max-width: 1199px) {
+    .login-right {
+        background-color: #293146;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .login-card {
+        width: 100%;
+    }
+
+    .register-card {
+        width: 100%;
+    }
 }
 </style>

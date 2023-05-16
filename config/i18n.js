@@ -18,7 +18,9 @@ const default_translations = {
             email_reminder: 'Please enter your email address',
             password_reminder: 'Please input a password',
             password_length_prompt: 'Minimum length of 6 characters',
-            log_out: 'Log out'
+            log_out: 'Log out',
+            confirm_password: 'Confirm Password',
+            go_to_login: 'Existing account? Go to login',
         },
         resources: {
             actions: 'Actions',
@@ -49,7 +51,9 @@ const default_translations = {
             email_reminder: '请输入邮箱',
             password_reminder: '请输入邮箱',
             password_length_prompt: '最低长度6个字符',
-            log_out: '退出登录'
+            log_out: '退出登录',
+            confirm_password: '确认密码',
+            go_to_login: '已有账号？去登录'
         },
         resources: {
             actions: '操作',
