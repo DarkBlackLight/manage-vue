@@ -38,12 +38,12 @@
                             {{ t('login.sign_in') }}
                         </el-button>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{
-                                t('login.register')
-                            }}
-                        </el-button>
-                    </el-form-item>
+                    <!--                    <el-form-item>-->
+                    <!--                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{-->
+                    <!--                                t('login.register')-->
+                    <!--                            }}-->
+                    <!--                        </el-button>-->
+                    <!--                    </el-form-item>-->
                 </el-form>
             </el-card>
 
