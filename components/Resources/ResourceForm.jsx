@@ -101,14 +101,14 @@ const renderAssociations = (t, column, resource) => (<el-col span={24}>
     </div>
 </el-col>)
 
-const renderAssociation = (column, resource) => renderColumns(t, column.columns, _.get(resource, column.prop))
+const renderAssociation = (t, column, resource) => renderColumns(t, column.columns, _.get(resource, column.prop))
 
 const renderColumns = (t, columns, resource) => columns.map((column) => {
     if (!column.condition || column.condition(resource)) {
         if (column.type === 'associations')
             return (renderAssociations(t, column, resource))
         else if (column.type === 'association')
-            return (renderAssociation(column, resource))
+            return (renderAssociation(t, column, resource))
         else if (column.type === 'hidden')
             return null
         else return (

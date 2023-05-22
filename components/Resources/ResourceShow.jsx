@@ -2,6 +2,7 @@ import {ref, defineComponent} from "vue";
 import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
 import {formatDateTime} from "../../config/tools";
+import './ResourceShow.scss';
 
 import _ from 'lodash-es';
 
@@ -16,7 +17,9 @@ const renderColumns = (columns, showResource) => columns.map(column =>
             else if (column.type === 'image')
                 return (
                     _.get(showResource, column.prop) &&
-                    <img height={100} src={_.get(showResource, column.prop).src}/>
+                    <el-image style="height: 30px" src={_.get(showResource, column.prop).src}
+                              preview-src-list={[_.get(showResource, column.prop).src]}
+                    />
                 )
             if (column.render)
                 return column.render(showResource)
@@ -50,7 +53,7 @@ export default defineComponent({
         return () => (
             <ResourceDialog title={props.showConfig.title} ref={resourceDialogRef}>
                 {{
-                    default: () => <el-descriptions column={1}>
+                    default: () => <el-descriptions column={1} border class="resource-show">
                         {showResource && renderColumns(props.showConfig.columns, showResource.value)}
                     </el-descriptions>
                 }}
