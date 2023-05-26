@@ -10,10 +10,35 @@ import _ from 'lodash-es';
 
 import {useI18n} from 'vue-i18n'
 
+const renderOption = (c, r) => (
+    <el-select modelValue={_.get(r, c.prop)} onChange={(e) => _.set(r, c.prop, e)} class="w-100" {...c.props}
+               filterable>
+        {c.options && c.options.map(option => (
+            <el-option key={option.value} label={option.label} value={option.value}/>))}
+    </el-select>)
+
+const renderColumn = {
+    'text': (c, r) => <el-input modelValue={_.get(r, c.prop)} onInput={(e) => _.set(r, c.prop, e)}
+                                type="text" {...c.props} />,
+
+    'date': (c, r) => <el-date-picker modelValue={_.get(r, c.prop)} onUpdate:modelValue={(e) => _.set(r, c.prop, e)}
+                                      type="date" {...c.props}/>,
+
+    'datetime': (c, r) => <el-date-picker modelValue={_.get(r, c.prop)} onUpdate:modelValue={(e) => _.set(r, c.prop, e)}
+                                          type="datetime" {...c.props}/>,
+
+    'time': (c, r) => <el-time-picker modelValue={_.get(r, c.prop)} onUpdate:modelValue={(e) => {
+        _.set(r, c.prop, e)
+    }}
+                                      arrow-control {...c.props}/>,
+    'options': renderOption,
+    'remote_options': renderOption,
+}
+
 const renderFilters = (queries, filters) => filters.map(filter => (
     <el-col span={6}>
         <el-form-item label={filter.label} prop={filter.prop}>
-            <el-input v-model={queries[filter.prop]} placeholder={filter.placeholder} {...filter.props}/>
+            {renderColumn[filter.type ? filter.type : 'text'](filter, queries)}
         </el-form-item>
     </el-col>
 ))
