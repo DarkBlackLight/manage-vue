@@ -21,6 +21,8 @@ const default_translations = {
             log_out: 'Log out',
             confirm_password: 'Confirm Password',
             go_to_login: 'Existing account? Go to login',
+            name: 'name',
+            name_reminder: 'Please enter a name'
         },
         resources: {
             actions: 'Actions',
@@ -53,7 +55,9 @@ const default_translations = {
             password_length_prompt: '最低长度6个字符',
             log_out: '退出登录',
             confirm_password: '确认密码',
-            go_to_login: '已有账号？去登录'
+            go_to_login: '已有账号？去登录',
+            name: '名称',
+            name_reminder: '请输入名称'
         },
         resources: {
             actions: '操作',

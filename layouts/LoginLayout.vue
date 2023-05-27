@@ -2,8 +2,8 @@
     <el-row class="h-100">
         <el-col :lg="12" class="hidden-md-and-down login-left p-20">
             <div class="position-r h-100 w-100">
-                <div class="position-a d-flex" style="top: 0;left: 0">
-                    <img :src="configStore.globalSettings.logoPath" style="height: 75px">
+                <div class="position-a d-flex align-center" style="top: 0;left: 0">
+                    <img :src="configStore.globalSettings.logoPath" style="height: 50px;margin-right: 10px">
                     <h2 style="color: white">{{ configStore.globalSettings.shortTitle }}</h2>
                 </div>
                 <div class="position-a login-img">
@@ -14,8 +14,8 @@
             </div>
         </el-col>
         <el-col :lg="12" class="login-right">
-            <div class="d-flex hidden-lg-and-up">
-                <img :src="configStore.globalSettings.logoPath" style="height: 75px">
+            <div class="d-flex hidden-lg-and-up align-center">
+                <img :src="configStore.globalSettings.logoPath" style="height: 50px;margin-right: 10px">
                 <h2 style="color: white">{{ configStore.globalSettings.shortTitle }}</h2>
             </div>
             <el-card shadow="never" @keydown.enter="onEnter" class="login-card" v-if="formCard">
@@ -38,12 +38,12 @@
                             {{ t('login.sign_in') }}
                         </el-button>
                     </el-form-item>
-                    <!--                    <el-form-item>-->
-                    <!--                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{-->
-                    <!--                                t('login.register')-->
-                    <!--                            }}-->
-                    <!--                        </el-button>-->
-                    <!--                    </el-form-item>-->
+                    <el-form-item>
+                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{
+                                t('login.register')
+                            }}
+                        </el-button>
+                    </el-form-item>
                 </el-form>
             </el-card>
 
@@ -52,6 +52,9 @@
                 <el-form label-position="top" :hide-required-asterisk="true"
                          :model="registerFormValue"
                          :rules="registerRules" ref="registerForm">
+                    <el-form-item :label="t('login.name')" prop="name">
+                        <el-input size="large" v-model="registerFormValue.name" clearable/>
+                    </el-form-item>
                     <el-form-item :label="t('login.email')" prop="email">
                         <el-input size="large" v-model="registerFormValue.email" clearable/>
                     </el-form-item>
@@ -64,7 +67,7 @@
                                   v-model="registerFormValue.password_confirmation" clearable/>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="large" class="w-100">
+                        <el-button type="primary" size="large" class="w-100" @click="Register(registerForm)">
                             {{ t('login.register') }}
                         </el-button>
                     </el-form-item>
@@ -113,6 +116,11 @@ const formValue = reactive({
 
 const registerForm = ref();
 const registerRules = reactive({
+    name: [
+        {
+            required: true, message: t('login.name_reminder'), trigger: 'submit'
+        }
+    ],
     email: [
         {
             required: true, message: t('login.email_reminder'), trigger: 'submit'
@@ -128,6 +136,8 @@ const registerRules = reactive({
     ]
 });
 const registerFormValue = reactive({
+    name: '',
+    role: configStore.globalSettings.role,
     email: '',
     password: '',
     password_confirmation: ''
@@ -141,6 +151,15 @@ const Login = async (formEl) => {
         });
     });
 }
+
+// const Register = async (formEl) => {
+//     await formEl.validate((valid, fields) => {
+//         if (!valid) return false;
+//         authStore.register(registerFormValue).then(() => {
+//             router.replace('/');
+//         });
+//     });
+// }
 
 const onEnter = () => {
     if (formValue.email && formValue.password) Login(form.value);
