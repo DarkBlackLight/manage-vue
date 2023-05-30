@@ -17,6 +17,16 @@ const renderOption = (c, r) => (
             <el-option key={option.value} label={option.label} value={option.value}/>))}
     </el-select>)
 
+const renderRemoteOption = (c, r) => {
+    c.options = []
+    c.remote_options.remote().then(data => {
+        c.options = data.map(d => ({
+            value: d[c.remote_options.value], label: d[c.remote_options.label]
+        }))
+    })
+    return renderOption(c, r)
+}
+
 const renderColumn = {
     'text': (c, r) => <el-input modelValue={_.get(r, c.prop)} onInput={(e) => _.set(r, c.prop, e)}
                                 type="text" {...c.props} />,
@@ -32,7 +42,7 @@ const renderColumn = {
     }}
                                       arrow-control {...c.props}/>,
     'options': renderOption,
-    'remote_options': renderOption,
+    'remote_options': renderRemoteOption,
 }
 
 const renderFilters = (queries, filters) => filters.map(filter => (
