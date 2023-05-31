@@ -1,37 +1,39 @@
 <template>
-  <el-aside class="layout-aside"
-            :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
-    <div class="layout-aside-header row-align-center">
-      <img :src="configStore.globalSettings.logoPath" style="height: 60%">
-      <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
-    </div>
-    <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
-             :collapse="configStore.globalConfig.sideMenuCollapse" @open="handleOpen" @close="handleClose">
-      <template v-for="(item, index) in list">
-        <template v-if="item.children.length > 0">
-          <el-sub-menu :index="`${item.name}`">
-            <template #title>
-              <el-icon>
-                <component :is="item.icon"/>
-              </el-icon>
-              <span>{{ item.name }}</span>
+    <el-aside class="layout-aside"
+              :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
+        <div class="layout-aside-header row-align-center">
+            <img :src="configStore.globalSettings.logoPath" style="height: 60%">
+            <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
+        </div>
+        <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
+                 :collapse="configStore.globalConfig.sideMenuCollapse" @open="handleOpen" @close="handleClose">
+            <template v-for="(item, index) in list">
+                <template v-if="item.children.length > 0">
+                    <el-sub-menu :index="`${item.name}`">
+                        <template #title>
+                            <i :class="['iconfont icon',item.icon]"></i>
+                            <!--                <el-icon>-->
+                            <!--                <component :is="item.icon"/>-->
+                            <!--              </el-icon>-->
+                            <span>{{ item.name }}</span>
+                        </template>
+                        <template v-for="(item_children, c_index) in item.children">
+                            <el-menu-item :index="`${item_children.path}`">{{ item_children.name }}</el-menu-item>
+                        </template>
+                    </el-sub-menu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="`${item.path}`">
+                        <i :class="['iconfont icon',item.icon]"></i>
+                        <!--                        <el-icon>-->
+                        <!--                            <component :is="item.icon"/>-->
+                        <!--                        </el-icon>-->
+                        <template #title>{{ item.name }}</template>
+                    </el-menu-item>
+                </template>
             </template>
-            <template v-for="(item_children, c_index) in item.children">
-              <el-menu-item :index="`${item_children.path}`">{{ item_children.name }}</el-menu-item>
-            </template>
-          </el-sub-menu>
-        </template>
-        <template v-else>
-          <el-menu-item :index="`${item.path}`">
-            <el-icon>
-              <component :is="item.icon"/>
-            </el-icon>
-            <template #title>{{ item.name }}</template>
-          </el-menu-item>
-        </template>
-      </template>
-    </el-menu>
-  </el-aside>
+        </el-menu>
+    </el-aside>
 </template>
 
 <script setup>
@@ -54,47 +56,66 @@ const filterMenu = (mu, permissions) => mu
 
 // 导航列表
 const list = ref(filterMenu(menus, authStore.permissions.map(i => {
-  return i.permission.subject
+    return i.permission.subject
 })))
 
 const handleOpen = (key, keyPath) => {
-  // console.log(key, keyPath)
+    // console.log(key, keyPath)
 }
 
 const handleClose = (key, keyPath) => {
-  console.log(key, keyPath)
+    console.log(key, keyPath)
 }
 
 onMounted(() => {
-  defaultActive.value = route.path.split('/')[1] ? '/' + route.path.split('/')[1] : '/'
+    defaultActive.value = route.path.split('/')[1] ? '/' + route.path.split('/')[1] : '/'
 })
 
 </script>
 
 <style lang="scss" scoped>
 .layout-aside {
-  height: 100%;
-  transition: width 0.3s ease;
+    height: 100%;
+    transition: width 0.3s ease;
 }
 
 .layout-menu {
-  height: calc(100vh - 59px);
+    height: calc(100vh - 59px);
 }
 
 .layout-aside-header {
-  width: 100%;
-  height: 59px;
+    width: 100%;
+    height: 59px;
 
-  justify-content: center;
+    justify-content: center;
 
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 10px;
-  }
+    h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 10px;
+    }
 }
 
 .layout-aside-footer {
-  height: 50px;
+    height: 50px;
+}
+
+.icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.el-menu--collapse {
+    .icon {
+        margin: 0;
+    }
 }
 </style>
