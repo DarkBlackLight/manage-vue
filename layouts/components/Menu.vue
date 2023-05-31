@@ -55,9 +55,7 @@ const filterMenu = (mu, permissions) => mu
     .map(m => m.children ? ({...m, children: filterMenu(m.children, permissions)}) : m)
 
 // 导航列表
-const list = ref(filterMenu(menus, authStore.permissions.map(i => {
-    return i.permission.subject
-})))
+const list = ref(filterMenu(menus, authStore.permissions))
 
 const handleOpen = (key, keyPath) => {
     // console.log(key, keyPath)
