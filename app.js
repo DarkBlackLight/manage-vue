@@ -71,10 +71,12 @@ router.beforeEach(async (to, from, next) => {
     if (!configStore.globalState.routerInit) {
         filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
 
-        configStore.changeGlobalState('routerInit', true);
+        if (filterRouter(routes, authStore.permissions).length > 0) {
+            configStore.changeGlobalState('routerInit', true);
+            next({...to, replace: true})
+            return
+        }
         // await router.replace(router.currentRoute.value.fullPath);
-        next({...to, replace: true})
-        return
     }
 
     if (!authRequired && loggedIn) {
