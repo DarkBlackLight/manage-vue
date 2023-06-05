@@ -14,6 +14,6 @@ const default_settings = {
 }
 
 
-const settings = _.merge(app_settings, default_settings)
+const settings = _.merge(default_settings, app_settings)
 
 export default settings;
