@@ -70,10 +70,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!configStore.globalState.routerInit) {
-        filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
-        status_routes.forEach(r => router.addRoute(r));
-
         if (filterRouter(routes, authStore.permissions).length > 0) {
+            filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
+            status_routes.forEach(r => router.addRoute(r));
+
             configStore.changeGlobalState('routerInit', true);
             next({...to, replace: true})
             return

@@ -39,7 +39,15 @@ export const useAuth = defineStore('auth', {
                 this.role = null;
                 this.permissions = [];
             });
-        }
+        },
+        async register(user) {
+            await API.Auth.register(user)
+                .then((response) => {
+                    this.user = response.data;
+                    this.role = response.data.source.role;
+                    this.permissions = response.data.source.admin_permissions;
+                })
+        },
     },
     persist: {
         paths: ['user']

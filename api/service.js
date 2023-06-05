@@ -74,7 +74,8 @@ const Resources = function (resources, resource, others = {}) {
 const Auth = {
     current: () => Request.get('/auth/current'),
     validate_email_password: (user) => Request.post('/auth/validate_email_password', {user}),
-    logout: () => Request.delete('/auth/logout')
+    logout: () => Request.delete('/auth/logout'),
+    register: (user) => Request.post('/auth/register', {user})
 }
 
 const Storage = {
