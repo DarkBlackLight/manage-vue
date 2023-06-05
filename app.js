@@ -32,25 +32,26 @@ import App from './App.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: [
-        ...[
-            {
-                path: '/login',
-                name: 'login',
-                component: () => import('@/manage-vue/layouts/LoginLayout.vue')
-            },
-            {
-                path: '/500',
-                name: '500',
-                component: () => import('@/manage-vue/layouts/500.vue')
-            },
-            {
-                path: '/:pathMatch(.*)*',
-                name: '404',
-                component: () => import('@/manage-vue/layouts/404.vue')
-            },
-        ]
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('@/manage-vue/layouts/LoginLayout.vue')
+        }
     ]
 })
+
+const status_routes = [
+    {
+        path: '/500',
+        name: '500',
+        component: () => import('@/manage-vue/layouts/500.vue')
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: '404',
+        component: () => import('@/manage-vue/layouts/404.vue')
+    },
+]
 
 const filterRouter = (rs, permissions) => rs
     .filter(r => !r.permission || r.permission(permissions))
@@ -70,6 +71,7 @@ router.beforeEach(async (to, from, next) => {
 
     if (!configStore.globalState.routerInit) {
         filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
+        status_routes.forEach(r => router.addRoute(r));
 
         if (filterRouter(routes, authStore.permissions).length > 0) {
             configStore.changeGlobalState('routerInit', true);
