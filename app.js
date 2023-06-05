@@ -39,15 +39,15 @@ const router = createRouter({
                 component: () => import('@/manage-vue/layouts/LoginLayout.vue')
             },
             {
-                path: '/404',
-                name: '404',
-                component: () => import('@/manage-vue/layouts/404.vue')
-            },
-            {
                 path: '/500',
                 name: '500',
                 component: () => import('@/manage-vue/layouts/500.vue')
-            }
+            },
+            {
+                path: '*',
+                name: '404',
+                component: () => import('@/manage-vue/layouts/404.vue')
+            },
         ]
     ]
 })
