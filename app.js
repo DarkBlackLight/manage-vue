@@ -71,8 +71,9 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!configStore.globalState.routerInit) {
-        if (filterRouter(routes, authStore.permissions).length > 0) {
-            filterRouter(routes, authStore.permissions).forEach(r => router.addRoute(r));
+        const initRoutes = filterRouter(routes, authStore.permissions)
+        if (initRoutes.length > 0) {
+            initRoutes.forEach(r => router.addRoute(r));
             status_routes.forEach(r => router.addRoute(r));
 
             configStore.changeGlobalState('routerInit', true);
