@@ -32,11 +32,12 @@ import App from './App.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes: [
-        {
+        ...[{
             path: '/login',
             name: 'login',
             component: () => import('@/manage-vue/layouts/LoginLayout.vue')
-        }
+        }],
+        ...routes.filter(rs => rs.name === 'register')
     ]
 })
 

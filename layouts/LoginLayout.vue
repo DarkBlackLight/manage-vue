@@ -38,46 +38,36 @@
                             {{ t('login.sign_in') }}
                         </el-button>
                     </el-form-item>
-                    <!--                    <el-form-item>-->
-                    <!--                        <el-button size="large" class="w-100" @click="onSwitch('register')">{{-->
-                    <!--                                t('login.register')-->
-                    <!--                            }}-->
-                    <!--                        </el-button>-->
-                    <!--                    </el-form-item>-->
+                    <el-form-item v-if="configStore.globalSettings.register">
+                        <el-button size="large" class="w-100"
+                                   @click="onSwitch(configStore.globalSettings.register.switch)">{{
+                                t('login.register')
+                            }}
+                        </el-button>
+                    </el-form-item>
                 </el-form>
             </el-card>
 
             <el-card shadow="never" class="register-card" v-if="!formCard">
                 <h2>{{ t('login.register') }}</h2>
-                <el-form label-position="top" :hide-required-asterisk="true"
-                         :model="registerFormValue"
-                         :rules="registerRules" ref="registerForm">
-                    <el-form-item :label="t('login.name')" prop="name">
-                        <el-input size="large" v-model="registerFormValue.name" clearable/>
-                    </el-form-item>
-                    <el-form-item :label="t('login.email')" prop="email">
-                        <el-input size="large" v-model="registerFormValue.email" clearable/>
-                    </el-form-item>
-                    <el-form-item :label="t('login.password')" prop="password">
-                        <el-input type="password" size="large" :show-password="true"
-                                  v-model="registerFormValue.password" clearable/>
-                    </el-form-item>
-                    <el-form-item :label="t('login.confirm_password')" prop="password_confirmation">
-                        <el-input type="password" size="large" :show-password="true"
-                                  v-model="registerFormValue.password_confirmation" clearable/>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="large" class="w-100" @click="Register(registerForm)">
+                <ResourceForm
+                    @submit="Register"
+                    ref="resourceFormRef"
+                    :columns="configStore.globalSettings.register.columns"/>
+
+                <el-row>
+                    <el-col class="text-right">
+                        <el-button type="primary" size="large" class="w-100" @click="() => resourceFormRef.submit()">
                             {{ t('login.register') }}
                         </el-button>
-                    </el-form-item>
-                    <el-form-item>
+                    </el-col>
+                    <el-col class="text-right mt-20">
                         <el-button size="large" class="w-100" @click="onSwitch('login')">{{
                                 t('login.go_to_login')
                             }}
                         </el-button>
-                    </el-form-item>
-                </el-form>
+                    </el-col>
+                </el-row>
             </el-card>
         </el-col>
     </el-row>
@@ -89,6 +79,8 @@ import {useRouter} from "vue-router";
 import {useAuth, useConfig} from '../stores';
 import {ref, reactive} from "vue";
 import {useI18n} from 'vue-i18n'
+import ResourceForm from "../components/Resources/ResourceForm";
+import {ElMessage} from "element-plus";
 
 const authStore = useAuth();
 const configStore = useConfig();
@@ -114,34 +106,7 @@ const formValue = reactive({
     password: ''
 });
 
-const registerForm = ref();
-const registerRules = reactive({
-    name: [
-        {
-            required: true, message: t('login.name_reminder'), trigger: 'submit'
-        }
-    ],
-    email: [
-        {
-            required: true, message: t('login.email_reminder'), trigger: 'submit'
-        }
-    ],
-    password: [
-        {required: true, message: t('login.password_reminder'), trigger: 'submit'},
-        {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
-    ],
-    password_confirmation: [
-        {required: true, message: t('login.password_reminder'), trigger: 'submit'},
-        {min: 6, message: t('login.password_length_prompt'), trigger: 'blur'}
-    ]
-});
-const registerFormValue = reactive({
-    name: '',
-    role: configStore.globalSettings.role,
-    email: '',
-    password: '',
-    password_confirmation: ''
-});
+const resourceFormRef = ref(null);
 
 const Login = async (formEl) => {
     await formEl.validate((valid, fields) => {
@@ -152,14 +117,15 @@ const Login = async (formEl) => {
     });
 }
 
-// const Register = async (formEl) => {
-//     await formEl.validate((valid, fields) => {
-//         if (!valid) return false;
-//         authStore.register(registerFormValue).then(() => {
-//             router.replace('/');
-//         });
-//     });
-// }
+const Register = (formEl) => {
+    authStore.register(formEl).then(() => {
+        router.replace('/');
+        ElMessage({
+            message: '注册成功',
+            type: 'success',
+        })
+    });
+}
 
 const onEnter = () => {
     if (formValue.email && formValue.password) Login(form.value);
@@ -168,6 +134,8 @@ const onEnter = () => {
 const onSwitch = (type) => {
     if (type === 'register') {
         formCard.value = false
+    } else if (type === 'page') {
+        router.replace('/register');
     } else {
         formCard.value = true
     }
