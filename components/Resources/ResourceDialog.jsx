@@ -5,7 +5,8 @@ import './ResourceDialog.scss';
 export default defineComponent({
     name: 'ResourceDialog',
     props: {
-        title: String
+        title: String,
+        width: String
     },
     setup(props, {expose, slots}) {
         const displayDialog = ref(false);
@@ -21,7 +22,7 @@ export default defineComponent({
                        class='resource-dialog'
                        show-close={false}
                        destroy-on-close
-                       width="50%">
+                       width={props.width ? props.width : '50%'}>
                 {{
                     header: () => <div className="row-justify-space-between align-center" style="margin-right: 0">
                         <h4 className="my-0">{props.title}</h4>
