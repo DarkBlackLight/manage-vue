@@ -53,6 +53,10 @@ const renderFilters = (queries, filters) => filters.map(filter => (
     </el-col>
 ))
 
+const setColumnDefault = (c, r) => {
+    _.set(r, c.prop, c.default)
+}
+
 export default defineComponent({
     name: 'ResourceIndex',
     props: {
@@ -78,6 +82,10 @@ export default defineComponent({
             page: 1,
             page_size: 10
         });
+
+        const filterColumns = ref(props.listConfig.filters.filter(column => !column.disable));
+
+        filterColumns.value.forEach((column) => setColumnDefault(column, queries));
 
         const onDelete = (resource) => {
             ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
@@ -165,7 +173,7 @@ export default defineComponent({
                     <el-form ref={queryFormRef} model={queries} label-position="left" label-width="auto">
                         <el-row gutter={20}>
 
-                            {renderFilters(queries, props.listConfig.filters)}
+                            {renderFilters(queries, filterColumns.value)}
 
                             <el-col span={6} class="text-center">
                                 <el-button type="primary" onClick={() => getResourceList()} icon={Search}>
