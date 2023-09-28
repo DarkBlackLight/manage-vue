@@ -34,6 +34,24 @@ const renderImage = (c, r) => {
     </el-upload>)
 }
 
+const renderFile = (c, r) => {
+    return (<el-upload
+        class="resource-form-file"
+        show-file-list={false}
+        http-request={({file}) => {
+            API.Storage.upload(file).then(response => {
+                _.set(r, c.prop, response.data.id);
+                _.set(r, c.prop.replace('_id', ''), response.data);
+            });
+        }}
+    >
+        {_.get(r, c.prop.replace('_id', '')) ?
+            <el-link href={_.get(r, c.prop.replace('_id', ''))['url']}
+                     target="_blank">{_.get(r, c.prop.replace('_id', ''))['filename']}</el-link>
+            : <el-icon class='uploader-icon'><Plus/></el-icon>}
+    </el-upload>)
+}
+
 
 const renderColumn = {
     'text': (c, r) => <el-input modelValue={_.get(r, c.prop)} onInput={(e) => _.set(r, c.prop, e)}
@@ -61,6 +79,7 @@ const renderColumn = {
     'options': renderOption,
     'remote_options': renderOption,
     'image': renderImage,
+    'file': renderFile,
     'display': (c, r) => c.render ? c.render(c, r) : <el-text class="mx-6">{_.get(r, c.prop)}</el-text>,
     'color': (c, r) => <el-color-picker modelValue={_.get(r, c.prop)}
                                         onUpdate:modelValue={(e) => _.set(r, c.prop, e)} {...c.props}></el-color-picker>,
@@ -131,6 +150,7 @@ const initResource = {
     'options': (c) => c && c.props && c.props.multiple ? [] : null,
     'remote_options': (c) => c && c.props && c.props.multiple ? [] : null,
     'image': (c) => null,
+    'file': (c) => null,
     'display': (c) => null,
     'association': (c) => ({}),
     'associations': (c) => [],
