@@ -24,7 +24,7 @@ const renderColumns = (columns, showResource) => columns.map(column =>
             else if (column.type === 'file')
                 return (
                     _.get(showResource, column.prop) &&
-                    <el-link href={_.get(showResource, column.prop.replace('_id', ''))['url']}
+                    <el-link href={_.get(showResource, column.prop.replace('_id', ''))['src']}
                              target="_blank">{_.get(showResource, column.prop.replace('_id', ''))['filename']}</el-link>
                 )
             if (column.render)

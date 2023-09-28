@@ -46,8 +46,7 @@ const renderFile = (c, r) => {
         }}
     >
         {_.get(r, c.prop.replace('_id', '')) ?
-            <el-link href={_.get(r, c.prop.replace('_id', ''))['url']}
-                     target="_blank">{_.get(r, c.prop.replace('_id', ''))['filename']}</el-link>
+            <el-text>{_.get(r, c.prop.replace('_id', ''))['filename']}</el-text>
             : <el-icon class='uploader-icon'><Plus/></el-icon>}
     </el-upload>)
 }
