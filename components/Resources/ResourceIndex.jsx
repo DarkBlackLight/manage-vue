@@ -38,29 +38,31 @@ export default defineComponent({
 
         return () => (
             <>
-                {!props.resourceConfig.onShow &&
+                {props.showConfig && !props.resourceConfig.onShow &&
                     <ResourceShow ref={resourceShowRef}
                                   resourceConfig={props.resourceConfig}
                                   showConfig={props.showConfig}
                     />}
 
-                {!props.resourceConfig.onEdit &&
+                {props.editConfig && !props.resourceConfig.onEdit &&
                     <ResourceEdit ref={resourceEditRef}
                                   resourceConfig={props.resourceConfig}
                                   editConfig={props.editConfig}
                                   onSuccess={() => resourceListRef.value.getResourceList()}
                     />}
 
-                <ResourceNew ref={resourceNewRef}
-                             resourceConfig={props.resourceConfig}
-                             newConfig={props.newConfig}
-                             onSuccess={() => resourceListRef.value.getResourceList()}
-                />
+                {props.newConfig && !props.resourceConfig.onNew &&
+                    <ResourceNew ref={resourceNewRef}
+                                 resourceConfig={props.resourceConfig}
+                                 newConfig={props.newConfig}
+                                 onSuccess={() => resourceListRef.value.getResourceList()}
+                    />}
 
                 <ResourceList ref={resourceListRef}
                               resourceConfig={props.resourceConfig}
                               listConfig={props.listConfig}
-                              onNew={() => resourceNewRef.value.onNew()}
+                              onNew={() => props.resourceConfig.onNew ?
+                                  props.resourceConfig.onNew() : resourceNewRef.value.onNew()}
                               onShow={(resource) => props.resourceConfig.onShow ?
                                   props.resourceConfig.onShow(resource) : resourceShowRef.value.onShow(resource)}
                               onEdit={(resource) => props.resourceConfig.onEdit ?

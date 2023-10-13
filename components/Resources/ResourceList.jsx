@@ -148,14 +148,17 @@ export default defineComponent({
             width: 150,
             render: (scope) => (
                 <div>
-                    <el-button plain type="primary" icon={ZoomIn} circle
-                               onClick={() => emit('show', scope.row)}/>
+                    {(!props.listConfig.actions || props.listConfig.actions.includes('show')) &&
+                        <el-button plain type="primary" icon={ZoomIn} circle
+                                   onClick={() => emit('show', scope.row)}/>}
 
-                    <el-button plain type="warning" icon={Edit} circle
-                               onClick={() => emit('edit', scope.row)}/>
+                    {(!props.listConfig.actions || props.listConfig.actions.includes('edit')) &&
+                        <el-button plain type="warning" icon={Edit} circle
+                                   onClick={() => emit('edit', scope.row)}/>}
 
-                    <el-button plain type="danger" icon={Delete} circle
-                               onClick={() => onDelete(scope.row)}/>
+                    {(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&
+                        <el-button plain type="danger" icon={Delete} circle
+                                   onClick={() => onDelete(scope.row)}/>}
                 </div>
             )
         }]]
@@ -191,17 +194,20 @@ export default defineComponent({
                     <h3 className="my-0">{props.listConfig.title}</h3>
                     <div>
                         <el-button icon={Refresh} circle onClick={() => getResourceList()}/>
-                        <el-button icon={Search} circle type={displayFilter.value ? 'primary' : 'default'}
-                                   onClick={onSearch}/>
+                        {props.listConfig.filters.length > 0 &&
+                            <el-button icon={Search} circle type={displayFilter.value ? 'primary' : 'default'}
+                                       onClick={onSearch}/>}
 
-                        <el-button icon={Plus} type="primary" onClick={() => {
-                            emit('new')
-                        }}>{t('resources.new')}
-                        </el-button>
+                        {(!props.listConfig.actions || props.listConfig.actions.includes('new')) &&
+                            <el-button icon={Plus} type="primary" onClick={() => {
+                                emit('new')
+                            }}>{t('resources.new')}
+                            </el-button>}
 
-                        <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
-                                   onClick={onDeleteSelected}>{t('resources.delete')}
-                        </el-button>
+                        {(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&
+                            <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
+                                       onClick={onDeleteSelected}>{t('resources.delete')}
+                            </el-button>}
                     </div>
                 </div>
 
