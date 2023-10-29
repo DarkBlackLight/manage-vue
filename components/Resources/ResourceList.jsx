@@ -254,13 +254,13 @@ export default defineComponent({
                                 <el-button icon={Search} circle type={displayFilter.value ? 'primary' : 'default'}
                                            onClick={onSearch}/>}
 
-                            {props.listConfig.actions.includes('new') &&
+                            {(!props.listConfig.actions || props.listConfig.actions.includes('new')) &&
                                 <el-button icon={Plus} type="primary" onClick={() => {
                                     emit('new')
                                 }}>{t('resources.new')}
                                 </el-button>}
 
-                            {props.listConfig.actions.includes('delete') &&
+                            {(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&
                                 <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
                                            onClick={onDeleteSelected}>{t('resources.delete')}
                                 </el-button>}
