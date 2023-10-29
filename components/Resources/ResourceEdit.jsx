@@ -44,7 +44,7 @@ export default defineComponent({
         expose({onEdit})
 
         return () => (
-            <ResourceDialog title={props.editConfig.title} ref={resourceDialogRef}>
+            <ResourceDialog title={props.editConfig.title} ref={resourceDialogRef} class={props.editConfig.className}>
                 {{
                     default: () => (editResource.value && <ResourceForm resource={editResource.value}
                                                                         onSubmit={onSubmit}

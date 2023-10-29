@@ -36,6 +36,12 @@ export default defineComponent({
         const resourceEditRef = ref(null);
         const resourceNewRef = ref(null);
 
+        function getResourceList() {
+            resourceListRef.value.getResourceList();
+        }
+
+        expose({getResourceList})
+
         return () => (
             <>
                 {props.showConfig && !props.resourceConfig.onShow &&

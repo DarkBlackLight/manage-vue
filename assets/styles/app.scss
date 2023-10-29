@@ -176,190 +176,77 @@
 }
 
 // 边距
-.m-6 {
-  margin: 6px;
+@for $i from 1 through 100 {
+  .w-#{$i} {
+    width: round(percentage(calc($i / 100)));
+  }
+  .p-#{$i} {
+    padding: #{ $i }px;
+  }
+  .px-#{$i} {
+    padding-left: #{ $i }px;
+    padding-right: #{ $i }px;
+  }
+  .py-#{$i} {
+    padding-top: #{ $i }px;
+    padding-bottom: #{ $i }px;
+  }
+  .pt-#{$i} {
+    padding-top: #{ $i }px;
+  }
+  .pb-#{$i} {
+    padding-bottom: #{ $i }px;
+  }
+  .pl-#{$i} {
+    padding-left: #{ $i }px;
+  }
+  .pr-#{$i} {
+    padding-right: #{ $i }px;
+  }
+
+  .m-#{$i} {
+    margin: #{ $i }px;
+  }
+  .mt-#{$i} {
+    margin-top: #{ $i }px;
+  }
+  .mb-#{$i} {
+    margin-bottom: #{ $i }px;
+  }
+  .mr-#{$i} {
+    margin-right: #{ $i }px;
+  }
+  .ml-#{$i} {
+    margin-left: #{ $i }px;
+  }
+  .mx-#{ $i } {
+    margin-left: #{ $i }px;
+    margin-right: #{ $i }px;
+  }
+  .my-#{ $i } {
+    margin-top: #{ $i }px;
+    margin-bottom: #{ $i }px;
+  }
 }
 
-.m-10 {
-  margin: 10px;
+//循环文字大学
+@for $i from 12 through 50 {
+  .font-#{$i} {
+    font-size: #{ $i }px;
+  }
 }
 
-.m-16 {
-  margin: 16px;
-}
-
-.m-20 {
-  margin: 20px;
-}
-
-.mt-6 {
-  margin-top: 6px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.mt-16 {
-  margin-top: 16px;
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-.mb-6 {
-  margin-bottom: 6px;
-}
-
-.mb-10 {
-  margin-bottom: 10px;
-}
-
-.mb-16 {
-  margin-bottom: 16px;
-}
-
-.mb-20 {
-  margin-bottom: 20px;
-}
-
-.ml-6 {
-  margin-left: 6px;
-}
-
-.ml-10 {
-  margin-left: 10px;
-}
-
-.ml-16 {
-  margin-left: 16px;
-}
-
-.ml-20 {
-  margin-left: 20px;
-}
-
-.mr-6 {
-  margin-right: 6px;
-}
-
-.mr-10 {
-  margin-right: 10px;
-}
-
-.mr-16 {
-  margin-right: 16px;
-}
-
-.mr-20 {
-  margin-right: 20px;
-}
-
-.mx-6 {
-  margin-left: 6px;
-  margin-right: 6px;
-}
-
-.mx-10 {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.mx-16 {
-  margin-left: 16px;
-  margin-right: 16px;
-}
-
-.mx-20 {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.my-0 {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.my-6 {
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-.my-10 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.my-16 {
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-
-.my-20 {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-// 内边距
-.p-10 {
-  padding: 10px;
-}
-
-.p-16 {
-  padding: 16px;
-}
-
-.p-20 {
-  padding: 20px;
-}
-
-.py-10 {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.py-16 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.py-20 {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.px-5 {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.px-10 {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.px-16 {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.px-20 {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-// 文字
-.font-600 {
-  font-weight: 600;
+//文字粗细
+.font-400 {
+  font-weight: 400;
 }
 
 .font-500 {
   font-weight: 500;
 }
 
-.font-400 {
-  font-weight: 400;
+.font-600 {
+  font-weight: 600;
 }
 
 .font-bold {
@@ -378,25 +265,11 @@
   text-align: end;
 }
 
-// 圆角
-.br-4 {
-  border-radius: 4px;
-}
-
-.br-6 {
-  border-radius: 6px;
-}
-
-.br-8 {
-  border-radius: 8px;
-}
-
-.br-10 {
-  border-radius: 10px;
-}
-
-.br-half {
-  border-radius: 50%;
+//循环圆角
+@for $i from 1 through 50 {
+  .br-#{$i} {
+    border-radius: #{ $i }px;
+  }
 }
 
 // z-index

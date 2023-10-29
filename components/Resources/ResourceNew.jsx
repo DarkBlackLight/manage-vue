@@ -37,7 +37,7 @@ export default defineComponent({
         expose({onNew})
 
         return () => (
-            <ResourceDialog title={props.newConfig.title} ref={resourceDialogRef}>
+            <ResourceDialog title={props.newConfig.title} ref={resourceDialogRef} class={props.newConfig.className}>
                 {{
                     default: () => <ResourceForm onSubmit={onSubmit}
                                                  ref={resourceFormRef}

@@ -31,14 +31,8 @@ import './assets/styles/app.scss'
 import App from './App.vue'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL), routes: [
-        ...[{
-            path: '/login',
-            name: 'login',
-            component: () => import('@/manage-vue/layouts/LoginLayout.vue')
-        }],
-        ...routes.filter(rs => rs.name === 'register')
-    ]
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: routes.filter(rs => rs.name === 'register' || rs.name === 'login')
 })
 
 const status_routes = [
@@ -80,7 +74,6 @@ router.beforeEach(async (to, from, next) => {
             next({...to, replace: true})
             return
         }
-        // await router.replace(router.currentRoute.value.fullPath);
     }
 
     if (!authRequired && loggedIn) {

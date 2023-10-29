@@ -8,11 +8,12 @@ import _ from 'lodash-es';
 
 import {useI18n} from 'vue-i18n'
 
-
 const renderColumns = (columns, showResource) => columns.map(column =>
     (<el-descriptions-item label={column.label}>
         {() => {
-            if (column.type === 'datetime')
+            if (column.render)
+                return column.render(showResource)
+            else if (column.type === 'datetime')
                 return formatDateTime(_.get(showResource, column.prop))
             else if (column.type === 'image')
                 return (
@@ -27,8 +28,6 @@ const renderColumns = (columns, showResource) => columns.map(column =>
                     <el-link href={_.get(showResource, column.prop.replace('_id', ''))['src']}
                              target="_blank">{_.get(showResource, column.prop.replace('_id', ''))['filename']}</el-link>
                 )
-            if (column.render)
-                return column.render(showResource)
             else
                 return _.get(showResource, column.prop)
         }}
@@ -41,7 +40,7 @@ export default defineComponent({
         resourceConfig: Object,
         showConfig: Object
     },
-    setup(props, {expose}) {
+    setup(props, {expose, slots}) {
         const {t} = useI18n()
 
         const resourceDialogRef = ref(null);
@@ -57,7 +56,7 @@ export default defineComponent({
         expose({onShow})
 
         return () => (
-            <ResourceDialog title={props.showConfig.title} ref={resourceDialogRef}>
+            <ResourceDialog title={props.showConfig.title} class={props.showConfig.className} ref={resourceDialogRef}>
                 {{
                     default: () => <el-descriptions column={1} border class="resource-show">
                         {showResource && renderColumns(props.showConfig.columns, showResource.value)}

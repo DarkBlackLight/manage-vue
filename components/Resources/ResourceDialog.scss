@@ -1,17 +1,51 @@
 .resource-dialog {
-  header {
-    margin: 0;
-    padding: 15px 20px;
+  border-radius: 15px;
 
-    border-bottom: 1px solid var(--el-color-info-light-7);
-  }
-
-  footer {
-    border-top: 1px solid var(--el-color-info-light-7);
-    padding: 10px 20px;
+  .el-dialog__header {
+    padding: 18px 28px 10px 28px;
+    margin-right: 0;
+    border-bottom: 1px solid #D0D0D0;
   }
 
   .el-dialog__body {
-    padding: 5px 15px;
+    padding: 20px;
+  }
+
+  .el-dialog__footer {
+    border-top: 1px solid #D0D0D0;
+  }
+
+  .el-dialog-custom-title {
+    font-size: 18px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  .el-dialog-custom-title-bg {
+    background-color: #ECECFD;
+    position: absolute;
+    height: 12px;
+    width: 100%;
+    bottom: 0px;
+    z-index: -1;
+    left: -4px;
+  }
+
+  .icon-group {
+    .el-icon {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+  }
+
+  footer {
+    padding: 15px 28px;
   }
 }

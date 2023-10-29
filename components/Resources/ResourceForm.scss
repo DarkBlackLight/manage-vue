@@ -17,29 +17,10 @@
     height: 80px;
   }
 
-  .uploader-icon {
-    font-size: 28px;
-    color: var(--el-border-color);
-    width: 80px;
-    height: 80px;
-    text-align: center;
-  }
-}
-
-.resource-form-file {
-  .el-upload {
-    border: 1px dashed var(--el-border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: var(--el-transition-duration-fast);
-    padding: 5px 20px;
-  }
-
-  .el-upload:hover {
-    border-color: var(--el-color-primary);
-  }
+  //.delete-icon {
+  //  width: 40px;
+  //  height: 40px;
+  //}
 
   .uploader-icon {
     font-size: 28px;
@@ -50,7 +31,120 @@
   }
 }
 
+.el-form-item__label {
+  color: #000;
+
+  &:before {
+    color: #FF0000 !important;
+  }
+}
+
+
+.icon-drag {
+  cursor: move;
+}
 
 .resource-form-tabs > .el-tabs__content {
 
+}
+
+.form-el-scrollbar-wrap-class {
+  max-height: calc(55vh - 90px);
+}
+
+;
+.form-el-scrollbar-wrap-class-full-screen {
+  //max-height: auto;
+}
+
+.resource-tips {
+  color: #F79D13;
+  font-size: 13px;
+  word-wrap: break-word;
+  word-break: break-all;
+  font-weight: 400;
+  //flex: 1;
+  width: 200px;
+  padding-left: 15px;
+}
+
+.resource-form-drag-image {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .resource-form-drag-image-item {
+    list-style: none;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    position: relative;
+
+    .resource-form-drag-image-item-mask {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.5);
+      width: 100%;
+      height: 25px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      color: #000;
+    }
+
+    .icon-del {
+      cursor: pointer;
+      color: var(--el-color-danger);
+      background-color: var(--el-color-danger-light-9);
+    }
+
+    .line {
+      height: 100%;
+      border-left: 0.25px solid #000;
+    }
+
+    .el-image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .resource-form-drag-image-upload {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+
+    .el-upload {
+      width: 100%;
+      height: 100%;
+    }
+
+    .uploader-icon {
+      font-size: 28px;
+      color: var(--el-border-color);
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+  }
+}
+
+.resource-drag-associations {
+  border-radius: 5px;
+  overflow: hidden;
+  border: 0.5px #D0D0D0 solid;
+  min-height: 100px;
+
+  .resource-drag-associations-item {
+    border: 0.5px #D0D0D0 solid;
+    padding: 10px;
+  }
+}
+
+.is_error {
+  color: var(--el-color-danger);
 }
