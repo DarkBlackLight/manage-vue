@@ -490,7 +490,7 @@ export default defineComponent({
         const onChange = (path, newValue) => {
             emit('change', path, newValue);
 
-            if (props.type === 'association' || props.type === 'associations') {
+            if (props.type === 'association' || props.type === 'associations' || props.type === 'drag_images') {
                 let submitPath = props.path.toSpliced(props.path.length - 1, 1, props.path[props.path.length - 1] + '_attributes');
                 let newPath = [...submitPath, ...path.slice(submitPath.length, path.length)]
                 emit('changeSubmit', newPath, newValue);
