@@ -16,7 +16,7 @@ export default defineComponent({
             Array,
             default: null
         },
-        LabelPosition: {
+        labelPosition: {
             type: String,
             default: 'top'
         },
@@ -76,7 +76,7 @@ export default defineComponent({
         return () => (
             <el-form rules={rules} ref={formRef} model={resource.value} class="resource-form"
                      label-width='auto'
-                     label-position={props.LabelPosition}>
+                     label-position={props.labelPosition}>
                 {
                     tabs.value ?
                         <el-tabs v-model={activeTab.value} class="resource-form-tabs">

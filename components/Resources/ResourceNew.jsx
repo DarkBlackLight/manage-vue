@@ -41,8 +41,7 @@ export default defineComponent({
                 {{
                     default: () => <ResourceForm onSubmit={onSubmit}
                                                  ref={resourceFormRef}
-                                                 tabs={props.newConfig.tabs}
-                                                 columns={props.newConfig.columns}/>,
+                                                 {...props.newConfig}/>,
                     footer: () =>
                         <el-row gutter={20}>
                             <el-col class="text-right">

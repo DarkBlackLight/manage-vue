@@ -49,8 +49,7 @@ export default defineComponent({
                     default: () => (editResource.value && <ResourceForm resource={editResource.value}
                                                                         onSubmit={onSubmit}
                                                                         ref={resourceFormRef}
-                                                                        tabs={props.editConfig.tabs}
-                                                                        columns={props.editConfig.columns}/>),
+                                                                        {...props.editConfig}/>),
                     footer: () =>
                         <el-row gutter={20}>
                             <el-col class="text-right">
