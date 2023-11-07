@@ -82,8 +82,8 @@ const fetchRemoteOptions = (props, states, q) => {
         states.loading = true;
         props.remote_options.remote(q).then(response => {
             states.options = response.map(i => ({
-                label: i[props.remote_options.label],
-                value: i[props.remote_options.value]
+                label: _.get(i, props.remote_options.label),
+                value: _.get(i, props.remote_options.value)
             }));
 
             states.loading = false;
@@ -100,8 +100,8 @@ const fetchRemoteCascader = (props, states) => {
             states.options = filterOptions(null, response.map(i => ({
                 id: i['id'],
                 parent_id: i['parent_id'],
-                label: i[props.remote_cascader_options.label],
-                value: i[props.remote_cascader_options.value]
+                label: _.get(i, props.remote_cascader_options.label),
+                value: _.get(i, props.remote_cascader_options.value)
             })));
         })
     }
