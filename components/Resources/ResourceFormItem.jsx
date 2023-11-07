@@ -2,7 +2,6 @@ import _ from "lodash-es";
 import API from "@/api";
 import {Delete, Plus, Rank} from "@element-plus/icons-vue";
 import {ElMessageBox} from "element-plus";
-import ElTableNext from "el-table-next";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
 
@@ -21,7 +20,7 @@ import Sortable from 'sortablejs';
 //                             (!c.condition || c.condition(resource)) &&
 //                             <el-form-item class={"mr-20"} prop={[column.prop, index, c.prop]}>
 //                                 {column.prop + index + c.prop}
-//                                 <div className={""}>{c.label}</div>
+//                                 <div class={""}>{c.label}</div>
 //                                 {renderColumn[c.type](c, item)}
 //                             </el-form-item>
 //                         ))}
@@ -29,7 +28,7 @@ import Sortable from 'sortablejs';
 //                             {column.columns.filter(c => c.type != 'image' && c.type != 'hidden').map(c => (!c.condition || c.condition(resource)) && (
 //                                 <el-col span={c.span ? c.span : 18}>
 //                                     <el-form-item rules={c.rules} prop={[column.prop, index, c.prop]}>
-//                                         <div className={""}>{c.label}</div>
+//                                         <div class={""}>{c.label}</div>
 //                                         {renderColumn[c.type](c, item)}
 //                                     </el-form-item>
 //                                 </el-col>
@@ -45,7 +44,7 @@ import Sortable from 'sortablejs';
 //                 }
 //             </div>
 //             {_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] != true).length < column.props.max(resource) &&
-//                 <div className="text-start my-10">
+//                 <div class="text-start my-10">
 //                     <el-button plain icon={Plus} type="primary" onClick={() => {
 //                         let newResource = {};
 //                         column.columns.forEach(c => setColumnDefault(c, newResource))
@@ -132,13 +131,14 @@ const initItem = {
     'remote_options': (p) => p.props && p.props.multiple ? [] : null,
     'remote_cascader': (p) => p.props && p.props.multiple ? [] : null,
 }
+
 const renderItem = (props, states, onChange) => {
     let r = props.resource
     let t = props.type;
     let p = props.path;
 
     if (t === 'display')
-        return (<el-text class="mx-6">{_.get(r, p)}</el-text>)
+        return (<el-text class={"mx-6"}>{_.get(r, p)}</el-text>)
     if (t === 'text')
         return (<el-input modelValue={_.get(r, p)}
                           onInput={(e) => onChange(p, e)}
@@ -167,12 +167,13 @@ const renderItem = (props, states, onChange) => {
         return (<el-date-picker modelValue={_.get(r, p)}
                                 onUpdate:modelValue={(e) => onChange(p, e)}
                                 type="date"
-                                class="w-100"
+                                class={"w-100"}
                                 {...props.props}/>)
     else if (t === 'datetime')
         return (<el-date-picker modelValue={_.get(r, p)}
                                 onUpdate:modelValue={(e) => onChange(p, e)}
                                 type="datetime"
+                                class={"w-100"}
                                 {...props.props}/>)
     else if (t === 'color')
         return (<el-color-picker modelValue={_.get(r, p)}
@@ -189,7 +190,7 @@ const renderItem = (props, states, onChange) => {
     else if (t === 'image') {
         let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
         return (<el-upload
-            className="resource-form-image"
+            class={"resource-form-image"}
             show-file-list={false}
             http-request={({file}) => {
                 API.Storage.upload(file).then(response => {
@@ -200,16 +201,16 @@ const renderItem = (props, states, onChange) => {
         >
             {
                 _.get(r, storage_path) ?
-                    <div className='uploader-image'>
+                    <div class={"uploader-image"}>
                         <el-image src={_.get(r, storage_path)['src']}/>
                     </div>
                     :
-                    <el-icon className='uploader-icon'><Plus/></el-icon>
+                    <el-icon class={"uploader-icon"}><Plus/></el-icon>
             }
         </el-upload>)
     } else if (t === 'file')
         return (<el-upload
-            className="resource-form-file"
+            class={"resource-form-file"}
             show-file-list={false}
             http-request={({file}) => {
                 API.Storage.upload(file).then(response => {
@@ -220,7 +221,7 @@ const renderItem = (props, states, onChange) => {
         >
             {_.get(r, c.prop.replace('_id', '')) ?
                 <el-text>{_.get(r, c.prop.replace('_id', ''))['filename']}</el-text>
-                : <el-icon className='uploader-icon'><Plus/></el-icon>}
+                : <el-icon class={"uploader-icon"}><Plus/></el-icon>}
         </el-upload>)
     else if (t === 'radio_group')
         return (
@@ -236,7 +237,7 @@ const renderItem = (props, states, onChange) => {
         return (
             <el-select modelValue={_.get(r, p)}
                        onChange={(e) => onChange(p, e)}
-                       class="w-100"
+                       class={"w-100"}
                        {...props.props}>
                 {states.options.map(option =>
                     (<el-option key={option.value} label={option.label} value={option.value}/>)
@@ -247,7 +248,7 @@ const renderItem = (props, states, onChange) => {
         return (
             <el-select modelValue={_.get(r, p)}
                        onChange={(e) => onChange(p, e)}
-                       class="w-100"
+                       class={"w-100"}
                        filterable
                        remote={true}
                        loading={states.loading}
@@ -261,7 +262,7 @@ const renderItem = (props, states, onChange) => {
     else if (t === 'remote_cascader')
         return (
             <el-cascader modelValue={_.get(r, p)}
-                         class="w-100"
+                         class={"w-100"}
                          onChange={(e) => onChange(p, e)}
                          options={states.options}
                          props={
@@ -273,20 +274,20 @@ const renderItem = (props, states, onChange) => {
         )
     else if (t === 'drag_images')
         return (
-            <div id={p.join('_') + "_drag_images"} className={"resource-form-drag-images flex-warp"}
+            <div id={p.join('_') + "_drag_images"} class={"resource-form-drag-images flex-warp"}
                  data-prop={props.props}>
                 {_.get(r, p)
                     .filter(i => !('_destroy' in i) || i['_destroy'] !== true)
                     .toSorted((a, b) => a.index < b.index ? 1 : -1)
                     .map(item => (
-                        <div className="resource-form-drag-images-item">
+                        <div class={"resource-form-drag-images-item"}>
                             <el-image src={item.image.src} fit="fill"></el-image>
-                            <div className="resource-form-drag-images-item-mask">
+                            <div class={"resource-form-drag-images-item-mask"}>
                                 <el-icon class={"flex-1 icon-drag"}>
                                     <Rank/>
                                 </el-icon>
-                                <div className={'line'}></div>
-                                <div className={"flex-1 h-100 icon-del row-center"} onClick={
+                                <div class={'line'}></div>
+                                <div class={"flex-1 h-100 icon-del row-center"} onClick={
                                     () => {
                                         ElMessageBox.confirm('确定删除该图片吗？', '提示', {
                                             confirmButtonText: '确定',
@@ -311,7 +312,7 @@ const renderItem = (props, states, onChange) => {
                         </div>
                     ))}
 
-                <el-upload class="resource-form-image"
+                <el-upload class={"resource-form-image"}
                            show-file-list={false}
                            http-request={({file}) => {
                                API.Storage.upload(file).then(response => {
@@ -329,7 +330,7 @@ const renderItem = (props, states, onChange) => {
                                })
                            }}
                            multiple>
-                    <el-icon className='uploader-icon'><Plus/></el-icon>
+                    <el-icon class={"uploader-icon"}><Plus/></el-icon>
                 </el-upload>
             </div>
         )
@@ -369,7 +370,7 @@ const renderAssociations = (props, states, onChange) => {
                                     </el-row>
                                 </el-col>
                                 <el-col span={4}>
-                                    <div class="w-100 h-100 row-center">
+                                    <div class={"w-100 h-100 row-center"}>
                                         <el-button circle plain type="danger" icon={Delete}
                                                    onClick={() => onChange(props.path, _.get(props.resource, props.path).map((item, i1) => i === i1 ? ({...item, ...{"_destroy": true}}) : item))}/>
                                     </div>
@@ -379,7 +380,7 @@ const renderAssociations = (props, states, onChange) => {
                         </el-col> : <el-col span={0}></el-col>
                 )}
             <el-col span={24}>
-                <el-button type="primary" class="w-100" plain onClick={() => {
+                <el-button type="primary" class={"w-100"} plain onClick={() => {
                     onChange(props.path, [..._.get(props.resource, props.path), ...[{}]])
                 }}>新增
                 </el-button>
@@ -410,7 +411,7 @@ export default defineComponent({
         },
         span: {
             type: Number,
-            default: 16
+            default: 12
         },
         props: {
             type: Object,
@@ -504,11 +505,11 @@ export default defineComponent({
         })
 
         return () => {
-            if (props.render)
-                return props.render(props)
-            else if (props.type === 'hidden')
+            if (props.condition && !props.condition(props.resource))
                 return (<el-col span={0}></el-col>)
-            else if (props.condition && !props.condition(props.resource))
+            else if (props.render)
+                return props.render(props, onChange)
+            else if (props.type === 'hidden')
                 return (<el-col span={0}></el-col>)
             else if (props.type === 'association')
                 return (
@@ -531,7 +532,7 @@ export default defineComponent({
                     <el-col span={props.span}>
                         <el-form-item label={props.label} prop={props.path} rules={props.rules}>
                             {states.value && renderItem(props, states.value, onChange)}
-                            {props.tips && <span className="resource-tips">{props.tips}</span>}
+                            {props.tips && <span class={"resource-tips"}>{props.tips}</span>}
                         </el-form-item>
                     </el-col>
                 )
