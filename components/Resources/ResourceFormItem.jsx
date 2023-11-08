@@ -156,6 +156,7 @@ const renderItem = (props, states, onChange) => {
                           show-password/>)
     else if (t === 'number')
         return (<el-input-number modelValue={_.get(r, p)}
+                                 controls-position="right"
                                  onChange={(e) => onChange(p, e)}
                                  {...props.props} />)
     else if (t === 'time')
@@ -350,43 +351,90 @@ const renderAssociation = (props, states, onChange) => {
 }
 
 const renderAssociations = (props, states, onChange) => {
-    return (
-        <>
-            {_.get(props.resource, props.path)
-                .map((item, i) =>
-                    (!('_destroy' in item) || item['_destroy'] !== true) ?
-                        <el-col span={24}>
-                            <el-row gutter={20}>
-                                <el-col span={20}>
-                                    <el-row gutter={20}>
-                                        {props.columns.map(c =>
-                                            <ResourceFormItem
-                                                resource={props.resource}
-                                                path={[...props.path, ...[i, c.prop]]}
-                                                onChange={onChange}
-                                                onChangeSubmit={onChange}
-                                                {...c}/>
-                                        )}
+    let r = props.resource
+    let p = props.path;
+
+    if (props.associations_layout === 'form')
+        return (
+            <>
+                {_.get(r, p)
+                    .map((item, i) =>
+                        (!(('_destroy' in item) && item['_destroy'] === true)) ?
+                            <el-col span={24}>
+                                <el-row gutter={20}>
+                                    <el-col span={20}>
+                                        <el-row gutter={20}>
+                                            {props.columns.map(c =>
+                                                <ResourceFormItem
+                                                    resource={props.resource}
+                                                    path={[...p, ...[i, c.prop]]}
+                                                    onChange={onChange}
+                                                    onChangeSubmit={onChange}
+                                                    {...c}/>
+                                            )}
+                                        </el-row>
+                                    </el-col>
+                                    <el-col span={4}>
+                                        <div class={"w-100 h-100 row-center"}>
+                                            <el-button circle plain type="danger" icon={Delete}
+                                                       onClick={() => onChange(props.path, _.get(r, p).map((item, i1) => i === i1 ? ({...item, ...{"_destroy": true}}) : item))}/>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <el-divider/>
+                            </el-col> : <el-col span={0}></el-col>
+                    )}
+                <el-col span={24}>
+                    <el-button type="primary" class={"w-100"} plain onClick={() => {
+                        onChange(props.path, [..._.get(r, p), ...[{}]])
+                    }}>新增
+                    </el-button>
+                </el-col>
+            </>
+        )
+    else if (props.associations_layout === 'table')
+        return (
+            <>
+                {props.label && <label>{props.label}</label>}
+
+                <el-table data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true))}
+                          rowKey="id">
+                    {props.columns.map(c => (
+                        <el-table-column width={c.width}>
+                            {{
+                                header: () => <el-text>{c.label}</el-text>,
+                                default: (scope) =>
+                                    <el-row>
+                                        <ResourceFormItem
+                                            {...c}
+                                            span={24}
+                                            resource={props.resource}
+                                            path={[...p, ...[_.get(r, p).findIndex(item => _.isEqual(scope.row, item)), c.prop]]}
+                                            onChange={onChange}
+                                            onChangeSubmit={onChange}
+                                            label={null}/>
                                     </el-row>
-                                </el-col>
-                                <el-col span={4}>
-                                    <div class={"w-100 h-100 row-center"}>
-                                        <el-button circle plain type="danger" icon={Delete}
-                                                   onClick={() => onChange(props.path, _.get(props.resource, props.path).map((item, i1) => i === i1 ? ({...item, ...{"_destroy": true}}) : item))}/>
-                                    </div>
-                                </el-col>
-                            </el-row>
-                            <el-divider/>
-                        </el-col> : <el-col span={0}></el-col>
-                )}
-            <el-col span={24}>
+                            }}
+                        </el-table-column>
+                    ))}
+                    <el-table-column width={80}>
+                        {{
+                            header: () => <el-text>操作</el-text>,
+                            default: (scope) =>
+                                <el-button circle plain type="danger" icon={Delete}
+                                           onClick={() => onChange(p,
+                                               _.get(r, p).map((item, i1) => i1 === _.get(r, p).findIndex(item1 => _.isEqual(scope.row, item1)) ? ({...item, ...{"_destroy": true}}) : item))}/>
+                        }}
+                    </el-table-column>
+
+                </el-table>
+
                 <el-button type="primary" class={"w-100"} plain onClick={() => {
-                    onChange(props.path, [..._.get(props.resource, props.path), ...[{}]])
+                    onChange(p, [..._.get(r, p), ...[{}]])
                 }}>新增
                 </el-button>
-            </el-col>
-        </>
-    )
+            </>
+        )
 }
 
 export default defineComponent({
@@ -436,8 +484,16 @@ export default defineComponent({
             type: Object,
             default: {}
         },
+        associations_layout: {
+            type: String,
+            default: 'form'
+        },
         condition: {
             type: Function || Boolean,
+        },
+        form_item_style: {
+            type: Object,
+            default: {}
         },
         columns: null,
         default: null,
@@ -457,12 +513,16 @@ export default defineComponent({
                 return
             }
 
+
             if (_.get(props.resource, props.path)) {
                 onChange(props.path, _.get(props.resource, props.path))
             } else {
-                if (props.default)
-                    onChange(props.path, props.default)
-                else {
+                if (props.default) {
+                    if (typeof props.default === 'function')
+                        onChange(props.path, props.default(props.resource))
+                    else
+                        onChange(props.path, props.default)
+                } else {
                     onChange(props.path, initItem[props.type](props))
                 }
             }
@@ -535,7 +595,8 @@ export default defineComponent({
             else {
                 return (
                     <el-col span={props.span}>
-                        <el-form-item label={props.label} prop={props.path} rules={props.rules}>
+                        <el-form-item style={props.form_item_style} label={props.label} prop={props.path}
+                                      rules={props.rules}>
                             {states.value && renderItem(props, states.value, onChange)}
                             {props.tips && <span class={"resource-tips"}>{props.tips}</span>}
                         </el-form-item>

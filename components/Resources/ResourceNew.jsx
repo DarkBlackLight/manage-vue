@@ -20,7 +20,8 @@ export default defineComponent({
         const resourceDialogRef = ref(null);
         const resourceFormRef = ref(null);
 
-        const onNew = (resource) => {
+        const onNew = () => {
+            resource.value = {};
             resourceDialogRef.value.onToggle();
         }
 
