@@ -16,6 +16,7 @@ export default defineComponent({
     setup(props, {emit, expose}) {
         const {t} = useI18n()
 
+        const resource = ref({});
         const resourceDialogRef = ref(null);
         const resourceFormRef = ref(null);
 
@@ -39,7 +40,8 @@ export default defineComponent({
         return () => (
             <ResourceDialog title={props.newConfig.title} ref={resourceDialogRef} class={props.newConfig.className}>
                 {{
-                    default: () => <ResourceForm onSubmit={onSubmit}
+                    default: () => <ResourceForm resource={resource}
+                                                 onSubmit={onSubmit}
                                                  ref={resourceFormRef}
                                                  {...props.newConfig}/>,
                     footer: () =>

@@ -9,7 +9,7 @@ export default defineComponent({
     name: 'ResourceForm', props: {
         resource: {
             type: Object,
-            default: {}
+            required: true
         },
         columns: Array,
         tabs: {
