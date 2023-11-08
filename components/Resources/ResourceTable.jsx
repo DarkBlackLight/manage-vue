@@ -29,8 +29,7 @@ export default defineComponent({
             required: true
         },
         preprocess: {
-            type: Function,
-            required: true
+            type: Function
         },
         filterRowSelections: {
             type: Function
