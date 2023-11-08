@@ -1,4 +1,4 @@
-import {defineComponent, onMounted, ref, toRaw, markRaw, watch, nextTick, inject} from "vue";
+import {defineComponent, onMounted, ref, toRaw, markRaw, watch, nextTick, inject, reactive} from "vue";
 import {WarnTriangleFilled} from "@element-plus/icons-vue";
 import './ResourceForm.scss';
 
@@ -34,20 +34,11 @@ export default defineComponent({
         const rules = ref([]);
 
         const onChange = (path, newValue) => {
-            if (newValue === undefined) {
-                _.unset(resource.value, path)
-            } else {
-                _.set(resource.value, path, newValue);
-            }
+            _.set(resource.value, path, newValue);
         }
 
         const onChangeSubmit = (path, newValue) => {
-            if (newValue === undefined) {
-                _.set(resourceSubmit.value, path, newValue);
-            } else {
-                _.unset(resourceSubmit.value, path);
-            }
-
+            _.set(resourceSubmit.value, path, newValue);
             emit('change', resourceSubmit.value);
         }
 
