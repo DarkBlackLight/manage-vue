@@ -452,6 +452,11 @@ export default defineComponent({
                 loading: false
             }
 
+            if (props.condition && !props.condition(props.resource)) {
+                onChange(props.path, undefined);
+                return
+            }
+
             if (_.get(props.resource, props.path)) {
                 onChange(props.path, _.get(props.resource, props.path))
             } else {

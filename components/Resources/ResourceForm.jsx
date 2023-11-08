@@ -34,12 +34,21 @@ export default defineComponent({
         const rules = ref([]);
 
         const onChange = (path, newValue) => {
-            _.set(resource.value, path, newValue);
-            emit('change', resource.value);
+            if (newValue === undefined) {
+                _.unset(resource.value, path)
+            } else {
+                _.set(resource.value, path, newValue);
+            }
         }
 
         const onChangeSubmit = (path, newValue) => {
-            _.set(resourceSubmit.value, path, newValue);
+            if (newValue === undefined) {
+                _.set(resourceSubmit.value, path, newValue);
+            } else {
+                _.unset(resourceSubmit.value, path);
+            }
+
+            emit('change', resourceSubmit.value);
         }
 
         const submit = () => {
