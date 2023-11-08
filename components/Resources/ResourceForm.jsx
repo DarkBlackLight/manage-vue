@@ -35,6 +35,7 @@ export default defineComponent({
 
         const onChange = (path, newValue) => {
             _.set(resource.value, path, newValue);
+            emit('change', resource.value);
         }
 
         const onChangeSubmit = (path, newValue) => {
