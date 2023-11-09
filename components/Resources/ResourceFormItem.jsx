@@ -394,10 +394,11 @@ const renderAssociations = (props, states, onChange) => {
         )
     else if (props.associations_layout === 'table')
         return (
-            <>
-                {props.label && <label>{props.label}</label>}
+            <el-col span={24}>
+                {props.label && <label className="el-form-item__label">{props.label}</label>}
 
                 <el-table data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true))}
+                          class="mb-10"
                           rowKey="id">
                     {props.columns.map(c => (
                         <el-table-column width={c.width}>
@@ -429,11 +430,11 @@ const renderAssociations = (props, states, onChange) => {
 
                 </el-table>
 
-                <el-button type="primary" class={"w-100"} plain onClick={() => {
+                {props.associations_increment && <el-button type="primary" class={"w-100"} plain onClick={() => {
                     onChange(p, [..._.get(r, p), ...[{}]])
                 }}>新增
-                </el-button>
-            </>
+                </el-button>}
+            </el-col>
         )
 }
 
@@ -488,6 +489,13 @@ export default defineComponent({
             type: String,
             default: 'form'
         },
+        associations_increment: {
+            type: Boolean,
+            default: true
+        },
+        visible: {
+            type: Function,
+        },
         condition: {
             type: Function || Boolean,
         },
@@ -509,10 +517,9 @@ export default defineComponent({
             }
 
             if (props.condition && !props.condition(props.resource)) {
-                onChange(props.path, undefined);
                 return
-            }
-
+            } else if (props.type === 'display')
+                return
 
             if (_.get(props.resource, props.path)) {
                 onChange(props.path, _.get(props.resource, props.path))
@@ -570,10 +577,12 @@ export default defineComponent({
         })
 
         return () => {
-            if (props.condition && !props.condition(props.resource))
+            if (props.visible && !props.visible(props.resource))
+                return (<el-col span={0}></el-col>)
+            else if (props.condition && !props.condition(props.resource))
                 return (<el-col span={0}></el-col>)
             else if (props.render)
-                return props.render(props, onChange)
+                return props.render(props, onChange, states.value)
             else if (props.type === 'hidden')
                 return (<el-col span={0}></el-col>)
             else if (props.type === 'association')
@@ -596,7 +605,7 @@ export default defineComponent({
                 return (
                     <el-col span={props.span}>
                         <el-form-item style={props.form_item_style} label={props.label} prop={props.path}
-                                      rules={props.rules}>
+                                      rules={props.rules} inline-message={false}>
                             {states.value && renderItem(props, states.value, onChange)}
                             {props.tips && <span class={"resource-tips"}>{props.tips}</span>}
                         </el-form-item>
