@@ -29,24 +29,54 @@ export default defineComponent({
         const columns = ref(props.columns.filter(column => !column.disable));
 
         const resource = ref(props.resource);
-        const resourceSubmit = ref({});
 
         const rules = ref([]);
 
         const onChange = (path, newValue) => {
+            let oldResource = _.cloneDeep(resource.value);
             _.set(resource.value, path, newValue);
+            emit('change', resource.value, oldResource, onChange);
         }
 
-        const onChangeSubmit = (path, newValue) => {
-            _.set(resourceSubmit.value, path, newValue);
-            emit('change', resourceSubmit.value);
+        const renderFormItems = (columns) => {
+            return (<el-row gutter={20}> {columns.map(c => <ResourceFormItem resource={resource.value} path={[c.prop]}
+                                                                             onChange={onChange}
+                                                                             {...c}/>)} </el-row>)
+        }
+
+        const submitFormItems = (r, p, columns) => {
+            let submitResource = {};
+            columns.forEach(column => {
+                if (column.type === 'display')
+                    return
+
+                if (column.condition && !column.condition(resource.value))
+                    return
+
+                if (column.type === 'associations' || column.type === 'drag_images') {
+                    _.set(submitResource, column.prop + '_attributes', _.get(r, [...p, ...[column.prop]]).map((item, i) => submitFormItems(r, [...p, ...[column.prop, i]], column.columns)))
+                } else if (column.type === 'association') {
+                    _.set(submitResource, column.prop + '_attributes', submitFormItems(r, p, column.columns))
+                } else {
+                    _.set(submitResource, column.submit_prop ? column.submit_prop : column.prop, _.get(r, [...p, ...[column.prop]]))
+                }
+            })
+
+            if (_.get(r, [...p, ...['_destroy']]) === true)
+                _.set(submitResource, '_destroy', true)
+
+
+            if (_.get(r, [...p, ...['id']]))
+                _.set(submitResource, 'id', _.get(r, [...p, ...['id']]))
+
+            return submitResource
         }
 
         const submit = () => {
             // 归属某个tab下的验证，tab出现错误标识
             formRef.value.validate((valid, msg) => {
                 if (valid) {
-                    emit('submit', resourceSubmit.value);
+                    emit('submit', submitFormItems(resource.value, [], props.columns))
                 } else {
                     // let errors = []
                     // _.keys(msg).forEach(key => {
@@ -65,12 +95,6 @@ export default defineComponent({
             });
         }
 
-        const renderFormItems = (columns) => {
-            return (<el-row gutter={20}> {columns.map(c => <ResourceFormItem resource={resource.value} path={[c.prop]}
-                                                                             onChange={onChange}
-                                                                             onChangeSubmit={onChangeSubmit}
-                                                                             {...c}/>)} </el-row>)
-        }
 
         expose({submit})
 

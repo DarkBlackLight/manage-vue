@@ -112,6 +112,7 @@ const initItem = {
     'textarea': (p) => null,
     'password': (p) => null,
     'number': (p) => null,
+    'decimal': (p) => null,
     'date': (p) => null,
     'datetime': (p) => null,
     'time': (p) => null,
@@ -130,6 +131,7 @@ const initItem = {
     'options': (p) => p.props && p.props.multiple ? [] : null,
     'remote_options': (p) => p.props && p.props.multiple ? [] : null,
     'remote_cascader': (p) => p.props && p.props.multiple ? [] : null,
+    'custom': (p) => null
 }
 
 const renderItem = (props, states, onChange) => {
@@ -158,6 +160,15 @@ const renderItem = (props, states, onChange) => {
         return (<el-input-number modelValue={_.get(r, p)}
                                  controls-position="right"
                                  onChange={(e) => onChange(p, e)}
+                                 step={1}
+                                 step-strictly={true}
+                                 {...props.props} />)
+    else if (t === 'decimal')
+        return (<el-input-number modelValue={_.get(r, p)}
+                                 controls-position="right"
+                                 onChange={(e) => onChange(p, e)}
+                                 step={0.01}
+                                 step-strictly={true}
                                  {...props.props} />)
     else if (t === 'time')
         return (<el-time-picker modelValue={_.get(r, p)}
@@ -451,6 +462,9 @@ export default defineComponent({
             type: String,
             required: true
         },
+        submit_prop: {
+            type: String,
+        },
         label: {
             type: String,
         },
@@ -507,7 +521,7 @@ export default defineComponent({
         default: null,
         render: null
     },
-    emits: ['change', 'changeSubmit'],
+    emits: ['change'],
     setup(props, {expose, emit}) {
         const states = ref(null);
         const initialize = () => {
@@ -516,14 +530,13 @@ export default defineComponent({
                 loading: false
             }
 
-            if (props.condition && !props.condition(props.resource)) {
-                return
-            } else if (props.type === 'display')
+            if (props.condition && !props.condition(props.resource))
                 return
 
-            if (_.get(props.resource, props.path)) {
-                onChange(props.path, _.get(props.resource, props.path))
-            } else {
+            if (props.type === 'display')
+                return
+
+            if (!_.get(props.resource, props.path)) {
                 if (props.default) {
                     if (typeof props.default === 'function')
                         onChange(props.path, props.default(props.resource))
@@ -562,14 +575,6 @@ export default defineComponent({
 
         const onChange = (path, newValue) => {
             emit('change', path, newValue);
-
-            if (props.type === 'association' || props.type === 'associations' || props.type === 'drag_images') {
-                let submitPath = props.path.toSpliced(props.path.length - 1, 1, props.path[props.path.length - 1] + '_attributes');
-                let newPath = [...submitPath, ...path.slice(submitPath.length, path.length)]
-                emit('changeSubmit', newPath, newValue);
-            } else {
-                emit('changeSubmit', path, newValue);
-            }
         }
 
         onMounted(() => {
@@ -605,7 +610,7 @@ export default defineComponent({
                 return (
                     <el-col span={props.span}>
                         <el-form-item style={props.form_item_style} label={props.label} prop={props.path}
-                                      rules={props.rules} inline-message={false}>
+                                      rules={props.rules}>
                             {states.value && renderItem(props, states.value, onChange)}
                             {props.tips && <span class={"resource-tips"}>{props.tips}</span>}
                         </el-form-item>

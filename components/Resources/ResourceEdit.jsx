@@ -33,7 +33,7 @@ export default defineComponent({
             API[props.resourceConfig.resourceData].update({...{id: editResource.value.id}, ...resource}).then(response => {
                 editResource.value = response.data;
                 resourceDialogRef.value.onToggle();
-                emit('success', response);
+                emit('success', response.data);
                 ElMessage({
                     message: t('resources.success_message'),
                     type: 'success',

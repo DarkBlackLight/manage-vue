@@ -30,17 +30,23 @@ export default defineComponent({
             columns: Array
         }
     },
-    setup(props, {expose}) {
+    emits: ['edit-success'],
+    setup(props, {expose, emit}) {
         const resourceListRef = ref(null);
         const resourceShowRef = ref(null);
         const resourceEditRef = ref(null);
         const resourceNewRef = ref(null);
 
-        function getResourceList() {
+        const getResourceList = () => {
             resourceListRef.value.getResourceList();
         }
 
-        expose({getResourceList})
+        const onEditSuccess = (resource) => {
+            resourceListRef.value.getResourceList();
+            emit('edit-success', resource)
+        }
+
+        expose({getResourceList, onEditSuccess, resourceShowRef, resourceEditRef, resourceNewRef})
 
         return () => (
             <>
@@ -54,7 +60,7 @@ export default defineComponent({
                     <ResourceEdit ref={resourceEditRef}
                                   resourceConfig={props.resourceConfig}
                                   editConfig={props.editConfig}
-                                  onSuccess={() => resourceListRef.value.getResourceList()}
+                                  onSuccess={onEditSuccess}
                     />}
 
                 {props.newConfig && !props.resourceConfig.onNew &&
