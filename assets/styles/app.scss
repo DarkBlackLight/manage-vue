@@ -1,7 +1,16 @@
 /*每个页面公共css */
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+  border: none;
 }
 
 /* 图片载入替代方案 */
