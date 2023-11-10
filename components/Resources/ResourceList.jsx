@@ -217,7 +217,7 @@ export default defineComponent({
                                  onTabChange={onTabChange}>
                             {
                                 props.listConfig.tabs.options.map(tab => (
-                                    <el-tab-pane label={tab.label} name={tab.value}></el-tab-pane>
+                                    <el-tab-pane label={tab.label} name={tab.label}></el-tab-pane>
                                 ))
                             }
                         </el-tabs>
