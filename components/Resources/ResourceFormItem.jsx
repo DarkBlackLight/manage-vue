@@ -536,7 +536,7 @@ export default defineComponent({
             if (props.type === 'display')
                 return
 
-            if (!_.get(props.resource, props.path)) {
+            if (!_.has(props.resource, props.path)) {
                 if (props.default) {
                     if (typeof props.default === 'function')
                         onChange(props.path, props.default(props.resource))
