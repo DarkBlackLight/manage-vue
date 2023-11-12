@@ -4,7 +4,7 @@ import {formatDateTime} from "../../config/tools";
 import _ from 'lodash-es';
 
 const renderItem = (column, scope) => {
-    let p = [column.prop];
+    let p = column.prop ? column.prop.split('.') : [];
     let r = scope.row
 
     if (column.render)
@@ -52,6 +52,9 @@ export default defineComponent({
         current_page: {
             type: Number,
             default: 1
+        },
+        tableProps: {
+            type: Object
         }
     },
     emits: ['selectionChange'],
@@ -114,6 +117,7 @@ export default defineComponent({
                           headerCellStyle={{textAlign: 'center'}}
                           cellStyle={{textAlign: 'center'}}
                           rowKey="id"
+                          {...props.tableProps}
                 >
                     {props.enableSelection && <el-table-column type="selection" width="55"/>}
 

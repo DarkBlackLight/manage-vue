@@ -10,35 +10,11 @@ import './ResourceList.scss';
 export default defineComponent({
     name: 'ResourceList',
     props: {
-        resourceName: {
-            type: String,
+        resourceConfig: {
+            type: Object,
         },
-        resourceData: {
-            type: String,
-        },
-        onShow: {
-            type: Function
-        },
-        title: {
-            type: String,
-        },
-        actions: {
-            type: Array
-        },
-        tabOptions: {
-            type: Array
-        },
-        tabProp: {
-            type: String
-        },
-        filters: {
-            type: Array
-        },
-        columns: {
-            type: Array
-        },
-        preprocess: {
-            type: Function
+        listConfig: {
+            type: Object,
         }
     },
     emits: ['new', 'show', 'edit'],
@@ -57,7 +33,7 @@ export default defineComponent({
 
         const onDelete = (resource) => {
             ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
-                API[props.resourceData].delete(resource.id).then(response => {
+                API[props.resourceConfig.resourceData].delete(resource.id).then(response => {
                     tableRef.value.getResourceList();
                     ElMessage({
                         message: t('resources.delete_message'),
@@ -103,10 +79,10 @@ export default defineComponent({
             <>
                 <el-main>
                     {
-                        props.tabOptions &&
+                        props.listConfig.tabOptions &&
                         <el-tabs className="resource-list-tabs" v-model={activeTab.value} onTabChange={onTabChange}>
                             {
-                                props.tabOptions.map(option => (
+                                props.listConfig.tabOptions.map(option => (
                                     <el-tab-pane label={option.label} name={option.value}/>
                                 ))
                             }
@@ -120,7 +96,7 @@ export default defineComponent({
                                       labelPosition="left"
                                       onSubmit={onFilterQuery}
                                       columns={[
-                                          ...props.filters,
+                                          ...props.listConfig.filters,
                                           ...[{
                                               prop: 'actions',
                                               type: 'display',
@@ -147,17 +123,18 @@ export default defineComponent({
 
                     </div>
 
-                    <div className="row-justify-space-between mb-10">
-                        <h3>{props.title}</h3>
+                    <div class="row-justify-space-between mb-10">
+                        <h3>{props.listConfig.title}</h3>
+
                         <div>
                             <el-button icon={Refresh} circle onClick={() => getResourceList()}/>
 
-                            {props.filters && props.filters.length > 0 &&
+                            {props.listConfig.filters && props.listConfig.filters.length > 0 &&
                                 <el-button icon={Search} circle type={displayFilter.value ? 'primary' : 'default'}
                                            onClick={onSearch}/>
                             }
 
-                            {(!props.actions || props.actions.includes('new')) &&
+                            {(!props.listConfig.actions || props.listConfig.actions.includes('new')) &&
                                 <el-button icon={Plus} type="primary" onClick={() => emit('new')}>
                                     {t('resources.new')}
                                 </el-button>
@@ -174,28 +151,34 @@ export default defineComponent({
                         ref={tableRef}
                         remote={() => {
                             let all_queries = queries.value;
-                            if (props.tabProp)
-                                all_queries[props.tabProp] = activeTab;
-                            return API[props.resourceData].all(all_queries)
+
+                            if (props.listConfig.queries)
+                                all_queries = {...all_queries, ...props.listConfig.queries};
+
+                            if (props.listConfig.tabProp)
+                                all_queries[props.listConfig.tabProp] = activeTab;
+
+                            return API[props.resourceConfig.resourceData].all(all_queries)
                         }}
-                        preprocess={props.preprocess}
+                        preprocess={props.listConfig.preprocess}
+                        tableProps={props.listConfig.tableProps}
                         columns={[
-                            ...props.columns,
+                            ...props.listConfig.columns,
                             ...[{
                                 label: t('resources.actions'),
                                 fixed: 'right',
                                 width: 150,
                                 render: (r) =>
                                     (r.id && <div>
-                                            {props.actions.includes('show') &&
+                                            {props.listConfig.actions.includes('show') &&
                                                 <el-button plain type="primary" icon={ZoomIn} circle
                                                            onClick={() => emit('show', r)}/>}
 
-                                            {props.actions.includes('edit') &&
+                                            {props.listConfig.actions.includes('edit') &&
                                                 <el-button plain type="warning" icon={Edit} circle
                                                            onClick={() => emit('edit', r)}/>}
 
-                                            {props.actions.includes('delete') &&
+                                            {props.listConfig.actions.includes('delete') &&
                                                 <el-button plain type="danger" icon={Delete} circle
                                                            onClick={() => onDelete(r)}/>}
                                         </div>
