@@ -31,9 +31,8 @@ export default defineComponent({
 
         const onSubmit = (resource) => {
             API[props.resourceConfig.resourceData].update({...{id: editResource.value.id}, ...resource}).then(response => {
-                editResource.value = response.data;
                 resourceDialogRef.value.onToggle();
-                emit('success', response.data);
+                emit('success', response.data, editResource.value);
                 ElMessage({
                     message: t('resources.success_message'),
                     type: 'success',

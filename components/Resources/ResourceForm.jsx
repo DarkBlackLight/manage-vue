@@ -73,18 +73,20 @@ export default defineComponent({
         const submit = () => {
             // 归属某个tab下的验证，tab出现错误标识
             formRef.value.validate((valid, msg) => {
-
-
                 if (valid) {
+                    if (tabs.value) {
+                        tabs.value.forEach((tab, i) => {
+                            tabs.value[i].is_error = false
+                        })
+                    }
                     emit('submit', submitFormItems(resource.value, [], props.columns))
-                    tabs.value.forEach((tab, i) => {
-                        tabs.value[i].is_error = false
-                    })
                 } else {
-                    let mKeys = Object.keys(msg).map(k => k.split('.')[0]);
-                    tabs.value.forEach((tab, i) => {
-                        tabs.value[i].is_error = _.intersection(tab.prop, mKeys).length !== 0
-                    })
+                    if (tabs.value) {
+                        let mKeys = Object.keys(msg).map(k => k.split('.')[0]);
+                        tabs.value.forEach((tab, i) => {
+                            tabs.value[i].is_error = _.intersection(tab.prop, mKeys).length !== 0
+                        })
+                    }
                 }
             });
         }
