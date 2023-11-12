@@ -2,7 +2,10 @@ import moment from "moment";
 import {ElMessage} from "element-plus";
 
 export const formatDateTime = (data) => {
-    return moment(data).format("YYYY-MM-DD HH:mm:ss");
+    if (data)
+        return moment(data).format("YYYY-MM-DD HH:mm:ss");
+    else
+        return null
 }
 
 export const formatDate = (data) => {

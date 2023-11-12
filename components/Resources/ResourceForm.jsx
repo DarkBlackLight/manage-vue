@@ -28,9 +28,7 @@ export default defineComponent({
 
         const columns = ref(props.columns.filter(column => !column.disable));
 
-        const resource = ref(props.resource);
-
-        const rules = ref([]);
+        const resource = ref(_.cloneDeep(props.resource));
 
         const onChange = (path, newValue) => {
             let oldResource = _.cloneDeep(resource.value);
@@ -75,31 +73,30 @@ export default defineComponent({
         const submit = () => {
             // 归属某个tab下的验证，tab出现错误标识
             formRef.value.validate((valid, msg) => {
+
+
                 if (valid) {
                     emit('submit', submitFormItems(resource.value, [], props.columns))
+                    tabs.value.forEach((tab, i) => {
+                        tabs.value[i].is_error = false
+                    })
                 } else {
-                    // let errors = []
-                    // _.keys(msg).forEach(key => {
-                    //     let val = key.split('.')[0]
-                    //     Tabs.value.forEach((tab, index) => {
-                    //         if (_.includes(tab.prop, val) && !_.includes(errors, tab.name)) {
-                    //             errors.push(tab.name)
-                    //             _.set(tab, 'is_error', true)
-                    //         }
-                    //     })
-                    // })
-                    // Tabs.value.filter(tab => !_.includes(errors, tab.name)).forEach(tab => {
-                    //     _.set(tab, 'is_error', false)
-                    // })
+                    let mKeys = Object.keys(msg).map(k => k.split('.')[0]);
+                    tabs.value.forEach((tab, i) => {
+                        tabs.value[i].is_error = _.intersection(tab.prop, mKeys).length !== 0
+                    })
                 }
             });
         }
 
+        const reset = () => {
+            resource.value = _.cloneDeep(props.resource);
+        }
 
-        expose({submit})
+        expose({submit, reset})
 
         return () => (
-            <el-form rules={rules} ref={formRef} model={resource.value} class="resource-form"
+            <el-form ref={formRef} model={resource.value} class="resource-form"
                      label-width='auto'
                      label-position={props.labelPosition}>
                 {
@@ -110,9 +107,11 @@ export default defineComponent({
                                     {{
                                         label: () =>
                                             <div
-                                                className={["row-center", tabs.value[index].is_error ? 'is_error' : '']}>
+                                                class={["row-center", tabs.value[index].is_error === true ? 'is_error' : '']}>
                                                 <span>{tab.name}</span>
-                                                {tabs.value[index].is_error && <el-icon><WarnTriangleFilled/></el-icon>}
+                                                {tabs.value[index].is_error === true &&
+                                                    <el-icon><WarnTriangleFilled/></el-icon>
+                                                }
                                             </div>,
                                         default: () =>
                                             renderFormItems(columns.value.filter(c => tab.prop.includes(c.prop)))

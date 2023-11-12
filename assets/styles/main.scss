@@ -1,13 +1,12 @@
 @use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
 
-
 html {
   height: 100%;
   width: 100%;
 }
 
 body {
-  font-family: avenir, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, sans-serif;
+  font-family: Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, sans-serif;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

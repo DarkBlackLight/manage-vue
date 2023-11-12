@@ -610,7 +610,7 @@ export default defineComponent({
                 return (
                     <el-col span={props.span}>
                         <el-form-item style={props.form_item_style} label={props.label} prop={props.path}
-                                      rules={props.rules}>
+                                      rules={props.rules} labelWidth={'auto'}>
                             {states.value && renderItem(props, states.value, onChange)}
                             {props.tips && <span class={"resource-tips"}>{props.tips}</span>}
                         </el-form-item>

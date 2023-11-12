@@ -11,7 +11,7 @@ const renderItem = (column, scope) => {
         return column.render(r, column)
     else if (column.type === 'image') {
         return (
-            <img height={60} src={_.get(r, p).src}/>
+            <img height={70} src={_.get(r, p).src}/>
         )
     } else if (column.type === 'datetime') {
         return <el-text>{formatDateTime(_.get(r, p))}</el-text>
@@ -111,16 +111,24 @@ export default defineComponent({
             <>
                 <el-table data={resources.value} ref={tableRef}
                           onSelectionChange={onSelectionChange}
+                          headerCellStyle={{textAlign: 'center'}}
+                          cellStyle={{textAlign: 'center'}}
+                          rowKey="id"
                 >
                     {props.enableSelection && <el-table-column type="selection" width="55"/>}
 
                     {props.columns.map(column => (
-                        <el-table-column width={column.width}>
-                            {{
-                                header: () => <el-text>{column.label}</el-text>,
-                                default: (scope) => renderItem(column, scope)
-                            }}
-                        </el-table-column>
+                        column.type === 'expand' ? <el-table-column type="expand">
+                                {{
+                                    default: (scope) => renderItem(column, scope)
+                                }}
+                            </el-table-column> :
+                            <el-table-column width={column.width}>
+                                {{
+                                    header: () => <el-text>{column.label}</el-text>,
+                                    default: (scope) => renderItem(column, scope)
+                                }}
+                            </el-table-column>
                     ))}
                 </el-table>
 

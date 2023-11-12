@@ -10,7 +10,8 @@ export default defineComponent({
     props: {
         resourceConfig: {
             resourceData: String,
-            resourceName: String
+            resourceName: String,
+            onShow: Function
         },
         listConfig: {
             filters: Array,
@@ -71,8 +72,8 @@ export default defineComponent({
                     />}
 
                 <ResourceList ref={resourceListRef}
-                              resourceConfig={props.resourceConfig}
-                              listConfig={props.listConfig}
+                              resourceName={props.resourceConfig.resourceName}
+                              resourceData={props.resourceConfig.resourceData}
                               onNew={() => props.resourceConfig.onNew ?
                                   props.resourceConfig.onNew() : resourceNewRef.value.onNew()}
                               onShow={(resource) => props.resourceConfig.onShow ?
@@ -80,6 +81,7 @@ export default defineComponent({
                               onEdit={(resource) => props.resourceConfig.onEdit ?
                                   props.resourceConfig.onEdit(resource) : resourceEditRef.value.onEdit(resource)
                               }
+                              {...props.listConfig}
                 />
             </>
         )
