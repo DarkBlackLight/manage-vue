@@ -75,7 +75,7 @@ export default defineComponent({
                 resourcesTotal.value = props.data.length;
             } else if (props.remote) {
                 loading.value = true;
-                props.remote().then(async response => {
+                props.remote({page_size: pageSize.value, page: currentPage.value}).then(async response => {
                     if (props.preprocess) {
                         response = props.preprocess(response);
                     }

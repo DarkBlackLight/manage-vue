@@ -132,24 +132,25 @@
       }
     }
   }
+
+  .resource-form-associations {
+    .resource-form-associations-item {
+      border: 1px gray dashed;
+      border-radius: 10px;
+      padding: 10px 10px;
+      margin-bottom: 20px;
+
+      .icon-drag {
+        cursor: move;
+        color: var(--el-color-primary);
+      }
+    }
+  }
 }
 
 
 .resource-form-tabs {
   .is_error {
     color: var(--el-color-danger);
-  }
-}
-
-
-.resource-drag-associations {
-  border-radius: 5px;
-  overflow: hidden;
-  border: 0.5px #D0D0D0 solid;
-  min-height: 100px;
-
-  .resource-drag-associations-item {
-    border: 0.5px #D0D0D0 solid;
-    padding: 10px;
   }
 }

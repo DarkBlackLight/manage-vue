@@ -220,25 +220,22 @@ const renderItem = (props, states, onChange) => {
                     <el-icon class={"uploader-icon"}><Plus/></el-icon>
             }
         </el-upload>)
-    } else if (t === 'file') {
-        let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
+    } else if (t === 'file')
         return (<el-upload
             class={"resource-form-file"}
             show-file-list={false}
             http-request={({file}) => {
                 API.Storage.upload(file).then(response => {
-                    onChange(p, response.data.id);
-                    onChange(storage_path, response.data);
-                    // _.set(r, c.prop, response.data.id);
-                    // _.set(r, c.prop.replace('_id', ''), response.data);
+                    _.set(r, c.prop, response.data.id);
+                    _.set(r, c.prop.replace('_id', ''), response.data);
                 });
             }}
         >
-            {_.get(r, storage_path) ?
-                <el-text>{_.get(r, storage_path)['filename']}</el-text>
+            {_.get(r, c.prop.replace('_id', '')) ?
+                <el-text>{_.get(r, c.prop.replace('_id', ''))['filename']}</el-text>
                 : <el-icon class={"uploader-icon"}><Plus/></el-icon>}
         </el-upload>)
-    } else if (t === 'radio_group')
+    else if (t === 'radio_group')
         return (
             <el-radio-group modelValue={_.get(r, p)}
                             onChange={(e) => onChange(p, e)}
@@ -293,7 +290,7 @@ const renderItem = (props, states, onChange) => {
                  data-prop={props.props}>
                 {_.get(r, p)
                     .filter(i => !('_destroy' in i) || i['_destroy'] !== true)
-                    .toSorted((a, b) => a.index < b.index ? 1 : -1)
+                    .toSorted((a, b) => a.index > b.index ? 1 : -1)
                     .map(item => (
                         <div class={"resource-form-drag-images-item"}>
                             <el-image src={item.image.src} fit="fill"></el-image>
@@ -370,50 +367,61 @@ const renderAssociations = (props, states, onChange) => {
 
     if (props.associations_layout === 'form')
         return (
-            <>
-                {_.get(r, p)
-                    .map((item, i) =>
-                        (!(('_destroy' in item) && item['_destroy'] === true)) ?
-                            <el-col span={24}>
+            <el-row gutter={20} id={p.join('_') + "_associations"} class={"resource-form-associations"}>
+                {_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index > b.index ? 1 : -1)
+                    .map(item =>
+                        <el-col span={24}>
+                            <div class={"resource-form-associations-item"}>
                                 <el-row gutter={20}>
-                                    <el-col span={20}>
+                                    <el-col span={2}>
+                                        <div class={"w-100 h-100 row-center"}>
+                                            <el-icon size={20} color={'#333333'} class="icon-drag">
+                                                <Rank/>
+                                            </el-icon>
+                                        </div>
+                                    </el-col>
+
+                                    <el-col span={19}>
                                         <el-row gutter={20}>
                                             {props.columns.map(c =>
                                                 <ResourceFormItem
                                                     resource={props.resource}
-                                                    path={[...p, ...[i, c.prop]]}
+                                                    path={[...p, ...[_.get(r, p).findIndex(item1 => _.isEqual(item1, item)), c.prop]]}
                                                     onChange={onChange}
                                                     onChangeSubmit={onChange}
                                                     {...c}/>
                                             )}
                                         </el-row>
                                     </el-col>
-                                    <el-col span={4}>
+
+                                    <el-col span={3}>
                                         <div class={"w-100 h-100 row-center"}>
                                             <el-button circle plain type="danger" icon={Delete}
-                                                       onClick={() => onChange(props.path, _.get(r, p).map((item, i1) => i === i1 ? ({...item, ...{"_destroy": true}}) : item))}/>
+                                                       onClick={() => onChange(props.path, _.get(r, p).map(item1 => _.isEqual(item1, item) ? ({...item, ...{"_destroy": true}}) : item))}/>
                                         </div>
                                     </el-col>
                                 </el-row>
-                                <el-divider/>
-                            </el-col> : <el-col span={0}></el-col>
-                    )}
+                            </div>
+                        </el-col>
+                    )
+                }
                 <el-col span={24}>
                     <el-button type="primary" class={"w-100"} plain onClick={() => {
                         onChange(props.path, [..._.get(r, p), ...[{}]])
                     }}>新增
                     </el-button>
                 </el-col>
-            </>
+            </el-row>
         )
     else if (props.associations_layout === 'table')
         return (
             <el-col span={24}>
-                {props.label && <label className="el-form-item__label">{props.label}</label>}
+                {props.label && <label class="el-form-item__label">{props.label}</label>}
 
-                <el-table data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true))}
-                          class="mb-10"
-                          rowKey="id">
+                <el-table
+                    data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index > b.index ? 1 : -1)}
+                    class="mb-10"
+                    rowKey="id">
                     {props.columns.map(c => (
                         <el-table-column width={c.width}>
                             {{
@@ -437,15 +445,14 @@ const renderAssociations = (props, states, onChange) => {
                             header: () => <el-text>操作</el-text>,
                             default: (scope) =>
                                 <el-button circle plain type="danger" icon={Delete}
-                                           onClick={() => onChange(p,
-                                               _.get(r, p).map((item, i1) => i1 === _.get(r, p).findIndex(item1 => _.isEqual(scope.row, item1)) ? ({...item, ...{"_destroy": true}}) : item))}/>
+                                           onClick={() => onChange(p, _.get(r, p).map(item => _.isEqual(scope.row, item) ? ({...item, ...{"_destroy": true}}) : item))}/>
                         }}
                     </el-table-column>
 
                 </el-table>
 
                 {props.associations_increment && <el-button type="primary" class={"w-100"} plain onClick={() => {
-                    onChange(p, [..._.get(r, p), ...[{}]])
+                    onChange(p, [..._.get(r, p), ...[{index: _.get(r, p).length}]])
                 }}>新增
                 </el-button>}
             </el-col>
@@ -556,17 +563,18 @@ export default defineComponent({
                 fetchRemoteCascader(props, states.value)
             }
 
-            if (props.type === 'drag_images') {
+            if (props.type === 'drag_images' || props.type === 'associations') {
                 nextTick().then(() => {
-                    let ele = document.getElementById(props.path.join('_') + "_drag_images")
+                    let ele = document.getElementById(props.path.join('_') + "_" + props.type)
                     if (ele) {
                         Sortable.create(ele,
                             {
+                                handle: '.icon-drag',
                                 onEnd: function (evt) {
-                                    let items = _.get(props.resource, props.path).toSorted((a, b) => a.index < b.index ? 1 : -1);
+                                    let items = _.get(props.resource, props.path).toSorted((a, b) => a.index > b.index ? 1 : -1);
                                     var element = items[evt.oldIndex];
-                                    items = items.toSpliced(evt.oldIndex, 1).toSpliced(evt.newIndex, 0, element);
-                                    items.forEach((item, i) => item.index = i)
+                                    items = items.toSpliced(evt.oldIndex, 1).toSpliced(evt.newIndex, 0, element).toSorted((a, b) => a.index > b.index ? 1 : -1);
+                                    items.forEach((item, i) => item.index = i + 1)
                                     onChange(props.path, items);
                                 }
                             }
@@ -604,9 +612,7 @@ export default defineComponent({
             else if (props.type === 'associations')
                 return (
                     <el-col span={24}>
-                        <el-row gutter={20}>
-                            {states.value && renderAssociations(props, states.value, onChange)}
-                        </el-row>
+                        {states.value && renderAssociations(props, states.value, onChange)}
                     </el-col>
                 )
             else {
