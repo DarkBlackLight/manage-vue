@@ -21,7 +21,7 @@ export default defineComponent({
     setup(props, {expose, emit}) {
         const {t} = useI18n()
 
-        const activeTab = ref('');
+        const activeTab = ref(0);
         const displayFilter = ref(false);
 
         const formRef = ref(null);
@@ -82,8 +82,8 @@ export default defineComponent({
                         props.listConfig.tabOptions &&
                         <el-tabs className="resource-list-tabs" v-model={activeTab.value} onTabChange={onTabChange}>
                             {
-                                props.listConfig.tabOptions.map(option => (
-                                    <el-tab-pane label={option.label} name={option.value}/>
+                                props.listConfig.tabOptions.map((option, i) => (
+                                    <el-tab-pane label={option.label} name={i}/>
                                 ))
                             }
                         </el-tabs>
@@ -153,10 +153,10 @@ export default defineComponent({
                             let all_queries = queries.value;
 
                             if (props.listConfig.queries)
-                                all_queries = {...all_queries, ...props.listConfig.queries};
+                                all_queries = {...props.listConfig.queries, ...all_queries};
 
                             if (props.listConfig.tabProp)
-                                all_queries[props.listConfig.tabProp] = activeTab;
+                                all_queries[props.listConfig.tabProp] = props.listConfig.tabOptions[activeTab.value].value;
 
                             return API[props.resourceConfig.resourceData].all(all_queries)
                         }}
