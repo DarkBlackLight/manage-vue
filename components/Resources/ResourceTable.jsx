@@ -11,7 +11,7 @@ const renderItem = (column, scope) => {
         return column.render(r, column)
     else if (column.type === 'image') {
         return (
-            <img height={70} src={_.get(r, p).src}/>
+            _.get(r, p) && <img height={70} src={_.get(r, p).src}/>
         )
     } else if (column.type === 'datetime') {
         return <el-text>{formatDateTime(_.get(r, p))}</el-text>
