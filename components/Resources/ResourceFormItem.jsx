@@ -220,22 +220,25 @@ const renderItem = (props, states, onChange) => {
                     <el-icon class={"uploader-icon"}><Plus/></el-icon>
             }
         </el-upload>)
-    } else if (t === 'file')
+    } else if (t === 'file') {
+        let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
         return (<el-upload
             class={"resource-form-file"}
             show-file-list={false}
             http-request={({file}) => {
                 API.Storage.upload(file).then(response => {
-                    _.set(r, c.prop, response.data.id);
-                    _.set(r, c.prop.replace('_id', ''), response.data);
+                    onChange(p, response.data.id);
+                    onChange(storage_path, response.data);
+                    // _.set(r, c.prop, response.data.id);
+                    // _.set(r, c.prop.replace('_id', ''), response.data);
                 });
             }}
         >
-            {_.get(r, c.prop.replace('_id', '')) ?
-                <el-text>{_.get(r, c.prop.replace('_id', ''))['filename']}</el-text>
+            {_.get(r, storage_path) ?
+                <el-text>{_.get(r, storage_path)['filename']}</el-text>
                 : <el-icon class={"uploader-icon"}><Plus/></el-icon>}
         </el-upload>)
-    else if (t === 'radio_group')
+    } else if (t === 'radio_group')
         return (
             <el-radio-group modelValue={_.get(r, p)}
                             onChange={(e) => onChange(p, e)}
