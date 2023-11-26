@@ -80,7 +80,7 @@ import Sortable from 'sortablejs';
 const fetchRemoteOptions = (props, states, q) => {
     if (props.remote_options.remote) {
         states.loading = true;
-        props.remote_options.remote(q).then(response => {
+        props.remote_options.remote(q, props.path, props.resource).then(response => {
             states.options = response.map(i => ({
                 label: _.get(i, props.remote_options.label),
                 value: _.get(i, props.remote_options.value)
