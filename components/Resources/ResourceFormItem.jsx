@@ -400,7 +400,7 @@ const renderAssociations = (props, states, onChange) => {
                                     <el-col span={3}>
                                         <div class={"w-100 h-100 row-center"}>
                                             <el-button circle plain type="danger" icon={Delete}
-                                                       onClick={() => onChange(props.path, _.get(r, p).map(item1 => _.isEqual(item1, item) ? ({...item, ...{"_destroy": true}}) : item))}/>
+                                                       onClick={() => onChange(props.path, _.get(r, p).map(item1 => _.isEqual(item1, item) ? ({...item, ...{"_destroy": true}}) : item1))}/>
                                         </div>
                                     </el-col>
                                 </el-row>
