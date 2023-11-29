@@ -426,7 +426,7 @@ const renderAssociations = (props, states, onChange) => {
                     class="mb-10"
                     rowKey="id">
                     {props.columns.map(c => (
-                        <el-table-column width={c.width}>
+                        <el-table-column width={c.type === 'hidden' ? 1 : c.width}>
                             {{
                                 header: () => <el-text>{c.label}</el-text>,
                                 default: (scope) =>
