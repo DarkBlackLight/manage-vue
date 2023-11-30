@@ -34,7 +34,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="Logout">
-                      {{ t('login.log_out') }}
+                    {{ t('login.log_out') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -89,6 +89,6 @@ onMounted(() => {
 
 <style scoped>
 .layout-header {
-  border-bottom: 1px solid var(--el-border-color);
+//border-bottom: 1px solid var(--el-border-color);
 }
 </style>

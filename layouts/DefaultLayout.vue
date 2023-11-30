@@ -4,9 +4,7 @@
       <Menu/>
       <el-container direction="vertical">
         <Header/>
-        <el-main style="background-color: var(--tm-bg-color)">
-          <router-view></router-view>
-        </el-main>
+        <router-view></router-view>
       </el-container>
     </el-container>
   </div>
