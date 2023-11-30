@@ -145,7 +145,11 @@ const renderItem = (props, states, onChange) => {
         return (<el-input modelValue={_.get(r, p)}
                           onInput={(e) => onChange(p, e)}
                           type="text"
-                          {...props.props} />)
+                          {...props.props} >
+            {{
+                append: props.slots.append ? () => props.slots.append(_.get(r, p)) : undefined
+            }}
+        </el-input>)
     else if (t === 'textarea')
         return (<el-input modelValue={_.get(r, p)}
                           onInput={(e) => onChange(p, e)}
@@ -490,6 +494,10 @@ export default defineComponent({
             default: 12
         },
         props: {
+            type: Object,
+            default: {}
+        },
+        slots: {
             type: Object,
             default: {}
         },
