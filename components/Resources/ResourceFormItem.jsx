@@ -410,7 +410,7 @@ const renderAssociations = (props, states, onChange) => {
                 }
                 <el-col span={24}>
                     <el-button type="primary" class={"w-100"} plain onClick={() => {
-                        onChange(props.path, [..._.get(r, p), ...[{}]])
+                        onChange(props.path, [..._.get(r, p), ...[{index: _.get(r, p).length + 1}]])
                     }}>新增
                     </el-button>
                 </el-col>
@@ -455,7 +455,7 @@ const renderAssociations = (props, states, onChange) => {
                 </el-table>
 
                 {props.associations_increment && <el-button type="primary" class={"w-100"} plain onClick={() => {
-                    onChange(p, [..._.get(r, p), ...[{index: _.get(r, p).length}]])
+                    onChange(p, [..._.get(r, p), ...[{index: _.get(r, p).length + 1}]])
                 }}>新增
                 </el-button>}
             </el-col>
