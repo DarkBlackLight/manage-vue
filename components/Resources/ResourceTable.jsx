@@ -16,7 +16,7 @@ const renderItem = (column, scope) => {
     } else if (column.type === 'datetime') {
         return <el-text>{formatDateTime(_.get(r, p))}</el-text>
     } else if (column.type === 'price') {
-        return <el-text>${_.get(r, p)}</el-text>
+        return <el-text>${_.get(r, p).toFixed(2)}</el-text>
     } else {
         return (<el-text>{_.get(r, p)}</el-text>)
     }
