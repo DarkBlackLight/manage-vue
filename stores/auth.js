@@ -33,6 +33,14 @@ export const useAuth = defineStore('auth', {
                     this.permissions = response.data.source.admin_permissions;
                 })
         },
+        async login_username(user) {
+            await API.Auth.validate_username_password(user)
+                .then((response) => {
+                    this.user = response.data;
+                    this.role = response.data.source.role;
+                    this.permissions = response.data.source.admin_permissions;
+                })
+        },
         async logout() {
             await API.Auth.logout().finally(() => {
                 this.user = null;
