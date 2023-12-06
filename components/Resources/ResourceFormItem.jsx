@@ -546,6 +546,7 @@ export default defineComponent({
     setup(props, {expose, emit}) {
         const states = ref(null);
         const initialize = () => {
+
             states.value = {
                 options: props.options,
                 loading: false
@@ -560,9 +561,9 @@ export default defineComponent({
             if (!_.has(props.resource, props.path)) {
                 if (props.default) {
                     if (typeof props.default === 'function')
-                        onChange(props.path, props.default(props.resource))
+                        onChange(props.path, _.cloneDeep(props.default(props.resource)))
                     else
-                        onChange(props.path, props.default)
+                        onChange(props.path, _.cloneDeep(props.default))
                 } else {
                     onChange(props.path, initItem[props.type](props))
                 }
