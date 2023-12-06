@@ -22,6 +22,12 @@ const renderItem = (column, scope) => {
     }
 }
 
+const paginate = (data, pageSize, currentPage) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return data.slice(startIndex, endIndex);
+}
+
 export default defineComponent({
     name: 'ResourceTable',
     props: {
@@ -55,7 +61,10 @@ export default defineComponent({
         },
         tableProps: {
             type: Object
-        }
+        },
+        customTable: {
+            type: Function
+        },
     },
     emits: ['selectionChange'],
     setup(props, {expose, emit}) {
@@ -71,7 +80,7 @@ export default defineComponent({
 
         const getResourceList = () => {
             if (props.data) {
-                resources.value = props.data;
+                resources.value = paginate(props.data, pageSize.value, currentPage.value);
                 resourcesTotal.value = props.data.length;
             } else if (props.remote) {
                 loading.value = true;
@@ -112,29 +121,30 @@ export default defineComponent({
 
         return () => (
             <>
-                <el-table data={resources.value} ref={tableRef}
-                          onSelectionChange={onSelectionChange}
-                          headerCellStyle={{textAlign: 'center'}}
-                          cellStyle={{textAlign: 'center'}}
-                          rowKey="id"
-                          {...props.tableProps}
-                >
-                    {props.enableSelection && <el-table-column type="selection" width="55"/>}
+                {props.customTable ? props.customTable(resources.value) :
+                    <el-table data={resources.value} ref={tableRef}
+                              onSelectionChange={onSelectionChange}
+                              headerCellStyle={{textAlign: 'center'}}
+                              cellStyle={{textAlign: 'center'}}
+                              rowKey="id"
+                              {...props.tableProps}
+                    >
+                        {props.enableSelection && <el-table-column type="selection" width="55"/>}
 
-                    {props.columns.map(column => (
-                        column.type === 'expand' ? <el-table-column type="expand">
-                                {{
-                                    default: (scope) => renderItem(column, scope)
-                                }}
-                            </el-table-column> :
-                            <el-table-column width={column.width}>
-                                {{
-                                    header: () => <el-text>{column.label}</el-text>,
-                                    default: (scope) => renderItem(column, scope)
-                                }}
-                            </el-table-column>
-                    ))}
-                </el-table>
+                        {props.columns.map(column => (
+                            column.type === 'expand' ? <el-table-column type="expand">
+                                    {{
+                                        default: (scope) => renderItem(column, scope)
+                                    }}
+                                </el-table-column> :
+                                <el-table-column width={column.width}>
+                                    {{
+                                        header: () => <el-text>{column.label}</el-text>,
+                                        default: (scope) => renderItem(column, scope)
+                                    }}
+                                </el-table-column>
+                        ))}
+                    </el-table>}
 
                 {resources.value.length !== resourcesTotal.value &&
                     <>
