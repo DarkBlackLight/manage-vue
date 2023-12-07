@@ -147,7 +147,8 @@ const renderItem = (props, states, onChange) => {
                           type="text"
                           {...props.props} >
             {{
-                append: props.slots.append ? () => props.slots.append(_.get(r, p)) : undefined
+                append: props.slots.append ? () => props.slots.append(_.get(r, p)) : undefined,
+                suffix: props.slots.suffix ? () => props.slots.suffix(_.get(r, p)) : undefined
             }}
         </el-input>)
     else if (t === 'textarea')
