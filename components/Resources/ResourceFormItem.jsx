@@ -319,7 +319,7 @@ const renderItem = (props, states, onChange) => {
                                                 _.get(r, p).map(n =>
                                                     ({
                                                         ...n,
-                                                        ...{'_destroy': item.id === n.id ? true : item['_destroy']}
+                                                        ...{'_destroy': _.isEqual(item, n) ? true : item['_destroy']}
                                                     })
                                                 )
                                             )
