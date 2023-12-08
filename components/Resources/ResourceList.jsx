@@ -149,8 +149,11 @@ export default defineComponent({
 
                     <ResourceTable
                         ref={tableRef}
-                        remote={() => {
+                        remote={(table_queries) => {
                             let all_queries = queries.value;
+
+                            if (table_queries)
+                                all_queries = {...table_queries, ...all_queries};
 
                             if (props.listConfig.queries)
                                 all_queries = {...props.listConfig.queries, ...all_queries};
