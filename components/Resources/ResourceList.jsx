@@ -151,11 +151,11 @@ export default defineComponent({
                     remote={(table_queries) => {
                         let all_queries = queries.value;
 
+                        if (props.listConfig.queries)
+                            all_queries = {...all_queries, ...props.listConfig.queries};
+
                         if (table_queries)
                             all_queries = {...table_queries, ...all_queries};
-
-                        if (props.listConfig.queries)
-                            all_queries = {...props.listConfig.queries, ...all_queries};
 
                         if (props.listConfig.tabProp)
                             all_queries[props.listConfig.tabProp] = props.listConfig.tabOptions[activeTab.value].value;
