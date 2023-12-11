@@ -140,7 +140,7 @@ const renderItem = (props, states, onChange) => {
     let p = props.path;
 
     if (t === 'display')
-        return (<el-text class={"mx-6"}>{_.get(r, p)}</el-text>)
+        return (<el-text class={"mx-6"} {...props.props}>{_.get(r, p)}</el-text>)
     if (t === 'text')
         return (<el-input modelValue={_.get(r, p)}
                           onInput={(e) => onChange(p, e)}
