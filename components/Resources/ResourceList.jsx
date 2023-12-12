@@ -133,6 +133,8 @@ export default defineComponent({
                                        onClick={onSearch}/>
                         }
 
+                        {props.listConfig.tools && props.listConfig.tools()}
+
                         {(!props.listConfig.actions || props.listConfig.actions.includes('new')) &&
                             <el-button icon={Plus} type="primary" onClick={() => emit('new')}>
                                 {t('resources.new')}
