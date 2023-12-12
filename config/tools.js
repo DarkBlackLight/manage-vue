@@ -12,6 +12,10 @@ export const formatDate = (data) => {
     return moment(data).format("YYYY-MM-DD");
 }
 
+export const formatTime = (data) => {
+    return moment(data).format("HH:mm:ss");
+}
+
 export const isEmpty = (item) => {
     if (item === null || item === undefined || item === '' || item === 'undefined') {
         return false;
