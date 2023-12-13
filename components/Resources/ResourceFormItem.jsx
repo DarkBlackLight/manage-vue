@@ -269,8 +269,7 @@ const renderItem = (props, states, onChange) => {
             <el-select modelValue={_.get(r, p)}
                        onChange={(e) => onChange(p, e)}
                        class={"w-100"}
-                       filterable
-                       remote={true}
+                       remote
                        loading={states.loading}
                        remoteMethod={(q) => fetchRemoteOptions(props, states, q)}
                        {...props.props}>
