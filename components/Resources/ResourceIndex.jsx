@@ -42,12 +42,16 @@ export default defineComponent({
             resourceListRef.value.getResourceList();
         }
 
+        const getQueries = () => {
+            return resourceListRef.value.getQueries();
+        }
+
         const onEditSuccess = (resource, resourceOld) => {
             resourceListRef.value.getResourceList();
             emit('edit-success', resource, resourceOld)
         }
 
-        expose({getResourceList, resourceShowRef, resourceEditRef, resourceNewRef})
+        expose({getResourceList, getQueries, resourceShowRef, resourceEditRef, resourceNewRef})
 
         return () => (
             <>

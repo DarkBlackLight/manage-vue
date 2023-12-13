@@ -73,7 +73,19 @@ export default defineComponent({
             getResourceList()
         }
 
-        expose({getResourceList, tableRef})
+        const getQueries = () => {
+            let all_queries = queries.value;
+
+            if (props.listConfig.queries)
+                all_queries = {...all_queries, ...props.listConfig.queries};
+
+            if (props.listConfig.tabProp)
+                all_queries[props.listConfig.tabProp] = props.listConfig.tabOptions[activeTab.value].value;
+
+            return all_queries
+        }
+
+        expose({getResourceList, getQueries, tableRef})
 
         return () => (
             <el-main>
@@ -151,16 +163,10 @@ export default defineComponent({
                 <ResourceTable
                     ref={tableRef}
                     remote={(table_queries) => {
-                        let all_queries = queries.value;
-
-                        if (props.listConfig.queries)
-                            all_queries = {...all_queries, ...props.listConfig.queries};
+                        let all_queries = getQueries();
 
                         if (table_queries)
                             all_queries = {...table_queries, ...all_queries};
-
-                        if (props.listConfig.tabProp)
-                            all_queries[props.listConfig.tabProp] = props.listConfig.tabOptions[activeTab.value].value;
 
                         return API[props.resourceConfig.resourceData].all(all_queries)
                     }}
