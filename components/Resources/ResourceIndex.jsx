@@ -31,7 +31,7 @@ export default defineComponent({
             columns: Array
         }
     },
-    emits: ['edit-success'],
+    emits: ['new-success', 'edit-success'],
     setup(props, {expose, emit}) {
         const resourceListRef = ref(null);
         const resourceShowRef = ref(null);
@@ -44,6 +44,11 @@ export default defineComponent({
 
         const getQueries = () => {
             return resourceListRef.value.getQueries();
+        }
+
+        const onNewSuccess = (resource) => {
+            resourceListRef.value.getResourceList();
+            emit('new-success', resource)
         }
 
         const onEditSuccess = (resource, resourceOld) => {
@@ -72,7 +77,7 @@ export default defineComponent({
                     <ResourceNew ref={resourceNewRef}
                                  resourceConfig={props.resourceConfig}
                                  newConfig={props.newConfig}
-                                 onSuccess={() => resourceListRef.value.getResourceList()}
+                                 onSuccess={onNewSuccess}
                     />}
 
                 <ResourceList ref={resourceListRef}
