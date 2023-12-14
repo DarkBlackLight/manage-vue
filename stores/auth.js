@@ -57,9 +57,9 @@ export const useAuth = defineStore('auth', {
                 })
         },
         setUser(user) {
-            this.user = user.data;
-            this.role = user.data.source.role;
-            this.permissions = user.data.source.admin_permissions;
+            this.user = user;
+            this.role = user.source.role;
+            this.permissions = user.source.admin_permissions;
         },
     },
     persist: {
