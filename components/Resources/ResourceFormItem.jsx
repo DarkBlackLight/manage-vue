@@ -297,9 +297,9 @@ const renderItem = (props, states, onChange) => {
                  data-prop={props.props}>
                 {_.get(r, p)
                     .filter(i => !('_destroy' in i) || i['_destroy'] !== true)
-                    .toSorted((a, b) => a.index > b.index ? 1 : -1)
                     .map(item => (
                         <div class={"resource-form-drag-images-item"}>
+                            <p>{item.index}, {item.id}</p>
                             <el-image src={item.image.src} fit="fill"></el-image>
                             <div class={"resource-form-drag-images-item-mask"}>
                                 <el-icon class={"flex-1 icon-drag"}>
@@ -371,7 +371,7 @@ const renderAssociations = (props, states, onChange) => {
     if (props.associations_layout === 'form')
         return (
             <el-row gutter={20} id={p.join('_') + "_associations"} class={"resource-form-associations"}>
-                {_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index > b.index ? 1 : -1)
+                {_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)
                     .map(item =>
                         <el-col span={24}>
                             <div class={"resource-form-associations-item"}>
@@ -422,7 +422,7 @@ const renderAssociations = (props, states, onChange) => {
                 {props.label && <label class="el-form-item__label">{props.label}</label>}
 
                 <el-table
-                    data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index > b.index ? 1 : -1)}
+                    data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)}
                     class="mb-10"
                     rowKey="id">
                     {props.columns.map(c => (
@@ -572,17 +572,26 @@ export default defineComponent({
             }
 
             if (props.type === 'drag_images' || props.type === 'associations') {
+                onChange(props.path, _.get(props.resource, props.path).toSorted((a, b) => a.index - b.index));
+
                 nextTick().then(() => {
                     let ele = document.getElementById(props.path.join('_') + "_" + props.type)
                     if (ele) {
                         Sortable.create(ele,
                             {
+                                sort: true,
                                 handle: '.icon-drag',
-                                onEnd: function (evt) {
-                                    let items = _.get(props.resource, props.path).toSorted((a, b) => a.index > b.index ? 1 : -1);
-                                    var element = items[evt.oldIndex];
-                                    items = items.toSpliced(evt.oldIndex, 1).toSpliced(evt.newIndex, 0, element).toSorted((a, b) => a.index > b.index ? 1 : -1);
-                                    items.forEach((item, i) => item.index = i + 1)
+                                onChange: function (evt) {
+                                    var element = _.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)[evt.oldIndex];
+
+                                    let items = _.get(props.resource, props.path);
+                                    for (let i = 0; i < items.length; i++) {
+                                        if (items[i].index >= evt.newIndex)
+                                            items[i].index = items[i].index + 1
+                                        if (_.isEqual(items[i], element))
+                                            items[i].index = evt.newIndex
+                                    }
+
                                     onChange(props.path, items);
                                 }
                             }
