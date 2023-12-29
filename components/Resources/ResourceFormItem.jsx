@@ -299,7 +299,6 @@ const renderItem = (props, states, onChange) => {
                     .filter(i => !('_destroy' in i) || i['_destroy'] !== true)
                     .map(item => (
                         <div class={"resource-form-drag-images-item"}>
-                            <p>{item.index}, {item.id}</p>
                             <el-image src={item.image.src} fit="fill"></el-image>
                             <div class={"resource-form-drag-images-item-mask"}>
                                 <el-icon class={"flex-1 icon-drag"}>
