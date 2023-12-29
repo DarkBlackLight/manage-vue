@@ -206,25 +206,39 @@ const renderItem = (props, states, onChange) => {
                            {...props.props}/>)
     else if (t === 'image') {
         let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
-        return (<el-upload
-            class={"resource-form-image"}
-            show-file-list={false}
-            http-request={({file}) => {
-                API.Storage.upload(file).then(response => {
-                    onChange(p, response.data.id);
-                    onChange(storage_path, response.data);
-                });
-            }}
-        >
-            {
-                _.get(r, storage_path) ?
-                    <div class={"uploader-image"}>
-                        <el-image src={_.get(r, storage_path)['src']}/>
-                    </div>
-                    :
-                    <el-icon class={"uploader-icon"}><Plus/></el-icon>
-            }
-        </el-upload>)
+        return (<div>
+            <el-upload
+                class={"resource-form-image"}
+                show-file-list={false}
+                http-request={({file}) => {
+                    API.Storage.upload(file).then(response => {
+                        onChange(p, response.data.id);
+                        onChange(storage_path, response.data);
+                    });
+                }}
+            >
+                {
+                    _.get(r, storage_path) ?
+                        <div class={"uploader-image"}>
+                            <el-image src={_.get(r, storage_path)['src']}/>
+                        </div>
+                        :
+                        <el-icon class={"uploader-icon"}><Plus/></el-icon>
+                }
+            </el-upload>
+            { _.get(r, storage_path) ? <el-button type={"danger"} class={"w-100"} onClick={
+                () => {
+                    ElMessageBox.confirm('确定删除该图片吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        onChange(p, null);
+                        onChange(storage_path, null);
+                    })
+                }
+            }>删除</el-button> : null}
+        </div>)
     } else if (t === 'file') {
         let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
         return (<el-upload
