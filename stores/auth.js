@@ -16,7 +16,7 @@ export const useAuth = defineStore('auth', {
                 let response = await API.Auth.current();
                 this.user = response.data;
                 this.role = response.data.source.role
-                this.permissions = response.data.source.admin_permissions
+                this.permissions = response.data.source.permissions
                 return true;
             } catch (e) {
                 this.user = null;
@@ -30,7 +30,7 @@ export const useAuth = defineStore('auth', {
                 .then((response) => {
                     this.user = response.data;
                     this.role = response.data.source.role;
-                    this.permissions = response.data.source.admin_permissions;
+                    this.permissions = response.data.source.permissions;
                 })
         },
         async login_username(user) {
@@ -38,7 +38,7 @@ export const useAuth = defineStore('auth', {
                 .then((response) => {
                     this.user = response.data;
                     this.role = response.data.source.role;
-                    this.permissions = response.data.source.admin_permissions;
+                    this.permissions = response.data.source.permissions;
                 })
         },
         async logout() {
@@ -53,13 +53,13 @@ export const useAuth = defineStore('auth', {
                 .then((response) => {
                     this.user = response.data;
                     this.role = response.data.source.role;
-                    this.permissions = response.data.source.admin_permissions;
+                    this.permissions = response.data.source.permissions;
                 })
         },
         setUser(user) {
             this.user = user;
             this.role = user.source.role;
-            this.permissions = user.source.admin_permissions;
+            this.permissions = user.source.permissions;
         },
     },
     persist: {
