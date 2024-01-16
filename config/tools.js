@@ -30,7 +30,7 @@ export const isEmpty = (item) => {
 
 export const CopyText = (text) => {
     //    复制text文字
-    const str = '#' + text
+    const str = text
     if (!navigator.clipboard) {
         const input = document.createElement('input');
         input.value = str;
