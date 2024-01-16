@@ -21,7 +21,7 @@ export default defineComponent({
     setup(props, {expose, emit}) {
         const {t} = useI18n()
 
-        const activeTab = ref(0);
+        const activeTab = ref(props.listConfig.activeTab ? props.listConfig.activeTab : 0);
         const displayFilter = ref(false);
 
         const formRef = ref(null);
