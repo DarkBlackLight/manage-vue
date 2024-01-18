@@ -129,21 +129,26 @@ export default defineComponent({
                               rowKey="id"
                               {...props.tableProps}
                     >
-                        {props.enableSelection && <el-table-column type="selection" width="55"/>}
-
-                        {props.columns.map(column => (
-                            column.type === 'expand' ? <el-table-column type="expand">
-                                    {{
-                                        default: (scope) => renderItem(column, scope)
-                                    }}
-                                </el-table-column> :
-                                <el-table-column width={column.width}>
-                                    {{
-                                        header: () => <el-text>{column.label}</el-text>,
-                                        default: (scope) => renderItem(column, scope)
-                                    }}
-                                </el-table-column>
-                        ))}
+                        {{
+                            default: () => <>
+                                {props.enableSelection && <el-table-column type="selection" width="55"/>}
+                                {props.columns.map(column => (
+                                    column.type === 'expand' ?
+                                        <el-table-column type="expand">
+                                            {{
+                                                default: (scope) => renderItem(column, scope)
+                                            }}
+                                        </el-table-column> :
+                                        <el-table-column width={column.width}>
+                                            {{
+                                                header: () => <el-text>{column.label}</el-text>,
+                                                default: (scope) => renderItem(column, scope)
+                                            }}
+                                        </el-table-column>
+                                ))}
+                            </>,
+                            empty: () => <el-empty/>
+                        }}
                     </el-table>}
 
                 {resources.value.length !== resourcesTotal.value &&
