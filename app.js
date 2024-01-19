@@ -55,7 +55,7 @@ const filterRouter = (rs, permissions) => rs
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuth()
     const configStore = useConfig()
-    const publicPages = ['/login', '/register']
+    const publicPages = ['/login', '/register', '/verify_email']
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = await authStore.current();
 
