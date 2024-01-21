@@ -151,18 +151,19 @@ export default defineComponent({
                         }}
                     </el-table>}
 
-                {resources.value.length !== resourcesTotal.value &&
-                    <>
+                {
+                    <div class="column-align-center">
                         <el-divider></el-divider>
                         <el-pagination v-model:pageSize={pageSize.value}
                                        v-model:currentPage={currentPage.value}
-                                       pageSizes={[1, 10, 50, 100]}
+                                       pageSizes={[10, 50, 100]}
                                        total={resourcesTotal.value}
                                        layout="total,sizes, prev, pager, next, jumper"
                                        onSizeChange={() => getResourceList()}
                                        onCurrentChange={() => getResourceList()}
                         />
-                    </>}
+                    </div>
+                }
             </>
         )
     }
