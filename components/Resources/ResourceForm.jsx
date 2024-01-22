@@ -100,7 +100,8 @@ export default defineComponent({
         return () => (
             <el-form ref={formRef} model={resource.value} class="resource-form"
                      label-width='auto'
-                     label-position={props.labelPosition}>
+                     label-position={props.labelPosition}
+                     onSubmit={(e => e.preventDefault())}>
                 {
                     tabs.value ?
                         <el-tabs v-model={activeTab.value} class="resource-form-tabs">
