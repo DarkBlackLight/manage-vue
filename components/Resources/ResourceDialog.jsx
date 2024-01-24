@@ -1,6 +1,7 @@
 import {defineComponent, ref, provide} from "vue";
 import {Close, Minus, FullScreen} from "@element-plus/icons-vue";
 import './ResourceDialog.scss';
+import {MobileUA} from "../../config/tools";
 
 export default defineComponent({
     name: 'ResourceDialog',
@@ -14,6 +15,12 @@ export default defineComponent({
         const fullscreen = ref(false);
 
         const onToggle = () => {
+            if (MobileUA.SMART_PHONE || MobileUA.TOUCH_DEVICE) {
+                fullscreen.value = true
+            } else {
+                fullscreen.value = false
+            }
+
             displayDialog.value = !displayDialog.value;
         }
 
