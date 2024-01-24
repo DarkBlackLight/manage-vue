@@ -74,13 +74,15 @@ export default defineComponent({
         }
 
         const getQueries = () => {
-            let all_queries = queries.value;
+            let all_queries = {};
 
             if (props.listConfig.queries)
                 all_queries = {...all_queries, ...props.listConfig.queries};
 
             if (props.listConfig.tabProp)
                 all_queries[props.listConfig.tabProp] = props.listConfig.tabOptions[activeTab.value].value;
+
+            all_queries = {...all_queries, ...queries.value};
 
             return all_queries
         }
