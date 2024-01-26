@@ -226,7 +226,7 @@ const renderItem = (props, states, onChange) => {
                         <el-icon class={"uploader-icon"}><Plus/></el-icon>
                 }
             </el-upload>
-            { _.get(r, storage_path) ? <el-button type={"danger"} class={"w-100"} onClick={
+            {_.get(r, storage_path) ? <el-button type={"danger"} class={"w-100"} onClick={
                 () => {
                     ElMessageBox.confirm('确定删除该图片吗？', '提示', {
                         confirmButtonText: '确定',
@@ -384,7 +384,7 @@ const renderAssociations = (props, states, onChange) => {
     if (props.associations_layout === 'form')
         return (
             <el-row gutter={20} id={p.join('_') + "_associations"} class={"resource-form-associations"}>
-                {_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)
+                {_.sortBy(_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)), ['index'])
                     .map(item =>
                         <el-col span={24}>
                             <div class={"resource-form-associations-item"}>
@@ -435,7 +435,7 @@ const renderAssociations = (props, states, onChange) => {
                 {props.label && <label class="el-form-item__label">{props.label}</label>}
 
                 <el-table
-                    data={_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)}
+                    data={_.sortBy(_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)), ['index'])}
                     class="mb-10"
                     rowKey="id">
                     {props.columns.map(c => (
@@ -585,7 +585,7 @@ export default defineComponent({
             }
 
             if (props.type === 'drag_images' || props.type === 'associations') {
-                onChange(props.path, _.get(props.resource, props.path).toSorted((a, b) => a.index - b.index));
+                onChange(props.path, _.sortBy(_.get(props.resource, props.path)), ['index']);
 
                 nextTick().then(() => {
                     let ele = document.getElementById(props.path.join('_') + "_" + props.type)
@@ -595,7 +595,7 @@ export default defineComponent({
                                 sort: true,
                                 handle: '.icon-drag',
                                 onChange: function (evt) {
-                                    var element = _.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true)).toSorted((a, b) => a.index - b.index)[evt.oldIndex];
+                                    var element = _.sortBy(_.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true), ['index']))[evt.oldIndex];
 
                                     let items = _.get(props.resource, props.path);
                                     for (let i = 0; i < items.length; i++) {
