@@ -32,7 +32,7 @@ import App from './App.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: routes.filter(rs => rs.name === 'register' || rs.name === 'login')
+    routes: routes.filter(rs => ['/login', '/register', '/verify_email', '/reset_password'].includes(rs.path))
 })
 
 const status_routes = [
