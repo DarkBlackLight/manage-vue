@@ -19,6 +19,7 @@ export default defineComponent({
         const resource = ref({});
         const resourceDialogRef = ref(null);
         const resourceFormRef = ref(null);
+        const loading = ref(false);
 
         const onNew = () => {
             resource.value = {};
@@ -26,7 +27,9 @@ export default defineComponent({
         }
 
         const onSubmit = (resource) => {
+            loading.value = true;
             API[props.resourceConfig.resourceData].create(resource).then(response => {
+                loading.value = false;
                 resourceDialogRef.value.onToggle();
                 emit('success', response.data);
                 ElMessage({
@@ -48,7 +51,7 @@ export default defineComponent({
                     footer: () =>
                         <el-row gutter={20}>
                             <el-col class="text-right">
-                                <el-button icon={Check} type="primary"
+                                <el-button icon={Check} type="primary" loading={loading.value}
                                            onClick={() => resourceFormRef.value.submit()}>{t('resources.submit')}
                                 </el-button>
                             </el-col>
