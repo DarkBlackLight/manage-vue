@@ -46,9 +46,10 @@ export default defineComponent({
         const getResourceList = () => tableRef.value.getResourceList();
 
 
-        const onFilterQuery = (values) => {
+        const onFilterQuery = (values, resolve) => {
             queries.value = values;
             tableRef.value.getResourceList();
+            resolve()
         }
 
         const onResetQuery = () => {

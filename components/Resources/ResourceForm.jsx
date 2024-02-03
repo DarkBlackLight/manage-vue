@@ -30,6 +30,8 @@ export default defineComponent({
 
         const resource = ref(_.cloneDeep(props.resource));
 
+        const disabled = ref(false);
+
         const onChange = (path, newValue) => {
             let oldResource = _.cloneDeep(resource.value);
             _.set(resource.value, path, newValue);
@@ -79,7 +81,11 @@ export default defineComponent({
                             tabs.value[i].is_error = false
                         })
                     }
-                    emit('submit', submitFormItems(resource.value, [], props.columns))
+
+                    disabled.value = true
+                    emit('submit', submitFormItems(resource.value, [], props.columns), () => {
+                        disabled.value = false;
+                    })
                 } else {
                     if (tabs.value) {
                         let mKeys = Object.keys(msg).map(k => k.split('.')[0]);
@@ -101,6 +107,7 @@ export default defineComponent({
             <el-form ref={formRef} model={resource.value} class="resource-form"
                      label-width='auto'
                      label-position={props.labelPosition}
+                     loading={disabled}
                      onSubmit={(e => e.preventDefault())}>
                 {
                     tabs.value ?

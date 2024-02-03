@@ -21,7 +21,6 @@ export default defineComponent({
         const editResource = ref(null);
 
         const resourceFormRef = ref(null);
-        const loading = ref(false);
 
         const onEdit = (resource) => {
             API[props.resourceConfig.resourceData].get(resource.id).then(response => {
@@ -30,16 +29,16 @@ export default defineComponent({
             })
         }
 
-        const onSubmit = (resource) => {
-            loading.value = true;
+        const onSubmit = (resource, resolve) => {
             API[props.resourceConfig.resourceData].update({...{id: editResource.value.id}, ...resource}).then(response => {
-                loading.value = false;
                 resourceDialogRef.value.onToggle();
                 emit('success', response.data, editResource.value);
                 ElMessage({
                     message: t('resources.success_message'),
                     type: 'success',
                 })
+            }).finally(() => {
+                resolve()
             })
         }
 
@@ -55,7 +54,7 @@ export default defineComponent({
                     footer: () =>
                         <el-row gutter={20}>
                             <el-col class="text-right">
-                                <el-button icon={Check} type="primary" loading={loading.value}
+                                <el-button icon={Check} type="primary"
                                            onClick={() => resourceFormRef.value.submit()}>{t('resources.submit')}
                                 </el-button>
                             </el-col>
