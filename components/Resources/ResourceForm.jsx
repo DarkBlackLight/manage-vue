@@ -4,6 +4,7 @@ import './ResourceForm.scss';
 
 import _ from "lodash-es";
 import ResourceFormItem from "@/manage-vue/components/Resources/ResourceFormItem";
+import {ElMessage} from "element-plus";
 
 export default defineComponent({
     name: 'ResourceForm', props: {
@@ -73,6 +74,13 @@ export default defineComponent({
         }
 
         const submit = () => {
+            if (disabled.value) {
+                ElMessage({
+                    type: 'warning',
+                    message: '请回重复提交！',
+                })
+                return
+            }
             // 归属某个tab下的验证，tab出现错误标识
             formRef.value.validate((valid, msg) => {
                 if (valid) {
@@ -107,7 +115,6 @@ export default defineComponent({
             <el-form ref={formRef} model={resource.value} class="resource-form"
                      label-width='auto'
                      label-position={props.labelPosition}
-                     loading={disabled}
                      onSubmit={(e => e.preventDefault())}>
                 {
                     tabs.value ?
