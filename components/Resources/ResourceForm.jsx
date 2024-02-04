@@ -77,7 +77,7 @@ export default defineComponent({
             if (disabled.value) {
                 ElMessage({
                     type: 'warning',
-                    message: '请回重复提交！',
+                    message: '请勿重复提交！',
                 })
                 return
             }
