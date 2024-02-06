@@ -74,13 +74,7 @@ export default defineComponent({
         }
 
         const submit = () => {
-            if (disabled.value) {
-                ElMessage({
-                    type: 'warning',
-                    message: '请勿重复提交！',
-                })
-                return
-            }
+            if (disabled.value) return
             // 归属某个tab下的验证，tab出现错误标识
             formRef.value.validate((valid, msg) => {
                 if (valid) {

@@ -34,6 +34,8 @@ export default defineComponent({
                     message: t('resources.success_message'),
                     type: 'success',
                 })
+            }).catch(() => {
+                resolve()
             })
         }
 
