@@ -26,7 +26,7 @@ export default defineComponent({
         }
 
 
-        const onSubmit = (resource) => {
+        const onSubmit = (resource, resolve) => {
             API[props.resourceConfig.resourceData].create(resource).then(response => {
                 resourceDialogRef.value.onToggle();
                 emit('success', response.data);

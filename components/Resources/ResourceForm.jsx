@@ -91,7 +91,9 @@ export default defineComponent({
                     }
 
                     disabled.value = true
-                    emit('submit', submitFormItems(resource.value, [], props.columns))
+                    emit('submit', submitFormItems(resource.value, [], props.columns), () => {
+                        disabled.value = false;
+                    })
                 } else {
                     if (tabs.value) {
                         let mKeys = Object.keys(msg).map(k => k.split('.')[0]);

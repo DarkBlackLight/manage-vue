@@ -29,7 +29,7 @@ export default defineComponent({
             })
         }
 
-        const onSubmit = (resource) => {
+        const onSubmit = (resource, resolve) => {
             API[props.resourceConfig.resourceData].update({...{id: editResource.value.id}, ...resource}).then(response => {
                 resourceDialogRef.value.onToggle();
                 emit('success', response.data, editResource.value);
