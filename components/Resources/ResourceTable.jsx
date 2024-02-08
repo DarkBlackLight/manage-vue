@@ -110,8 +110,8 @@ export default defineComponent({
         }
 
         const initPagination = () => {
-            currentPage.value = 1
-            pageSize.value = 10
+            currentPage.value = props.current_page
+            pageSize.value = props.page_size
         }
 
         onMounted(() => {
