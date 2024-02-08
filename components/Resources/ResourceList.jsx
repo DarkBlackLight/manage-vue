@@ -48,6 +48,7 @@ export default defineComponent({
 
         const onFilterQuery = (values, resolve) => {
             queries.value = values;
+            tableRef.value.initPagination();
             tableRef.value.getResourceList();
             resolve()
         }
@@ -55,6 +56,7 @@ export default defineComponent({
         const onResetQuery = () => {
             formRef.value.reset();
             formRef.value.submit();
+            tableRef.value.initPagination();
             tableRef.value.getResourceList();
         }
 

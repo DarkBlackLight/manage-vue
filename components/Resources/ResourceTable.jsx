@@ -109,11 +109,16 @@ export default defineComponent({
             emit('selectionChange', rows);
         }
 
+        const initPagination = () => {
+            currentPage.value = 1
+            pageSize.value = 10
+        }
+
         onMounted(() => {
             getResourceList();
         })
 
-        expose({getResourceList})
+        expose({getResourceList, initPagination})
 
         watch(() => props.data, () => {
             getResourceList()
