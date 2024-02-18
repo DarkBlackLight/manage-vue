@@ -4,6 +4,7 @@ import {Delete, Plus, Rank} from "@element-plus/icons-vue";
 import {ElMessageBox} from "element-plus";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
+import {useDraggable} from 'vue-draggable-plus'
 
 // const renderDragAssociations = (t, column, resource) => {
 //     return (
@@ -590,25 +591,36 @@ export default defineComponent({
                 nextTick().then(() => {
                     let ele = document.getElementById(props.path.join('_') + "_" + props.type)
                     if (ele) {
-                        Sortable.create(ele,
-                            {
-                                sort: true,
-                                handle: '.icon-drag',
-                                onChange: function (evt) {
-                                    var element = _.sortBy(_.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true), ['index']))[evt.oldIndex];
-
-                                    let items = _.get(props.resource, props.path);
-                                    for (let i = 0; i < items.length; i++) {
-                                        if (items[i].index >= evt.newIndex)
-                                            items[i].index = items[i].index + 1
-                                        if (_.isEqual(items[i], element))
-                                            items[i].index = evt.newIndex
-                                    }
-
-                                    onChange(props.path, items);
+                        const {draggable} = useDraggable(ele,_.get(props.resource, props.path),{
+                            onUpdate(e) {
+                                // console.log(_.get(props.resource, props.path))
+                                // console.log('update',e)
+                                let items = _.get(props.resource, props.path);
+                                for (let i = 0; i < items.length; i++) {
+                                    items[i].index = i
                                 }
+                                onChange(props.path, items);
                             }
-                        );
+                        })
+                        // Sortable.create(ele,
+                        //     {
+                        //         sort: true,
+                        //         handle: '.icon-drag',
+                        //         onChange: function (evt) {
+                        //             var element = _.sortBy(_.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true), ['index']))[evt.oldIndex];
+                        //
+                        //             let items = _.get(props.resource, props.path);
+                        //             for (let i = 0; i < items.length; i++) {
+                        //                 if (items[i].index >= evt.newIndex)
+                        //                     items[i].index = items[i].index + 1
+                        //                 if (_.isEqual(items[i], element))
+                        //                     items[i].index = evt.newIndex
+                        //             }
+                        //
+                        //             onChange(props.path, items);
+                        //         }
+                        //     }
+                        // );
                     }
                 })
             }
