@@ -19,11 +19,12 @@
           <template #content>
             <div class="">{{ configStore.globalSettings.fullTitle }}</div>
           </template>
-
+          
           <template #extra>
             <el-switch class="mr-10"
-                       :modalValue="configStore.globalConfig.darkMode"
-                       @change="changeDarkMode" inline-prompt
+                       :modelValue="configStore.globalConfig.darkMode"
+                       @change="changeDarkMode"
+                       inline-prompt
                        :active-icon="Sunny"
                        :inactive-icon="Moon"/>
 
@@ -89,6 +90,6 @@ onMounted(() => {
 
 <style scoped>
 .layout-header {
-//border-bottom: 1px solid var(--el-border-color);
+  /*//border-bottom: 1px solid var(--el-border-color);*/
 }
 </style>
