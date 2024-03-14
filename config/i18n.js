@@ -34,7 +34,9 @@ const default_translations = {
             success_message: 'Successfully submitted!',
             delete_prompt: 'Are you sure you want to delete this resource?',
             add: 'Add',
-            submit: 'Submit'
+            submit: 'Submit',
+            edit: 'Edit',
+            back: 'Back'
         },
     },
     zh: {
@@ -69,7 +71,9 @@ const default_translations = {
             success_message: '提交成功!',
             delete_prompt: '确定要删除该资源吗?',
             add: '添加',
-            submit: '提交'
+            submit: '提交',
+            edit: '编辑',
+            back: '返回'
         },
     }
 }

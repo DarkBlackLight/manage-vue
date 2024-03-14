@@ -23,6 +23,8 @@ export default defineComponent({
 
             const loading = ref(false)
 
+            const loaded = ref(false)
+
             const onSubmit = (resource, resolve) => {
                 loading.value = true
                 API[props.resourceConfig.resourceData].update(resource).then(response => {
@@ -39,19 +41,20 @@ export default defineComponent({
             }
 
             const getResource = () => {
+                loaded.value = false
                 API[props.resourceConfig.resourceData].get(route.params.id).then(response => {
                     resource.value = response.data;
+                    loaded.value = true
                 })
             }
 
             onMounted(() => {
-                console.log()
                 getResource()
             })
 
             return () => resource.value && <>
-                <el-main class="resource-edit">
-                    <el-card shadow="never">
+                <el-main v-loading={!loaded.value} class="resource-edit">
+                    {loaded.value && <el-card shadow="never">
                         {{
                             header: () => <div className="card-header">
                                 <h4>{props.editConfig.title}</h4>
@@ -62,7 +65,7 @@ export default defineComponent({
                                                          onSubmit={onSubmit}
                                                          {...props.editConfig}/>
                         }}
-                    </el-card>
+                    </el-card>}
                 </el-main>
                 <el-footer class={"footer"}>
                     <div class="h-100 d-flex align-center justify-between">

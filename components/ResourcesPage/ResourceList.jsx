@@ -4,8 +4,8 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {Delete, Edit, ZoomIn, Search, Refresh, Plus} from "@element-plus/icons-vue";
 import {useI18n} from 'vue-i18n'
 import {useRouter} from "vue-router";
-import ResourceForm from "../../components/Resources/ResourceForm";
-import ResourceTable from "../../components/Resources/ResourceTable";
+import ResourceForm from "../Resources/ResourceForm";
+import ResourceTable from "../Resources/ResourceTable";
 import './ResourceList.scss';
 
 export default defineComponent({

@@ -47,6 +47,8 @@ export default defineComponent({
 
         const showResource = ref(null);
 
+        const loading = ref(true)
+
         const onDelete = () => {
             ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
                 API[props.resourceConfig.resourceData].delete(showResource.value.id).then(response => {
@@ -60,15 +62,17 @@ export default defineComponent({
         }
 
         onMounted(() => {
+            loading.value = true
             API[props.resourceConfig.resourceData].get(route.params.id).then(response => {
                 showResource.value = response.data;
+                loading.value = false
             })
         })
 
         return () => (
             <>
-                <el-main class="resource-show">
-                    <el-card shadow="never">
+                <el-main v-loading={loading.value} class="resource-show">
+                    {!loading.value && <el-card shadow="never">
                         {{
                             header: () => <div class="card-header">
                                 <h4>{props.showConfig.title}</h4>
@@ -77,7 +81,7 @@ export default defineComponent({
                                 {showResource && renderColumns(props.showConfig.columns, showResource.value)}
                             </el-descriptions>
                         }}
-                    </el-card>
+                    </el-card>}
                 </el-main>
                 <el-footer class={"footer"}>
                     <div class="h-100 d-flex align-center justify-between">
@@ -85,7 +89,7 @@ export default defineComponent({
                                    onClick={() => router.go(-1)}>{t('resources.back')}</el-button>
                         <div>
                             {(!props.showConfig.actions || props.showConfig.actions.includes('edit')) &&
-                                <el-button icon={Edit} type="warning"
+                                <el-button plain icon={Edit} type="warning"
                                            onClick={() => {
                                                router.push({
                                                    path: `/${props.resourceConfig.resourcePath}/edit/${route.params.id}`
@@ -95,7 +99,7 @@ export default defineComponent({
                                 </el-button>
                             }
                             {(!props.showConfig.actions || props.showConfig.actions.includes('delete')) &&
-                                <el-button icon={Delete} type="danger"
+                                <el-button plain icon={Delete} type="danger"
                                            onClick={onDelete}>
                                     {t('resources.delete')}
                                 </el-button>
