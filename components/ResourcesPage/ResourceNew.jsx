@@ -47,8 +47,8 @@ export default defineComponent({
                                 </div>,
                                 default: () => <ResourceForm ref={resourceFormRef}
                                                              resource={resource.value}
-                                                             columns={props.newConfig.columns}
                                                              onSubmit={onSubmit}
+                                                             {...props.newConfig}
                                 />
                             }}
                         </el-card>

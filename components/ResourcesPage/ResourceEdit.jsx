@@ -61,7 +61,6 @@ export default defineComponent({
                             </div>,
                             default: () => <ResourceForm ref={resourceFormRef}
                                                          resource={resource.value}
-                                                         columns={props.editConfig.columns}
                                                          onSubmit={onSubmit}
                                                          {...props.editConfig}/>
                         }}
