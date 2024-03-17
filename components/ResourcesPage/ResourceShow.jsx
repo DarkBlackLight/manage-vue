@@ -1,12 +1,27 @@
-import {ref, defineComponent, onMounted} from "vue";
+import {ref, defineComponent, onMounted, markRaw} from "vue";
 import API from "@/api";
-import {formatDateTime} from "@/manage-vue/config/tools.js"
+import {formatDateTime, formatDate} from "@/manage-vue/config/tools.js"
 import {useRoute, useRouter} from "vue-router";
 import './ResourceShow.scss';
 import _ from 'lodash-es';
 import {useI18n} from 'vue-i18n'
 import {ArrowLeft, Edit, Delete} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox} from "element-plus";
+
+const renderCard = (column, showResource) => {
+    return (
+        <el-card shadow="never">
+            {{
+                header: () => <div class="card-header">
+                    <h4>{column.title}</h4>
+                </div>,
+                default: () => <el-descriptions column={column.columnsNumber} border>
+                    {showResource && renderColumns(column.columns, showResource)}
+                </el-descriptions>
+            }}
+        </el-card>
+    )
+}
 
 const renderColumns = (columns, showResource) => columns.map(column =>
     (<el-descriptions-item label={column.label} span={column.span} label-class-name={"label-class-name"}>
@@ -15,6 +30,8 @@ const renderColumns = (columns, showResource) => columns.map(column =>
                 return column.render(showResource)
             else if (column.type === 'datetime')
                 return formatDateTime(_.get(showResource, column.prop))
+            else if (column.type === 'date')
+                return formatDate(_.get(showResource, column.prop))
             else if (column.type === 'image')
                 return (
                     _.get(showResource, column.prop) &&
@@ -38,7 +55,8 @@ export default defineComponent({
     name: 'ResourceShow',
     props: {
         resourceConfig: Object,
-        showConfig: Object
+        showConfig: Object,
+        resourceData: Object
     },
     setup(props, {expose, slots}) {
         const {t} = useI18n()
@@ -61,27 +79,37 @@ export default defineComponent({
             })
         }
 
+        const updateShowResource = (resource) => {
+            showResource.value = resource;
+        }
+
         onMounted(() => {
             loading.value = true
-            API[props.resourceConfig.resourceData].get(route.params.id).then(response => {
-                showResource.value = response.data;
+            if (props.resourceData) {
+                showResource.value = _.cloneDeep(props.resourceData)
                 loading.value = false
-            })
+            } else {
+                API[props.resourceConfig.resourceData].get(route.params.id).then(response => {
+                    if (props.showConfig.preprocess) {
+                        showResource.value = props.showConfig.preprocess(response.data)
+                    } else {
+                        showResource.value = response.data;
+                    }
+                    loading.value = false
+                })
+            }
         })
+
+        expose({updateShowResource})
 
         return () => (
             <>
                 <el-main v-loading={loading.value} class="resource-show">
-                    {!loading.value && <el-card shadow="never">
-                        {{
-                            header: () => <div class="card-header">
-                                <h4>{props.showConfig.title}</h4>
-                            </div>,
-                            default: () => <el-descriptions column={props.showConfig.columnsNumber} border>
-                                {showResource && renderColumns(props.showConfig.columns, showResource.value)}
-                            </el-descriptions>
-                        }}
-                    </el-card>}
+                    <el-row gutter={props.showConfig.gutter ? props.showConfig.gutter : 20}>
+                        {props.showConfig.columnConfig.map(column => <el-col span={column.span ? column.span : 24}>
+                            {!loading.value && renderCard(column, showResource.value)}
+                        </el-col>)}
+                    </el-row>
                 </el-main>
                 <el-footer class={"footer"}>
                     <div class="h-100 d-flex align-center justify-between">
