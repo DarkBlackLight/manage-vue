@@ -187,6 +187,7 @@ export default defineComponent({
                     preprocess={props.listConfig.preprocess}
                     tableProps={props.listConfig.tableProps}
                     customTable={props.listConfig.customTable}
+                    enableSelection={props.listConfig.enableSelection}
                     columns={[
                         ...props.listConfig.columns,
                         ...[{

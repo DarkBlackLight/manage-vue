@@ -10,14 +10,15 @@ import {ElMessage, ElMessageBox} from "element-plus";
 
 const renderCard = (column, showResource) => {
     return (
-        <el-card shadow="never">
+        <el-card shadow="never" class={"card"}>
             {{
                 header: () => <div class="card-header">
                     <h4>{column.title}</h4>
                 </div>,
-                default: () => <el-descriptions column={column.columnsNumber} border>
-                    {showResource && renderColumns(column.columns, showResource)}
-                </el-descriptions>
+                default: () => column.render ? column.render(showResource) :
+                    <el-descriptions column={column.columnsNumber} border>
+                        {showResource && renderColumns(column.columns, showResource)}
+                    </el-descriptions>
             }}
         </el-card>
     )
