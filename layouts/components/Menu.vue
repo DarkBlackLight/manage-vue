@@ -3,7 +3,8 @@
             :width="configStore.globalConfig.sideMenuCollapse ? '64px' : configStore.globalSettings.layout.sideMenu.width">
     <div class="layout-aside-header row-align-center">
       <img :src="configStore.globalSettings.logoPath" style="height: 60%">
-      <h3 v-if="!configStore.globalConfig.sideMenuCollapse">{{ configStore.globalSettings.shortTitle }}</h3>
+      <h3 class="menu-title" v-if="!configStore.globalConfig.sideMenuCollapse">
+        {{ configStore.globalSettings.shortTitle }}</h3>
     </div>
     <el-menu class="layout-menu" :default-active="defaultActive" :collapse-transition="false" router
              :collapse="configStore.globalConfig.sideMenuCollapse" @open="handleOpen" @close="handleClose">
@@ -73,6 +74,12 @@ onMounted(() => {
 
 .layout-menu {
   height: calc(100vh - 59px);
+}
+
+.menu-title {
+  overflow: hidden;
+  white-space: nowrap;
+  //text-overflow: ellipsis;
 }
 
 .layout-aside-header {

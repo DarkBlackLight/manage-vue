@@ -9,11 +9,17 @@ export const formatDateTime = (data) => {
 }
 
 export const formatDate = (data) => {
-    return moment(data).format("YYYY-MM-DD");
+    if (data)
+        return moment(data).format("YYYY-MM-DD");
+    else
+        return null
 }
 
 export const formatTime = (data) => {
-    return moment(data).format("HH:mm:ss");
+    if (data)
+        return moment(data).format("HH:mm:ss");
+    else
+        return null
 }
 
 export const isEmpty = (item) => {
