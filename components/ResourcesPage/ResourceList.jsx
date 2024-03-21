@@ -144,8 +144,8 @@ export default defineComponent({
         expose({getResourceList, getQueries, tableRef})
 
         return () => (
-            <div class={"d-column flex-1"} style="height:0" v-loading={loading.value}>
-                <el-main>
+            <>
+                <el-main v-loading={loading.value}>
                     {props.listConfig.tabOptions &&
                         <el-tabs className="resource-list-tabs" v-model={activeTab.value} onTabChange={onTabChange}>
                             {
@@ -278,6 +278,7 @@ export default defineComponent({
                         />
                     </div>
                 </el-footer>
-            </div>)
+            </>
+        )
     }
 })
