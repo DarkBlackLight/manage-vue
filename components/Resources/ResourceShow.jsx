@@ -1,7 +1,7 @@
 import {ref, defineComponent} from "vue";
 import API from "@/api";
 import ResourceDialog from "./ResourceDialog";
-import {formatDateTime} from "../../config/tools";
+import {formatDateTime, formatDate} from "../../config/tools";
 import './ResourceShow.scss';
 
 import _ from 'lodash-es';
@@ -15,6 +15,8 @@ const renderColumns = (columns, showResource) => columns.map(column =>
                 return column.render(showResource)
             else if (column.type === 'datetime')
                 return formatDateTime(_.get(showResource, column.prop))
+            else if (column.type === 'date')
+                return formatDate(_.get(showResource, column.prop))
             else if (column.type === 'image')
                 return (
                     _.get(showResource, column.prop) &&
