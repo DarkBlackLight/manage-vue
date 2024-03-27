@@ -243,6 +243,7 @@ const renderItem = (props, states, onChange) => {
         let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
         return (<el-upload
             class={"resource-form-file"}
+            {...props.props}
             show-file-list={false}
             http-request={({file}) => {
                 API.Storage.upload(file).then(response => {
