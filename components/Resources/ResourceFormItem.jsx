@@ -4,7 +4,6 @@ import {Delete, Plus, Rank} from "@element-plus/icons-vue";
 import {ElMessageBox} from "element-plus";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
-import {useDraggable} from 'vue-draggable-plus'
 
 // const renderDragAssociations = (t, column, resource) => {
 //     return (
@@ -310,10 +309,10 @@ const renderItem = (props, states, onChange) => {
         return (
             <div id={p.join('_') + "_drag_images"} class={"resource-form-drag-images flex-warp"}
                  data-prop={props.props}>
-                {_.get(r, p)
-                    .filter(i => !('_destroy' in i) || i['_destroy'] !== true)
-                    .map(item => (
-                        <div class={"resource-form-drag-images-item"}>
+                {_.sortBy(_.get(r, p)
+                    .filter(i => !('_destroy' in i) || i['_destroy'] !== true), ['index'])
+                    .map((item, index) => (
+                        <div class={"resource-form-drag-images-item"} key={new Date().getTime() + index}>
                             <el-image src={item.image.src} fit="fill"></el-image>
                             <div class={"resource-form-drag-images-item-mask"}>
                                 <el-icon class={"flex-1 icon-drag"}>
@@ -339,8 +338,8 @@ const renderItem = (props, states, onChange) => {
                                 </div>
                             </div>
                         </div>
-                    ))}
-
+                    ))
+                }
                 <el-upload class={"resource-form-image"}
                            show-file-list={false}
                            http-request={({file}) => {
@@ -386,8 +385,8 @@ const renderAssociations = (props, states, onChange) => {
         return (
             <el-row gutter={20} id={p.join('_') + "_associations"} class={"resource-form-associations"}>
                 {_.sortBy(_.get(r, p).filter(item => !(('_destroy' in item) && item['_destroy'] === true)), ['index'])
-                    .map(item =>
-                        <el-col span={24}>
+                    .map((item, index) =>
+                        <el-col span={24} key={new Date().getTime() + index}>
                             <div class={"resource-form-associations-item"}>
                                 <el-row gutter={20}>
                                     <el-col span={2}>
@@ -555,6 +554,8 @@ export default defineComponent({
     emits: ['change'],
     setup(props, {expose, emit}) {
         const states = ref(null);
+
+        const DraggableList = ref({})
         const initialize = () => {
 
             states.value = {
@@ -586,43 +587,75 @@ export default defineComponent({
             }
 
             if (props.type === 'drag_images' || props.type === 'associations') {
-                onChange(props.path, _.sortBy(_.get(props.resource, props.path)), ['index']);
+                onChange(props.path, _.sortBy(_.get(props.resource, props.path), ['index']));
 
                 nextTick().then(() => {
-                    let ele = document.getElementById(props.path.join('_') + "_" + props.type)
-                    if (ele) {
-                        const {draggable} = useDraggable(ele,_.get(props.resource, props.path),{
-                            onUpdate(e) {
-                                // console.log(_.get(props.resource, props.path))
-                                // console.log('update',e)
-                                let items = _.get(props.resource, props.path);
-                                for (let i = 0; i < items.length; i++) {
-                                    items[i].index = i
-                                }
-                                onChange(props.path, items);
-                            }
-                        })
-                        // Sortable.create(ele,
-                        //     {
-                        //         sort: true,
-                        //         handle: '.icon-drag',
-                        //         onChange: function (evt) {
-                        //             var element = _.sortBy(_.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true), ['index']))[evt.oldIndex];
-                        //
-                        //             let items = _.get(props.resource, props.path);
-                        //             for (let i = 0; i < items.length; i++) {
-                        //                 if (items[i].index >= evt.newIndex)
-                        //                     items[i].index = items[i].index + 1
-                        //                 if (_.isEqual(items[i], element))
-                        //                     items[i].index = evt.newIndex
-                        //             }
-                        //
-                        //             onChange(props.path, items);
-                        //         }
-                        //     }
-                        // );
-                    }
+                    initDraggable(props)
                 })
+            }
+        }
+
+        const initDraggable = (props) => {
+            let ele_name = props.path.join('_') + "_" + props.type
+            let ele = document.getElementById(ele_name)
+            if (ele) {
+                let options = {
+                    handle: '.icon-drag',
+                    group: ele_name,
+                    // sort: false,
+                    onEnd(e) {
+                        // console.log('onEnd')
+
+                        let oldIndex = e.oldDraggableIndex;
+                        let newIndex = e.newDraggableIndex;
+                        if (oldIndex === newIndex) return;
+
+                        let items = _.cloneDeep(_.get(props.resource, props.path))
+                        let element = items[oldIndex];
+                        items.splice(oldIndex, 1);
+                        items.splice(newIndex, 0, element);
+                        for (let i = 0; i < items.length; i++) {
+                            if (items[i]['_destroy'] === true) {
+                                items[i]['index'] = -1
+                            } else {
+                                items[i]['index'] = i
+                            }
+                        }
+                        nextTick().then(() => {
+                            onChange(props.path, _.sortBy(items, ['index']));
+                        })
+                    },
+                    onChange: function (evt) {
+                        // console.log('onChange')
+                        // var element = _.sortBy(_.get(props.resource, props.path).filter(item => !(('_destroy' in item) && item['_destroy'] === true), ['index']))[evt.oldIndex];
+                        //
+                        // let items = _.get(props.resource, props.path);
+                        // for (let i = 0; i < items.length; i++) {
+                        //     if (items[i].index >= evt.newIndex)
+                        //         items[i].index = items[i].index + 1
+                        //     if (_.isEqual(items[i], element))
+                        //         items[i].index = evt.newIndex
+                        // }
+                        // onChange(props.path, items);
+                    },
+                    onUpdate(e) {
+                        // console.log('onUpdate')
+                    },
+                    // onSort(e) {
+                    //     console.log('onSort')
+                    // },
+                }
+
+                if (props.type === 'drag_images') {
+                    // options['dragClass'] = 'resource-form-drag-images-item'
+                    options['draggable'] = '.resource-form-drag-images-item'
+                    options['filter'] = '.resource-form-image'
+                }
+                if (_.get(DraggableList.value, ele_name)) {
+                    _.get(DraggableList.value, ele_name).destroy();
+                }
+                let SortableValue = Sortable.create(ele, options);
+                _.set(DraggableList.value, ele_name, SortableValue)
             }
         }
 
