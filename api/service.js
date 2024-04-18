@@ -84,7 +84,15 @@ const Storage = {
 }
 
 const Socket = {
-    create: () => new WebSocket(import.meta.env.VITE_SOCKET_URL)
+    create: () => {
+        let socket_url = import.meta.env.VITE_SOCKET_URL
+        if (socket_url.includes('ws')) {
+            return socket_url
+        } else {
+            let loc = window.location;
+            return loc.protocol.replace('http', 'ws') + "//" + loc.host + socket_url
+        }
+    }
 }
 
 export {Auth, Storage, Resources, Request, Socket}
