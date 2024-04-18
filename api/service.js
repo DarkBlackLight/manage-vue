@@ -87,10 +87,10 @@ const Socket = {
     create: () => {
         let socket_url = import.meta.env.VITE_SOCKET_URL
         if (socket_url.includes('ws')) {
-            return socket_url
+            return new WebSocket(socket_url)
         } else {
             let loc = window.location;
-            return loc.protocol.replace('http', 'ws') + "//" + loc.host + socket_url
+            return new WebSocket(loc.protocol.replace('http', 'ws') + "//" + loc.host + socket_url)
         }
     }
 }
