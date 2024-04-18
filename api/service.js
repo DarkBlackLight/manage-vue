@@ -83,4 +83,8 @@ const Storage = {
     upload: (file) => Request.upload('/storage/upload', {storage: file})
 }
 
-export {Auth, Storage, Resources, Request}
+const Socket = {
+    create: () => new WebSocket(import.meta.env.VITE_SOCKET_URL)
+}
+
+export {Auth, Storage, Resources, Request, Socket}
