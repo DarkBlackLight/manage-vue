@@ -96,7 +96,7 @@ export default defineComponent({
             <el-main>
                 {
                     props.listConfig.tabOptions &&
-                    <el-tabs className="resource-list-tabs" v-model={activeTab.value} onTabChange={onTabChange}>
+                    <el-tabs class="resource-list-tabs" v-model={activeTab.value} onTabChange={onTabChange}>
                         {
                             props.listConfig.tabOptions.map((option, i) => (
                                 <el-tab-pane label={option.label} name={i}/>
@@ -118,7 +118,7 @@ export default defineComponent({
                                           type: 'display',
                                           render: () => (
                                               <el-col span={8}>
-                                                  <div className={"d-flex align-center"}
+                                                  <div class={"d-flex align-center"}
                                                        style={"margin:0 0 18px 50px;"}>
                                                       <el-button type="primary"
                                                                  onClick={() => formRef.value.submit()}

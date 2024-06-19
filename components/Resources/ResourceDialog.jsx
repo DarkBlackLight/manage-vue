@@ -36,13 +36,13 @@ export default defineComponent({
                        fullscreen={fullscreen.value}
                        width={props.width ? props.width : '50%'}>
                 {{
-                    header: () => <div className="row-justify-space-between align-center">
-                        <div className="el-dialog-custom-title">
+                    header: () => <div class="row-justify-space-between align-center">
+                        <div class="el-dialog-custom-title">
                             <p>{props.title}</p>
-                            <div className="el-dialog-custom-title-bg"></div>
+                            <div class="el-dialog-custom-title-bg"></div>
                         </div>
 
-                        <div className="row-align-center icon-group">
+                        <div class="row-align-center icon-group">
                             <el-icon v-show={fullscreen.value} size="18" onClick={() => {
                                 fullscreen.value = false;
                             }}>
