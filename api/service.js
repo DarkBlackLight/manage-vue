@@ -88,10 +88,10 @@ const Socket = {
         const auth = useAuth();
         let socket_url = import.meta.env.VITE_SOCKET_URL
         if (socket_url.includes('ws')) {
-            return new WebSocket(socket_url + '?TOKEN=' + auth.user.access_token)
+            return new WebSocket(socket_url + '?token=' + auth.user.access_token)
         } else {
             let loc = window.location;
-            return new WebSocket(loc.protocol.replace('http', 'ws') + "//" + loc.host + socket_url + '?TOKEN=' + auth.user.access_token)
+            return new WebSocket(loc.protocol.replace('http', 'ws') + "//" + loc.host + socket_url + '?token=' + auth.user.access_token)
         }
     }
 }
