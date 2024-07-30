@@ -402,8 +402,8 @@ const renderAssociations = (props, states, onChange) => {
                                         <el-row gutter={20}>
                                             {props.columns.map(c =>
                                                 <ResourceFormItem
-                                                    resource={_.get(r, [...p, ...[_.get(r, p).findIndex(item1 => _.isEqual(item1, item))]])}
-                                                    path={[c.prop]}
+                                                    resource={props.resource}
+                                                    path={[...p, ...[_.get(r, p).findIndex(item1 => _.isEqual(item1, item)), c.prop]]}
                                                     onChange={(path, newValue) => {
                                                         onChange([...p, ...[_.get(r, p).findIndex(item1 => _.isEqual(item1, item)), c.prop]], newValue)
                                                     }}
