@@ -33,6 +33,7 @@ export default defineComponent({
                        class={['resource-dialog', props.className]}
                        show-close={false}
                        destroy-on-close
+                       append-to-body
                        fullscreen={fullscreen.value}
                        width={props.width ? props.width : '50%'}>
                 {{
