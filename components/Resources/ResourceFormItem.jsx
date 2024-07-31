@@ -91,13 +91,29 @@ const fetchRemoteOptions = (props, states, q) => {
     }
 }
 
-const fetchRemoteCascader = (props, states) => {
-    const filterOptions = (parent_id, options) => options.filter(o => o.parent_id === parent_id)
-        .map(o => ({...o, ...{children: filterOptions(o.id, options)}}))
+const filterOptions = (options) => {
+    const map = new Map();
+    const result = [];
 
+    options.forEach(item => {
+        map.set(item.id, {...item, children: []});
+    });
+
+    map.forEach(item => {
+        if (map.has(item.parent_id)) {
+            map.get(item.parent_id).children.push(item);
+        } else {
+            result.push(item);
+        }
+    });
+
+    return result;
+};
+
+const fetchRemoteCascader = (props, states) => {
     if (props.remote_cascader_options.remote) {
         props.remote_cascader_options.remote().then(response => {
-            states.options = filterOptions(null, response.map(i => ({
+            states.options = filterOptions(response.map(i => ({
                 id: i['id'],
                 parent_id: i['parent_id'],
                 label: _.get(i, props.remote_cascader_options.label),
