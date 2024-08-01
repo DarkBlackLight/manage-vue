@@ -53,7 +53,7 @@ const default_translations = {
             register: '注册',
             forget_password: '找回密码',
             email_reminder: '请输入邮箱',
-            password_reminder: '请输入邮箱',
+            password_reminder: '请输入密码',
             password_length_prompt: '最低长度6个字符',
             log_out: '退出登录',
             confirm_password: '确认密码',
