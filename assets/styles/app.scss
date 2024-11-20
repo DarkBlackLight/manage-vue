@@ -60,27 +60,6 @@ img {
   -moz-box-orient: vertical;
 }
 
-// 宽高度
-.w-100 {
-  width: 100%;
-}
-
-.w-90 {
-  width: 90%;
-}
-
-.w-75 {
-  width: 75%;
-}
-
-.w-50 {
-  width: 50%;
-}
-
-.h-100 {
-  height: 100%;
-}
-
 // 绝对相对定位
 .position-r {
   position: relative;
@@ -191,9 +170,6 @@ img {
 
 // 边距
 @for $i from 1 through 100 {
-  .w-#{$i} {
-    width: round(percentage(calc($i / 100)));
-  }
   .p-#{$i} {
     padding: #{ $i }px;
   }
@@ -293,4 +269,25 @@ img {
 
 .z-index999 {
   z-index: 999;
+}
+
+@for $i from 0 through 100 {
+  .w-#{$i} {
+    width: $i * 1%;
+  }
+  .h-#{$i} {
+    height: $i * 1%;
+  }
+  .top-#{$i} {
+    top: $i * 1%;
+  }
+  .bottom-#{$i} {
+    bottom: $i * 1%;
+  }
+  .left-#{$i} {
+    left: $i * 1%;
+  }
+  .right-#{$i} {
+    right: $i * 1%;
+  }
 }
