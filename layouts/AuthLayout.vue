@@ -22,7 +22,7 @@
       </div>
 
       <el-card shadow="never" @keydown.enter="onEnter" class="login-card" v-if="formCard">
-        <h2>{{ t('login.sign_in') }}</h2>
+        <h2 class="text-center">{{ t('login.sign_in') }}</h2>
         <el-form label-position="top" :hide-required-asterisk="true"
                  :model="formValue"
                  :rules="rules" ref="form">
@@ -161,7 +161,7 @@ const onSwitch = (type) => {
   display: flex;
   align-items: center;
   justify-items: center;
-  text-align: center;
+  //text-align: center;
   padding: 20px;
 }
 
