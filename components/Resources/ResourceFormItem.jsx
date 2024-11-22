@@ -5,78 +5,6 @@ import {ElMessageBox} from "element-plus";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
 
-// const renderDragAssociations = (t, column, resource) => {
-//     return (
-//         <el-col span={24}>
-//             <div id={column.prop + "_drag_associations"} class={"resource-drag-associations"}
-//                  data-prop={column.prop}>
-//                 {_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] != true).length > 0 ? _.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] != true).map((item, index) => (
-//                     <div class={'d-flex align-center resource-drag-associations-item'}>
-//                         {_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] != true).length > 1 &&
-//                             <el-icon size={16} class={"drag_handle icon-drag mr-20"}>
-//                                 <Rank/>
-//                             </el-icon>}
-//                         {column.columns.filter(c => c.type === 'image').map(c => (
-//                             (!c.condition || c.condition(resource)) &&
-//                             <el-form-item class={"mr-20"} prop={[column.prop, index, c.prop]}>
-//                                 {column.prop + index + c.prop}
-//                                 <div class={""}>{c.label}</div>
-//                                 {renderColumn[c.type](c, item)}
-//                             </el-form-item>
-//                         ))}
-//                         <el-row gutter={20}>
-//                             {column.columns.filter(c => c.type != 'image' && c.type != 'hidden').map(c => (!c.condition || c.condition(resource)) && (
-//                                 <el-col span={c.span ? c.span : 18}>
-//                                     <el-form-item rules={c.rules} prop={[column.prop, index, c.prop]}>
-//                                         <div class={""}>{c.label}</div>
-//                                         {renderColumn[c.type](c, item)}
-//                                     </el-form-item>
-//                                 </el-col>
-//                             ))}
-//                         </el-row>
-//                         <el-button circle class={'ml-20'} plain icon={Delete} type="danger" onClick={() => {
-//                             ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
-//                                 _.set(item, '_destroy', true)
-//                             })
-//                         }}/>
-//                     </div>
-//                 )) : <div class={"row-center"} style="height:80px;">{t('resources.no_data')}</div>
-//                 }
-//             </div>
-//             {_.get(resource, column.prop).filter(r => !('_destroy' in r) || r['_destroy'] != true).length < column.props.max(resource) &&
-//                 <div class="text-start my-10">
-//                     <el-button plain icon={Plus} type="primary" onClick={() => {
-//                         let newResource = {};
-//                         column.columns.forEach(c => setColumnDefault(c, newResource))
-//                         _.get(resource, column.prop).push(newResource);
-//                     }}>{t('resources.add')}
-//                     </el-button>
-//                 </div>}
-//         </el-col>
-//     )
-// }
-
-//
-// const renderColumns = (t, columns, resource) => columns.map((column) => {
-//     if (!column.condition || column.condition(resource)) {
-//         if (column.type === 'associations')
-//             return (renderAssociations(t, column, resource))
-//         else if (column.type === 'association')
-//             return (renderAssociation(t, column, resource))
-//         else if (column.type === 'drag_associations')
-//             return (renderDragAssociations(t, column, resource))
-//         else if (column.type === 'hidden')
-//             return null
-//         else return (
-//                 <el-col span={column.span ? column.span : 18}>
-//                     <el-form-item label={column.label} prop={column.prop.split(',')}>
-//                         {renderColumn[column.type](column, resource)}
-//                         {column.type != 'display' && column.render && column.render(resource)}
-//                     </el-form-item>
-//                 </el-col>)
-//     }
-// })
-
 const fetchRemoteOptions = (props, states, q) => {
     if (props.remote_options.remote) {
         states.loading = true;
@@ -698,13 +626,7 @@ export default defineComponent({
             else if (props.type === 'hidden')
                 return (<el-col span={0}></el-col>)
             else if (props.type === 'association')
-                return (
-                    <el-col span={24}>
-                        <el-row gutter={20}>
-                            {states.value && renderAssociation(props, states.value, onChange)}
-                        </el-row>
-                    </el-col>
-                )
+                return (states.value && renderAssociation(props, states.value, onChange))
             else if (props.type === 'associations')
                 return (
                     <el-col span={24}>

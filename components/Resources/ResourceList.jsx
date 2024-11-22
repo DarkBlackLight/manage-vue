@@ -69,7 +69,15 @@ export default defineComponent({
         }
 
         const onDeleteSelected = () => {
-
+            ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
+                API[props.resourceConfig.resourceData].delete(selectedIds.value.join(',')).then(response => {
+                    tableRef.value.getResourceList();
+                    ElMessage({
+                        message: t('resources.delete_message'),
+                        type: 'success',
+                    })
+                })
+            })
         }
 
         const onTabChange = () => {
@@ -158,10 +166,10 @@ export default defineComponent({
                             </el-button>
                         }
 
-                        {/*{(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&*/}
-                        {/*    <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}*/}
-                        {/*               onClick={onDeleteSelected}>{t('resources.delete')}*/}
-                        {/*    </el-button>}*/}
+                        {(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&
+                            <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
+                                       onClick={onDeleteSelected}>{t('resources.delete')}
+                            </el-button>}
                     </div>
                 </div>
 
@@ -178,6 +186,7 @@ export default defineComponent({
                     preprocess={props.listConfig.preprocess}
                     tableProps={props.listConfig.tableProps}
                     customTable={props.listConfig.customTable}
+                    onSelectionChange={handleSelectionChange}
                     columns={[
                         ...props.listConfig.columns,
                         ...[{
