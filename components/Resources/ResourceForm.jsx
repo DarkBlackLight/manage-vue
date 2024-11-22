@@ -54,7 +54,7 @@ export default defineComponent({
                 if (column.condition && !column.condition(resource.value))
                     return
 
-                if (column.type === 'associations' || column.type === 'drag_images') {
+                if (column.type === 'associations' || column.type === 'drag_images' || column.type === 'drag_files') {
                     _.set(submitResource, column.prop + '_attributes', _.get(r, [...p, ...[column.prop]]).map((item, i) => submitFormItems(r, [...p, ...[column.prop, i]], column.columns)))
                 } else if (column.type === 'association') {
                     _.set(submitResource, column.prop + '_attributes', submitFormItems(r, [...p, ...[column.prop]], column.columns))

@@ -1,6 +1,6 @@
 import _ from "lodash-es";
 import API from "@/api";
-import {Delete, Plus, Rank} from "@element-plus/icons-vue";
+import {Delete, Plus, Rank, UploadFilled, CircleCheck, CircleClose, Document} from "@element-plus/icons-vue";
 import {ElMessageBox} from "element-plus";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
@@ -72,6 +72,7 @@ const initItem = {
     'radio_group': (p) => null,
     'drag_images': (p) => [],
     'drag_associations': (p) => [],
+    'drag_files': (p) => [],
     'options': (p) => p.props && p.props.multiple ? [] : null,
     'remote_options': (p) => p.props && p.props.multiple ? [] : null,
     'remote_cascader': (p) => p.props && p.props.multiple ? [] : null,
@@ -307,6 +308,62 @@ const renderItem = (props, states, onChange) => {
                 </el-upload>
             </div>
         )
+    else if (t === 'drag_files')
+        return (
+            <div id={p.join('_') + "_drag_files"} class={"resource-form-drag-files"}
+                 data-prop={props.props}>
+                <el-upload class={"resource-form-drag-file"}
+                           show-file-list={false}
+                           http-request={({file}) => {
+                               API.Storage.upload(file).then(response => {
+                                   onChange(
+                                       p,
+                                       [
+                                           ..._.get(r, p),
+                                           ...[{
+                                               [props.columns[0].prop]: _.get(r, p).length,
+                                               [props.columns[1].prop]: response.data.id,
+                                               [props.columns[1].prop.split('_')[0]]: response.data
+                                           }]
+                                       ]
+                                   )
+                               })
+                           }}
+                           multiple
+                           {...props.props}>
+                    <el-icon class={"uploader-icon"}><UploadFilled/></el-icon>
+                </el-upload>
+                <div class={'resource-form-drag-file-list'}>
+                    {_.sortBy(_.get(r, p)
+                        .filter(i => !('_destroy' in i) || i['_destroy'] !== true), ['index'])
+                        .map((item, index) => {
+                            return (
+                                <div class={'resource-form-drag-file-list-item'}>
+                                    <div class={"row-center gap-5"}>
+                                        <el-icon><Document/></el-icon>
+                                        <p class={'resource-form-drag-file-list-item-text'}>
+                                            {_.get(item, [props.columns[1].prop.split('_')[0], 'filename'])}
+                                        </p>
+                                    </div>
+                                    <el-icon color="#67C23A" class={"resource-form-drag-file-list-item-icon"}>
+                                        <CircleCheck/>
+                                    </el-icon>
+                                    <el-icon class={"resource-form-drag-file-list-item-icon"} onClick={
+                                        () => {
+                                            onChange(
+                                                p,
+                                                _.get(r, p).map(n => _.isEqual(item, n) ? ({...n, ...{'_destroy': true}}) : n
+                                                )
+                                            )
+                                        }
+                                    }><CircleClose/></el-icon>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+        )
 }
 
 const renderAssociation = (props, states, onChange) => {
@@ -535,7 +592,7 @@ export default defineComponent({
                 fetchRemoteCascader(props, states.value)
             }
 
-            if (props.type === 'drag_images' || props.type === 'associations') {
+            if (props.type === 'drag_images' || props.type === 'associations' || props.type === 'drag_files') {
                 onChange(props.path, _.sortBy(_.get(props.resource, props.path), ['index']));
 
                 nextTick().then(() => {
