@@ -150,7 +150,7 @@ const renderItem = (props, states, onChange) => {
                            onUpdate:modelValue={(e) => onChange(p, e)}
                            {...props.props}/>)
     else if (t === 'image') {
-        let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
+        let storage_path = p.slice(0, p.length - 1) + p[p.length - 1].replace('_id', '');
         return (<div>
             <el-upload
                 class={"resource-form-image"}
@@ -185,7 +185,7 @@ const renderItem = (props, states, onChange) => {
             }>删除</el-button> : null}
         </div>)
     } else if (t === 'file') {
-        let storage_path = p.toSpliced(p.length - 1, 1, p[p.length - 1].replace('_id', ''));
+        let storage_path = p.slice(0, p.length - 1) + p[p.length - 1].replace('_id', '');
         return (<el-upload
             class={"resource-form-file"}
             {...props.props}
