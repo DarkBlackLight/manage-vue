@@ -249,7 +249,8 @@ const renderItem = (props, states, onChange) => {
                                  ...{emitPath: false},
                                  ...props.props
                              }
-                         }/>
+                         }
+                         {...props.props}/>
         )
     else if (t === 'drag_images')
         return (
