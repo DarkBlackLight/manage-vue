@@ -31,6 +31,8 @@ export default defineComponent({
 
         const queries = ref({});
 
+        const actions = ref(typeof props.listConfig.actions === 'function' ? props.listConfig.actions() : props.listConfig.actions);
+
         const onDelete = (resource) => {
             ElMessageBox.confirm(t('resources.delete_prompt')).then(() => {
                 API[props.resourceConfig.resourceData].delete(resource.id).then(response => {
@@ -160,13 +162,13 @@ export default defineComponent({
 
                         {props.listConfig.tools && props.listConfig.tools()}
 
-                        {(!props.listConfig.actions || props.listConfig.actions.includes('new')) &&
+                        {(actions.value.includes('new')) &&
                             <el-button icon={Plus} type="primary" onClick={() => emit('new')}>
                                 {t('resources.new')}
                             </el-button>
                         }
 
-                        {(!props.listConfig.actions || props.listConfig.actions.includes('delete')) &&
+                        {(actions.value.includes('delete')) &&
                             <el-button icon={Delete} plain type="danger" v-show={selectedIds.value.length}
                                        onClick={onDeleteSelected}>{t('resources.delete')}
                             </el-button>}
@@ -193,22 +195,25 @@ export default defineComponent({
                             label: t('resources.actions'),
                             fixed: 'right',
                             width: 150,
-                            render: (r) =>
-                                (r.id && <div>
-                                        {props.listConfig.actions.includes('show') &&
-                                            <el-button plain type="primary" icon={ZoomIn} circle
-                                                       onClick={() => emit('show', r)}/>}
+                            render: (r) => {
+                                if (r.id) {
+                                    let btn_actions = typeof props.listConfig.actions === 'function' ? props.listConfig.actions(r) : props.listConfig.actions;
+                                    return (<div>
+                                            {btn_actions.includes('show') &&
+                                                <el-button plain type="primary" icon={ZoomIn} circle
+                                                           onClick={() => emit('show', r)}/>}
 
-                                        {props.listConfig.actions.includes('edit') &&
-                                            <el-button plain type="warning" icon={Edit} circle
-                                                       onClick={() => emit('edit', r)}/>}
+                                            {btn_actions.includes('edit') &&
+                                                <el-button plain type="warning" icon={Edit} circle
+                                                           onClick={() => emit('edit', r)}/>}
 
-                                        {props.listConfig.actions.includes('delete') &&
-                                            <el-button plain type="danger" icon={Delete} circle
-                                                       onClick={() => onDelete(r)}/>}
-                                    </div>
-                                )
-
+                                            {btn_actions.includes('delete') &&
+                                                <el-button plain type="danger" icon={Delete} circle
+                                                           onClick={() => onDelete(r)}/>}
+                                        </div>
+                                    )
+                                }
+                            }
                         }]
                     ]}/>
             </el-main>
