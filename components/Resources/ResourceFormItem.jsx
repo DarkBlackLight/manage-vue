@@ -4,6 +4,7 @@ import {Delete, Plus, Rank, UploadFilled, CircleCheck, CircleClose, Document} fr
 import {ElMessageBox} from "element-plus";
 import {defineComponent, onMounted, ref, nextTick} from "vue";
 import Sortable from 'sortablejs';
+import {useI18n} from 'vue-i18n'
 
 const fetchRemoteOptions = (props, states, q) => {
     if (props.remote_options.remote) {
@@ -380,7 +381,7 @@ const renderAssociation = (props, states, onChange) => {
     </>)
 }
 
-const renderAssociations = (props, states, onChange) => {
+const renderAssociations = (props, states, onChange, t) => {
     let r = props.resource
     let p = props.path;
 
@@ -431,7 +432,7 @@ const renderAssociations = (props, states, onChange) => {
                 <el-col span={24}>
                     <el-button type="primary" class={"w-100"} plain onClick={() => {
                         onChange(props.path, [..._.get(r, p), ...[{index: _.get(r, p).length + 1}]])
-                    }}>新增
+                    }}>{t('resources.add')}
                     </el-button>
                 </el-col>
             </el-row>
@@ -476,7 +477,7 @@ const renderAssociations = (props, states, onChange) => {
 
                 {props.associations_increment && <el-button type="primary" class={"w-100"} plain onClick={() => {
                     onChange(p, [..._.get(r, p), ...[{index: _.get(r, p).length + 1}]])
-                }}>新增
+                }}>{t('resources.add')}
                 </el-button>}
             </el-col>
         )
@@ -560,6 +561,8 @@ export default defineComponent({
     },
     emits: ['change'],
     setup(props, {expose, emit}) {
+        const {t} = useI18n();
+
         const states = ref(null);
 
         const DraggableList = ref({})
@@ -688,7 +691,7 @@ export default defineComponent({
             else if (props.type === 'associations')
                 return (
                     <el-col span={24}>
-                        {states.value && renderAssociations(props, states.value, onChange)}
+                        {states.value && renderAssociations(props, states.value, onChange, t)}
                     </el-col>
                 )
             else {
