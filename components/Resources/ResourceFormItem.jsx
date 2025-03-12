@@ -46,7 +46,8 @@ const fetchRemoteCascader = (props, states, q) => {
                 id: i['id'],
                 parent_id: i['parent_id'],
                 label: _.get(i, props.remote_cascader_options.label),
-                value: _.get(i, props.remote_cascader_options.value)
+                value: _.get(i, props.remote_cascader_options.value),
+                raw_data: i
             })));
         })
     }
