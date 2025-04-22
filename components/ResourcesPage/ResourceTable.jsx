@@ -82,6 +82,14 @@ export default defineComponent({
         const pageSize = ref(props.page_size);
         const currentPage = ref(props.current_page);
 
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            getResourceList()
+        }
+
         const getResourceList = () => {
             if (props.enablePagination) {
                 if (props.data) {
@@ -180,8 +188,8 @@ export default defineComponent({
                                        pageSizes={[10, 50, 100]}
                                        total={resourcesTotal.value}
                                        layout="total,sizes, prev, pager, next, jumper"
-                                       onSizeChange={() => getResourceList()}
-                                       onCurrentChange={() => getResourceList()}
+                                       onSizeChange={() => scrollToTop()}
+                                       onCurrentChange={() => scrollToTop()}
                         />
                     </div>
                 }

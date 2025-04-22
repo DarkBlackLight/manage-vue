@@ -21,7 +21,7 @@ const default_translations = {
             log_out: 'Log out',
             confirm_password: 'Confirm Password',
             go_to_login: 'Existing account? Go to login',
-            name: 'name',
+            name: 'Name',
             name_reminder: 'Please enter a name'
         },
         resources: {
