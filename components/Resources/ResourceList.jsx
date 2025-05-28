@@ -160,7 +160,7 @@ export default defineComponent({
                                        onClick={onSearch}/>
                         }
 
-                        {props.listConfig.tools && props.listConfig.tools()}
+                        {props.listConfig.tools && props.listConfig.tools(selectedIds.value)}
 
                         {(actions.value.includes('new')) &&
                             <el-button icon={Plus} type="primary" onClick={() => emit('new')}>
